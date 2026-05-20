@@ -70,7 +70,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .splash-orb{width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 40px rgba(139,92,246,.6),0 0 80px rgba(139,92,246,.2);animation:splashPulse 2s ease-in-out infinite}
 @keyframes splashPulse{0%,100%{box-shadow:0 0 40px rgba(139,92,246,.6),0 0 80px rgba(139,92,246,.2)}50%{box-shadow:0 0 60px rgba(139,92,246,.9),0 0 120px rgba(139,92,246,.35)}}
 .splash-title{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(196,181,253,.5);animation:fadeUp .8s .3s both}
-.splash-name{font-family:'DM Mono',monospace;font-size:2rem;font-weight:500;color:#f0eeff;letter-spacing:.28em;text-transform:uppercase;animation:fadeUp .8s .6s both}
+.splash-name{font-family:'Source Serif 4',serif;font-size:2.2rem;font-weight:700;color:#f0eeff;letter-spacing:.02em;animation:fadeUp .8s .6s both}
 .splash-lib{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(196,181,253,.45);animation:fadeUp .8s .9s both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
@@ -298,7 +298,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .overlay.open{opacity:1;pointer-events:all}
 
 /* ── MODALS ── */
-body.modal-open{overflow:hidden!important}
+body.modal-open{overflow:hidden!important;touch-action:none}
 .modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:460px;max-width:92vw;background:var(--surface);border:2px solid var(--accent);border-radius:14px;padding:1.62rem;z-index:501;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;max-height:min(86vh,calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px));overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;box-shadow:0 30px 90px rgba(0,0,0,.85),0 0 40px var(--glow),inset 0 0 0 1px rgba(255,255,255,.04)}
 /* Book modal — much wider on desktop */
 #mBook{
@@ -501,7 +501,7 @@ body.modal-open{overflow:hidden!important}
 .btn-del:hover{border-color:var(--err);color:var(--err)}
 .set-s{margin-bottom:.95rem;padding-bottom:.95rem;border-bottom:1px solid var(--border)}
 .set-s:last-child{border:none;margin:0;padding:0}
-.set-s h3{font-family:'Source Serif 4',serif;font-size:.92rem;font-weight:700;margin-bottom:.52rem;color:var(--text)}
+.set-s h3{font-family:'Source Serif 4',serif;font-size:.88rem;font-weight:700;margin-bottom:.52rem;background:linear-gradient(120deg,#fff 0%,var(--accent2) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .prow{display:flex;gap:.32rem;margin-bottom:.52rem}
 .pbtn{flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.06em;padding:.37rem;border-radius:6px;cursor:pointer;transition:all .13s;text-align:center}
 .pbtn.active,.pbtn:hover{color:var(--accent2);border-color:var(--accent);background:var(--glow)}
@@ -524,7 +524,6 @@ body.modal-open{overflow:hidden!important}
 .star-sm{font-size:.7rem}
 .star-display{display:flex;gap:.1rem}
 
-body.onboarding-active header,body.onboarding-active #dock,body.onboarding-active .fab-wrap{display:none!important}
 /* ── MILESTONE POPUP ── */
 #milestonePopup.open{opacity:1!important;pointer-events:auto!important;transform:translateX(-50%) translateY(0)!important;}
 /* ── QUOTE POPUP ── */
@@ -645,10 +644,12 @@ canvas{-webkit-user-select:none;user-select:none}
 
 <!-- TOP HEADER LIMPIO -->
 <div id="dockTop">
-  <div style="display:flex;align-items:center;gap:.5rem">
-    <div id="headerOrb" style="width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 8px rgba(139,92,246,.55);flex-shrink:0"></div>
-    <span class="dtlogo">ALINEA</span>
-    <span class="dtbcount" id="bcount">0 libros</span>
+  <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.18rem">
+    <div style="display:flex;align-items:center;gap:.4rem">
+      <div id="headerOrb" style="width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 8px rgba(139,92,246,.55);flex-shrink:0"></div>
+      <span class="dtlogo">ALINEA</span>
+    </div>
+    <span class="dtbcount" id="bcount" style="align-self:center;margin-top:.1rem">0 libros</span>
   </div>
   <div id="dockActions">
     <button class="dta" id="wishBtn" onclick="openWishlist()" title="Wishlist" style="position:relative;font-size:.82rem">🚀<div class="rocket-badge" id="rocketBadge"></div></button>
@@ -755,7 +756,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btic" onclick="shareGalaxySnapshot()" title="Compartir galaxia" id="sharGalBtn" style="font-size:.85rem">📸</button>
       </div>
       <!-- Category filter panel -->
-      <div id="catFilterPanel" style="display:none;position:fixed;bottom:calc(env(safe-area-inset-bottom)+175px);left:50%;transform:translateX(-50%);background:rgba(8,6,18,.97);border:1px solid rgba(139,92,246,.35);border-radius:14px;padding:.75rem .8rem;z-index:9000;width:min(320px,92vw);backdrop-filter:blur(24px);box-shadow:0 8px 40px rgba(0,0,0,.8)">
+      <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:9000;width:min(280px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
           <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">Categorías</span>
           <div style="display:flex;gap:.3rem">
@@ -880,7 +881,20 @@ canvas{-webkit-user-select:none;user-select:none}
         </div>
         </div>
 
-        <!-- HARD RESET -->>
+        <!-- GALAXY SHARE -->
+        <div style="margin-bottom:1.4rem"><div class="sec" data-i18n="shareGalaxyTitle">Compartir galaxia ✦</div>
+        <div class="bit-card">
+          <div class="bit-card-title" data-i18n="shareGalaxyCardTitle">🌌 Compartir mi galaxia</div>
+          <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.85rem" data-i18n="shareGalaxyDesc">Exporta un código de tu biblioteca para que otra persona lo importe y vea tu galaxia junto a la suya.</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="copyGalaxyCode()" data-i18n="copyGalaxyBtn">📋 Copiar código de galaxia</button>
+            <button class="btn-ghost" style="font-size:.55rem;padding:.35rem .85rem" onclick="openFriendGalaxy()" data-i18n="viewFriendBtn">👁 Ver galaxia de amigo</button>
+          </div>
+          <textarea id="friendCodeIn" placeholder="Pega aquí el código JSON de tu amigo…" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.6rem;border-radius:6px;outline:none;resize:vertical;min-height:70px;margin-top:.65rem;display:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'"></textarea>
+        </div>
+        </div>
+
+        <!-- HARD RESET -->
         <div><div class="sec" style="color:rgba(248,113,113,.5)" data-i18n="dangerZone">Zona de peligro</div>
         <div class="bit-card" style="border-color:rgba(248,113,113,.2)">
           <div class="bit-card-title" style="color:var(--err)" data-i18n="hardResetTitle">☢ Hard Reset</div>
@@ -1125,27 +1139,6 @@ canvas{-webkit-user-select:none;user-select:none}
 
   <!-- TAB 2: DATOS & GALAXIA -->
   <div id="spage2" style="display:none">
-    <div class="set-s">
-      <h3>&#127756; Galaxia de amigos</h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem">Importa la biblioteca de un amigo para explorar ambas galaxias juntas.</p>
-      <input type="text" id="friendNameInput" placeholder="Nombre de tu amigo..." style="width:100%;box-sizing:border-box;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.38rem .65rem;border-radius:7px;outline:none;margin-bottom:.4rem" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
-      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
-        <button onclick="shareGalaxyFile()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.42rem .9rem;border-radius:7px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">&#128228; Compartir mi galaxia</button>
-        <label style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:.42rem .9rem;border-radius:7px;cursor:pointer">
-          &#128194; Importar galaxia
-          <input type="file" accept=".json" style="display:none" onchange="loadFriendGalaxyFile(event)">
-        </label>
-      </div>
-      <div id="friendGalaxyStatus" style="display:none;background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);border-radius:8px;padding:.55rem .75rem">
-        <div style="display:flex;align-items:center;justify-content:space-between">
-          <div><div style="font-family:'DM Mono',monospace;font-size:.52rem;color:#6ee7b7;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.15rem">&#10003; Galaxia cargada</div><div id="friendGalaxyName" style="font-size:.65rem;color:var(--text)"></div></div>
-          <div style="display:flex;gap:.3rem">
-            <button onclick="viewFriendGalaxy()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.32rem .65rem;border-radius:6px;cursor:pointer">Ver</button>
-            <button onclick="removeFriendGalaxy()" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.32rem .65rem;border-radius:6px;cursor:pointer">&#10005;</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- LOCAL-FIRST WARNING -->
     <div style="background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:.85rem 1rem;margin-bottom:.95rem;display:flex;gap:.65rem;align-items:flex-start">
       <span style="font-size:1.1rem;flex-shrink:0;margin-top:.05rem">⚠️</span>
@@ -1905,7 +1898,7 @@ let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
-const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat','mBookSelector'];
+const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat'];
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
 const persistCfg=()=>localStorage.setItem('eter2_cfg',JSON.stringify(cfg));
@@ -3601,7 +3594,7 @@ var _qpBookId=null,_qpQuoteText='',_qpBookTitle='',_qpBookAuthor='';
 function showQuotePopup(bookId,quoteText,bookTitle,bookAuthor){
   _qpBookId=bookId;_qpQuoteText=quoteText;_qpBookTitle=bookTitle;_qpBookAuthor=bookAuthor;
   document.getElementById('qpText').textContent='"'+quoteText+'"';
-  document.getElementById('qpSource').textContent=(_qpBookAuthor?_qpBookAuthor+' · ':'')+(_qpBookTitle||'');
+  document.getElementById('qpSource').textContent=(currentLang==='en'?'From ':'De ')+(bookTitle||'')+(bookAuthor?' · '+bookAuthor:'');
   document.getElementById('qpShareLabel').textContent=currentLang==='en'?'Share as Story':'Compartir como Story';
   document.getElementById('qpOpenBtn').textContent=currentLang==='en'?'View book':'Ver libro';
   const popup=document.getElementById('quotePopup');
@@ -3726,7 +3719,7 @@ async function shareQuoteAsStory(){
 
   // Watermark — only @alinea.io
   ctx.fillStyle=ac+'90';ctx.font='400 34px "DM Mono",monospace';
-  ctx.fillStyle=ac2+'aa';ctx.font='600 30px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='10px';ctx.fillText('ALINEA',W/2,H*.91);ctx.fillStyle=ac+'77';ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText('@alinea.io',W/2,H*.91+36);
+  ctx.letterSpacing='6px';ctx.textAlign='center';ctx.fillText('@alinea.io',W/2,H*.94);
 
   if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
 
@@ -3935,121 +3928,48 @@ function saveLibName(){persistState();if(document.getElementById('viewGraph').cl
 // GALAXY CATEGORY FILTER
 // ══════════════════════════
 // ── BITÁCORA STAT MODALS ──────────────────────────────
-// ── BOOK SELECTOR FOR SHARING ──
-let _bsBooks=[],_bsTitle='',_bsSelected=new Set();
-function openBookSelector(books,titleText){
-  if(!books||!books.length){if(typeof _showToast==='function')_showToast('Sin libros para compartir.');return;}
-  _bsBooks=[...books];_bsTitle=titleText;_bsSelected=new Set(_bsBooks.map(b=>b.id));
-  const t1=document.getElementById('bookSelectorTitle');const t2=document.getElementById('bookSelectorSub');
-  if(t1)t1.textContent=currentLang==='en'?'Select books':'Seleccionar libros';
-  if(t2)t2.textContent=currentLang==='en'?'Choose which to show':'Elige cuáles mostrar';
-  _bsRenderGrid();showModal('mBookSelector');
-}
-function _bsRenderGrid(){
-  const grid=document.getElementById('bookSelectorGrid');const count=document.getElementById('bsCount');
-  if(count)count.textContent=_bsSelected.size+' / '+_bsBooks.length;
-  if(!grid)return;
-  grid.innerHTML=_bsBooks.map(b=>{
-    const sel=_bsSelected.has(b.id);
-    return`<div onclick="_bsToggle(${b.id})" style="cursor:pointer;text-align:center;opacity:${sel?1:.4};transition:opacity .15s">
-      <div style="width:100%;aspect-ratio:2/3;border-radius:6px;overflow:hidden;background:var(--card2);border:2px solid ${sel?'var(--accent)':'transparent'};margin-bottom:.22rem;position:relative">
-        ${b.cover?`<img src="${b.cover}" style="width:100%;height:100%;object-fit:cover">`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2rem">\uD83D\uDCD6</div>'}
-        ${sel?'<div style="position:absolute;top:3px;right:3px;background:var(--accent);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#fff">\u2713</div>':''}
-      </div>
-      <div style="font-size:.45rem;color:var(--muted);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${b.title}</div>
-    </div>`;
-  }).join('');
-}
-function _bsToggle(id){if(_bsSelected.has(id))_bsSelected.delete(id);else _bsSelected.add(id);_bsRenderGrid();}
-function _bsSelectAll(val){if(val)_bsBooks.forEach(b=>_bsSelected.add(b.id));else _bsSelected.clear();_bsRenderGrid();}
-function _bsConfirmShare(){
-  const selected=_bsBooks.filter(b=>_bsSelected.has(b.id));
-  closeModal('mBookSelector');
-  if(!selected.length){if(typeof _showToast==='function')_showToast(currentLang==='en'?'Select at least one book.':'Selecciona al menos un libro.');return;}
-  setTimeout(()=>_bitShareStat(_bsTitle,[],selected.map(b=>b.id)),200);
-}
-
-function _bitShareStat(titleText, bodyLines, bookIds){
-  const W=1080,H=1920;
+function _bitShareStat(titleText, bodyLines){
+  // Generate a shareable image of a stat card
+  const W=1080,H=1080;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const ctx=cv.getContext('2d');
   const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
   const ac=theme.accent,ac2=theme.accent2,ac3=theme.accent3;
   const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  // BG
   const bg=ctx.createLinearGradient(0,0,W,H);
   bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  for(let i=0;i<300;i++){ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11)*1.2+.1,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.55+.08})`;ctx.fill();}
-  const gl=ctx.createRadialGradient(W/2,H*.4,0,W/2,H*.4,W*.7);
-  gl.addColorStop(0,theme.glow?theme.glow.replace(/[\d.]+\)$/,'0.15)'):'rgba(139,92,246,.15)');
+  // Stars
+  for(let i=0;i<200;i++){ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11)*.9+.1,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.5+.08})`;ctx.fill();}
+  // Glow
+  const gl=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,W*.6);
+  gl.addColorStop(0,ac.replace(')',',0.12)').replace('rgb','rgba')||'rgba(139,92,246,.12)');
   gl.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gl;ctx.fillRect(0,0,W,H);
   // Orb
-  const orbX=W/2,orbY=170,orbR=70;
+  const orbX=W/2,orbY=H*.18,orbR=55;
   const og=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
-  og.addColorStop(0,'#fff');og.addColorStop(.25,ac2);og.addColorStop(.65,ac);og.addColorStop(1,ac3);
-  ctx.shadowBlur=60;ctx.shadowColor=ac;ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-  ctx.fillStyle=ac2;ctx.font='500 46px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='12px';
-  ctx.fillText('ALINEA',W/2,orbY+orbR+58);
-  ctx.strokeStyle=theme.glow?theme.glow.replace(/[\d.]+\)$/,'0.4)'):'rgba(139,92,246,.4)';ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(W*.2,330);ctx.lineTo(W*.8,330);ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,.55)';ctx.font='400 34px "DM Mono",monospace';ctx.letterSpacing='5px';
-  ctx.fillText((titleText||'').toUpperCase().substring(0,26),W/2,390);
-
-  if(bookIds&&bookIds.length){
-    const books=bookIds.map(id=>lib.find(b=>b.id===id)).filter(Boolean);
-    const n=books.length;
-    let cols,cw,ch,gap;
-    if(n===1){cols=1;cw=700;ch=1050;gap=0;}
-    else if(n===2){cols=2;cw=480;ch=720;gap=24;}
-    else if(n<=4){cols=2;cw=440;ch=660;gap=20;}
-    else if(n<=6){cols=3;cw=300;ch=450;gap=18;}
-    else{cols=3;cw=270;ch=405;gap=16;}
-    const rows=Math.ceil(Math.min(n,9)/cols);
-    const totalW=cols*cw+(cols-1)*gap;
-    const totalH=rows*(ch+36)+(rows-1)*gap;
-    const startX=(W-totalW)/2;
-    const startY=Math.max(440,(H-totalH-200)/2+200);
-    const fs=n<=2?22:n<=4?18:15;
-    books.slice(0,9).forEach((b,i)=>{
-      const col=i%cols,row=Math.floor(i/cols);
-      const bx=startX+col*(cw+gap),by=startY+row*(ch+36+gap);
-      ctx.fillStyle='rgba(20,15,40,.8)';
-      _roundRectFn(ctx,bx,by,cw,ch,12);ctx.fill();
-      ctx.strokeStyle=ac+'44';ctx.lineWidth=1;_roundRectFn(ctx,bx,by,cw,ch,12);ctx.stroke();
-      const ts=b.title.length>22?b.title.substring(0,20)+'\u2026':b.title;
-      if(b.cover){
-        const img=new Image();img.crossOrigin='anonymous';
-        img.onload=()=>{ctx.save();_roundRectFn(ctx,bx,by,cw,ch,12);ctx.clip();ctx.drawImage(img,bx,by,cw,ch);ctx.restore();ctx.fillStyle='rgba(255,255,255,.8)';ctx.font=`400 ${fs}px "DM Mono",monospace`;ctx.letterSpacing='0';ctx.textAlign='center';ctx.fillText(ts,bx+cw/2,by+ch+24);};
-        img.onerror=()=>{ctx.fillStyle=ac+'33';_roundRectFn(ctx,bx,by,cw,ch,12);ctx.fill();};
-        img.src=b.cover;
-      } else {
-        ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='48px serif';ctx.textAlign='center';ctx.fillText('\uD83D\uDCD6',bx+cw/2,by+ch/2+16);
-        ctx.fillStyle='rgba(255,255,255,.7)';ctx.font=`400 ${fs}px "DM Mono",monospace`;ctx.letterSpacing='0';ctx.fillText(ts,bx+cw/2,by+ch+24);
-      }
-    });
-    setTimeout(()=>{
-      ctx.fillStyle=ac2+'aa';ctx.font='600 30px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='10px';ctx.fillText('ALINEA',W/2,H*.91);
-      ctx.fillStyle=ac+'77';ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText('@alinea.io',W/2,H*.91+36);
-      _exportBitStat(cv);
-    },500);
-  } else {
-    ctx.fillStyle='#f0eeff';ctx.font='700 72px "Source Serif 4",serif';ctx.letterSpacing='0';ctx.textAlign='center';
-    (bodyLines||[]).forEach((ln,i)=>ctx.fillText(ln,W/2,H*.52+i*90));
-    ctx.fillStyle=ac2+'aa';ctx.font='600 30px "DM Mono",monospace';ctx.letterSpacing='10px';ctx.fillText('ALINEA',W/2,H*.91);
-    ctx.fillStyle=ac+'77';ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText('@alinea.io',W/2,H*.91+36);
-    _exportBitStat(cv);
-  }
-}
-function _roundRectFn(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
-function _exportBitStat(cv){
+  og.addColorStop(0,'#fff');og.addColorStop(.3,ac2);og.addColorStop(.7,ac);og.addColorStop(1,ac3);
+  ctx.shadowBlur=50;ctx.shadowColor=ac;ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  // ALINEA
+  ctx.fillStyle=ac2;ctx.font='500 42px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='14px';ctx.fillText('ALINEA',W/2,orbY+orbR+56);
+  // Title
+  ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='400 32px "DM Mono",monospace';ctx.letterSpacing='4px';
+  ctx.fillText(titleText.toUpperCase(),W/2,H*.4);
+  // Body lines
+  ctx.fillStyle='#f0eeff';ctx.font='700 72px "Source Serif 4",serif';ctx.letterSpacing='0';
+  bodyLines.forEach((ln,i)=>ctx.fillText(ln,W/2,H*.52+i*90));
+  // Watermark
+  ctx.fillStyle=ac+'88';ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='5px';
+  ctx.fillText('@alinea.io',W/2,H*.93);
   cv.toBlob(async blob=>{
     if(!blob)return;
     const file=new File([blob],'alinea-stat.png',{type:'image/png'});
-    const st='My reading universe in ALINEA \uD83C\uDF0C @alinea.io';
+    const st=`My reading universe in ALINEA 🌌 @alinea.io`;
     if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
       try{await navigator.share({files:[file],title:'ALINEA',text:st});}
-      catch(e){if(e.name!=='AbortError')_downloadGalaxyPng&&_downloadGalaxyPng(blob);}
-    } else {if(typeof _downloadGalaxyPng==='function')_downloadGalaxyPng(blob);if(typeof _showToast==='function')_showToast(currentLang==='en'?'\uD83D\uDCF8 Story downloaded!':'\uD83D\uDCF8 Story descargada!');}
+      catch(e){if(e.name!=='AbortError')_downloadGalaxyPng(blob);}
+    } else {_downloadGalaxyPng(blob);_showToast(currentLang==='en'?'📸 Image downloaded!':'📸 Imagen descargada!');}
   },'image/png',1.0);
 }
 
@@ -4139,14 +4059,14 @@ function openBitModal(type){
   const body=document.getElementById('mBitStatBody');
   if(!modal||!title||!body)return;
   const realBooks=lib.filter(b=>!b.isWishlist&&b.status!=='wishlist');
-  window._bmd={r:realBooks,d:realBooks.filter(b=>b.readingStatus==='done'||b.status==='done'||b.status==='read'),rn:realBooks.filter(b=>b.readingStatus==='reading'||b.status==='reading'),w:lib.filter(b=>b.isWishlist||b.status==='wishlist')};
   let titleText='',html='';
   const isEN=currentLang==='en';
-  const shareBtn=(lbl,key)=>`<div style="margin-top:.7rem;text-align:right"><button onclick="openBookSelector(window._bmd&&window._bmd['${key}']||[],'${lbl}')" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">&#128248; ${isEN?'Share':'Compartir'}</button></div>`;
+
+  const shareBtn=(ttl,lines)=>`<div style="margin-top:.85rem;text-align:right"><button onclick="_bitShareStat('${ttl.replace(/'/g,"\\'")}',${JSON.stringify(lines)})" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .85rem;border-radius:6px;cursor:pointer;box-shadow:0 2px 10px var(--glow)">📸 ${isEN?'Share':'Compartir'}</button></div>`;
 
   if(type==='volumen'){
     titleText='📚 '+(t('volumen')||'Volumen');
-    html=_bitCoverGrid(realBooks,isEN?'No books yet.':'Sin libros aún.')+shareBtn(isEN?'My Galaxy':'Mi Galaxia','r');
+    html=_bitCoverGrid(realBooks,isEN?'No books yet.':'Sin libros aún.')+shareBtn(titleText,[`${realBooks.length}`,isEN?'books in my galaxy':'libros en mi galaxia']);
   } else if(type==='knowledge'){
     titleText='✦ '+(t('knowledge')||'Conocimiento');
     const totalNotes=realBooks.reduce((s,b)=>s+(b.notes?.length||0),0);
@@ -4194,13 +4114,15 @@ function openBitModal(type){
     :`<div style="color:var(--dim);font-size:.7rem">${isEN?'No categories yet.':'Sin categorías aún.'}</div>`;
   } else if(type==='done'){
     titleText='✅ '+(t('terminados')||'Terminados');
-    html=_bitCoverGrid(window._bmd.d,isEN?'No finished books yet.':'Sin libros terminados aún.')+shareBtn(isEN?'Finished':'Terminados','d');
+    const doneBooks=realBooks.filter(b=>b.readingStatus==='done'||b.status==='done'||b.status==='read');
+    html=_bitCoverGrid(doneBooks,isEN?'No finished books yet.':'Sin libros terminados aún.')+shareBtn(titleText,[`${doneBooks.length}`,isEN?'books finished':'libros terminados']);
   } else if(type==='reading'){
     titleText='📖 '+(t('leyendo')||'Leyendo');
-    html=_bitCoverGrid(window._bmd.rn,isEN?'Not reading anything right now.':'No estás leyendo nada actualmente.')+shareBtn(isEN?'Reading':'Leyendo','rn');
+    const readingBooks=realBooks.filter(b=>b.readingStatus==='reading'||b.status==='reading');
+    html=_bitCoverGrid(readingBooks,isEN?'Not reading anything right now.':'No estás leyendo nada actualmente.')+shareBtn(titleText,[`${readingBooks.length}`,isEN?'books in progress':'libros en progreso']);
   } else if(type==='wishlist'){
     titleText='🚀 Wishlist';
-    html=_bitCoverGrid(window._bmd.w,isEN?'Your wishlist is empty.':'Tu wishlist está vacía.')+shareBtn('Wishlist','w');
+    html=_bitCoverGrid(lib.filter(b=>b.isWishlist||b.status==='wishlist'),isEN?'Your wishlist is empty.':'Tu wishlist está vacía.')+shareBtn(titleText,[`${lib.filter(b=>b.isWishlist||b.status==='wishlist').length}`,isEN?'books I want to read':'libros que quiero leer']);
   } else if(type==='notes'){
     titleText='📝 '+(t('notasStat')||'Notas');
     const sorted=[...realBooks].sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).filter(b=>(b.notes||[]).length>0);
@@ -5779,61 +5701,41 @@ async function runHorizon(){
   }catch{res.innerHTML='<div style="color:var(--dim);font-size:.72rem">'+txt+'</div>';}
 }
 
-function shareGalaxyFile(){
-  const data=JSON.stringify({lib,appState,version:'alinea-galaxy-1.0'},null,2);
-  const blob=new Blob([data],{type:'application/json'});
-  const file=new File([blob],'mi-galaxia-alinea.json',{type:'application/json'});
-  const name=appState.libName||'Mi Galaxia';
-  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-    navigator.share({files:[file],title:'ALINEA — '+name,text:'Te comparto mi galaxia de lectura en ALINEA \uD83C\uDF0C alinea.io'}).catch(e=>{if(e.name!=='AbortError')_dlJSON(blob);});
-  } else {_dlJSON(blob);}
+function copyGalaxyCode(){
+  const data=JSON.stringify({version:2,library:lib,appState,exported:new Date().toISOString()});
+  navigator.clipboard.writeText(data).then(()=>{
+    alert('✓ Código copiado al portapapeles. Compártelo con tu amigo para que vea tu galaxia.');
+  }).catch(()=>{
+    // Fallback
+    const ta=document.createElement('textarea');ta.value=data;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    alert('✓ Código copiado.');
+  });
 }
-function _dlJSON(blob){
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-galaxia-alinea.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-  if(typeof _showToast==='function')_showToast('\uD83D\uDCC2 Galaxia exportada');
+
+function openFriendGalaxy(){
+  const ta=document.getElementById('friendCodeIn');
+  ta.style.display=ta.style.display==='none'?'block':'none';
+  if(ta.style.display==='block'){
+    ta.placeholder='Pega aquí el JSON de tu amigo y presiona Enter…';
+    ta.onkeydown=e=>{if(e.key==='Enter'&&e.ctrlKey)loadFriendGalaxy();};
+    const btn=document.querySelector('[onclick="openFriendGalaxy()"]');
+    if(btn)btn.textContent=ta.style.display==='block'?'✓ Cargar galaxia':'👁 Ver galaxia de amigo';
+  }
 }
-function loadFriendGalaxyFile(evt){
-  const file=evt.target.files[0];if(!file)return;
-  const nameInput=document.getElementById('friendNameInput');
-  const friendName=(nameInput&&nameInput.value.trim())||'Amigo';
-  const reader=new FileReader();
-  reader.onload=e=>{
-    try{
-      const data=JSON.parse(e.target.result);
-      const friendLib=data.lib||data.library||data;
-      if(!Array.isArray(friendLib)||!friendLib.length){alert('Archivo inv\u00e1lido.');return;}
-      window._friendGalaxyLib=friendLib;
-      window._friendGalaxyName=(data.appState&&data.appState.libName)||friendName;
-      const status=document.getElementById('friendGalaxyStatus');
-      const nameEl=document.getElementById('friendGalaxyName');
-      if(status)status.style.display='block';
-      if(nameEl)nameEl.textContent=window._friendGalaxyName+' \u00b7 '+friendLib.length+' libros';
-      if(typeof closeModal==='function')closeModal('mSettings');
-      setTimeout(viewFriendGalaxy,300);
-    }catch(err){alert('Error al leer el archivo.');}
-  };
-  reader.readAsText(file);
-  evt.target.value='';
+
+function loadFriendGalaxy(){
+  const ta=document.getElementById('friendCodeIn');
+  try{
+    const data=JSON.parse(ta.value);
+    if(!data.library)throw new Error('Formato inválido');
+    // Store friend lib temporarily
+    sessionStorage.setItem('eter_friend',JSON.stringify(data.library));
+    alert(`✓ Galaxia de amigo cargada: ${data.library.length} libros. Ve a la vista Galaxia para verla.`);
+    ta.style.display='none';
+    // Switch to graph
+    const graphTab=Array.from(document.querySelectorAll('.ntab')).find(b=>b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'graph'"));if(graphTab)graphTab.click();
+  }catch{alert('Error al leer el código. Asegúrate de pegar el JSON completo.');}
 }
-function viewFriendGalaxy(){
-  if(!window._friendGalaxyLib){if(typeof _showToast==='function')_showToast('No hay galaxia de amigo cargada.');return;}
-  if(typeof closeModal==='function')closeModal('mSettings');
-  const dock=document.querySelectorAll('.dock-btn');
-  dock.forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes('graph'))b.click();});
-  setTimeout(()=>{if(typeof initGraph==='function')initGraph();if(typeof _showToast==='function')_showToast('\uD83C\uDF0C '+window._friendGalaxyName);},400);
-}
-function removeFriendGalaxy(){
-  const name=window._friendGalaxyName||'tu amigo';
-  if(!confirm('\u00bfEliminar la galaxia de '+name+'?'))return;
-  window._friendGalaxyLib=null;window._friendGalaxyName=null;
-  const status=document.getElementById('friendGalaxyStatus');
-  if(status)status.style.display='none';
-  if(typeof initGraph==='function')initGraph();
-  if(typeof _showToast==='function')_showToast('Galaxia eliminada.');
-}
-function copyGalaxyCode(){shareGalaxyFile();}
-function openFriendGalaxy(){}
-function loadFriendGalaxy(){}
 
 // ══════════════════════════
 // INIT
@@ -6163,7 +6065,7 @@ function finishOnboarding(){
     const ls=document.getElementById('libNameSettings');if(ls)ls.value=appState.libName;
   }
   const onbOvl=document.getElementById('onbOverlay');
-  if(onbOvl)onbOvl.style.display='none';document.body.classList.remove('onboarding-active');
+  if(onbOvl)onbOvl.style.display='none';
   closeModal('mOnboarding');
   document.body.classList.remove('modal-open');
   localStorage.setItem('eter2_onboarded','1');
@@ -6191,7 +6093,7 @@ function forceShowOnboarding(){
   setTimeout(()=>{
     // Show full-screen blocking overlay
     const onbOvl=document.getElementById('onbOverlay');
-    if(onbOvl)onbOvl.style.display='block';document.body.classList.add('onboarding-active');
+    if(onbOvl)onbOvl.style.display='block';
     // Prevent any click from reaching the background
     document.getElementById('overlay').classList.remove('open'); // close regular overlay first
     showModal('mOnboarding');
@@ -6532,28 +6434,11 @@ document.addEventListener('click',e=>{
   <div id="msMsg" style="font-family:'Source Serif 4',serif;font-size:.82rem;font-style:italic;color:var(--text);line-height:1.6"></div>
 </div>
 
-<!-- BOOK SELECTOR MODAL -->
-<div class="modal" id="mBookSelector" style="width:500px;max-width:94vw;max-height:82vh">
-  <button onclick="closeModal('mBookSelector')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center">✕</button>
-  <h2 id="bookSelectorTitle" style="margin-bottom:.25rem;padding-right:2rem">Seleccionar libros</h2>
-  <p id="bookSelectorSub" style="font-size:.62rem;color:var(--dim);margin-bottom:.65rem">Elige cuáles mostrar</p>
-  <div style="display:flex;gap:.35rem;margin-bottom:.55rem;align-items:center">
-    <button onclick="_bsSelectAll(true)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.25rem .6rem;border-radius:5px;cursor:pointer">Todos</button>
-    <button onclick="_bsSelectAll(false)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.25rem .6rem;border-radius:5px;cursor:pointer">Ninguno</button>
-    <span id="bsCount" style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);margin-left:auto"></span>
-  </div>
-  <div id="bookSelectorGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:.5rem;overflow-y:auto;max-height:44vh;margin-bottom:.65rem"></div>
-  <div class="macts">
-    <button class="btn-ghost" onclick="closeModal('mBookSelector')">Cancelar</button>
-    <button class="btn-ok" onclick="_bsConfirmShare()">📸 Compartir</button>
-  </div>
-</div>
-
 <!-- BITSTAT MODAL -->
-<div class="modal" id="mBitStat" style="width:500px;max-width:94vw;max-height:82vh">
+<div class="modal" id="mBitStat" style="width:500px;max-width:96vw;max-height:80vh;display:flex;flex-direction:column">
   <button onclick="closeBitModal()" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10">✕</button>
   <h2 id="mBitStatTitle" style="margin-bottom:.8rem;font-size:1rem"></h2>
-  <div id="mBitStatBody" style="overflow-y:auto;max-height:60vh;padding-right:.2rem"></div>
+  <div id="mBitStatBody" style="overflow-y:auto;flex:1;padding-right:.2rem"></div>
 </div>
 
 <!-- QUOTE POPUP -->
