@@ -22,7 +22,23 @@
   document.addEventListener('contextmenu',e=>e.preventDefault(),{capture:true});
   </script>
 <!-- Lock to portrait on mobile -->
-<style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}/* ONBOARDING */
+<style>@media screen and (orientation:landscape) and (max-height:500px){#portraitLock{display:flex!important}}</style>
+<script>
+(function(){
+  function updateRotateArrow(){
+    const arrow=document.getElementById('rotateArrow');
+    if(!arrow)return;
+    // Detect if landscape — arrow should point toward portrait
+    const isLandscape=window.innerWidth>window.innerHeight;
+    // Phone tilted right (landscape) → rotate counterclockwise (↺) to go portrait
+    arrow.textContent=isLandscape?'↺':'↻';
+  }
+  window.addEventListener('resize',updateRotateArrow);
+  window.addEventListener('orientationchange',()=>setTimeout(updateRotateArrow,100));
+  document.addEventListener('DOMContentLoaded',updateRotateArrow);
+})();
+</script>
+<style>
 .onb-dot{width:7px;height:7px;border-radius:50%;background:rgba(139,92,246,.25);border:1px solid rgba(139,92,246,.4);cursor:pointer;transition:all .2s}
 .onb-dot.active{background:var(--accent);border-color:var(--accent);box-shadow:0 0 8px var(--glow);width:20px;border-radius:4px}
 .onb-step{animation:onbFadeIn .3s ease}
@@ -76,7 +92,13 @@
   box-shadow:0 0 12px var(--glow),0 0 20px var(--glow)!important;
 }
 </style>
-<div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;color:rgba(196,181,253,.7);font-family:DM Mono,monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;gap:.75rem"><div style="font-size:2rem">↩</div><div>Gira el teléfono<br>para usar ALINEA</div></div>
+<div id="portraitLock" style="display:none;position:fixed;inset:0;background:#06050f;z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem">
+  <div id="rotateArrow" style="font-size:3rem;line-height:1;transition:transform .4s ease">↻</div>
+  <div style="text-align:center">
+    <div style="font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;font-style:italic;color:rgba(196,181,253,.9);margin-bottom:.35rem;letter-spacing:.01em">Gira el teléfono</div>
+    <div style="font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(139,92,246,.6)">para usar ALINEA</div>
+  </div>
+</div>
 <title>ALINEA — Tu Biblioteca</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ib3JiIiBjeD0iMzUlIiBjeT0iMzAlIiByPSI2NSUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZTBkNGZmIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjOGI1Y2Y2Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzNiMDc2NCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIzIiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlTWVyZ2U+PGZlTWVyZ2VOb2RlIGluPSJibHVyIi8+PGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+PC9mZU1lcmdlPgogICAgPC9maWx0ZXI+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMDYwNTBmIiByeD0iMjIiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIzNiIgZmlsbD0idXJsKCNvcmIpIiBmaWx0ZXI9InVybCgjZ2xvdykiLz4KICA8Y2lyY2xlIGN4PSIzOCIgY3k9IjM2IiByPSI5IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4xOCIvPgo8L3N2Zz4=">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj4KICA8ZGVmcz4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iYmciIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwYzBhMTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDYwNTBmIi8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIzNSUiIGN5PSIzMCUiIHI9IjY1JSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlMGQ0ZmYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIzNSUiIHN0b3AtY29sb3I9IiNhNzhiZmEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI3MCUiIHN0b3AtY29sb3I9IiM3YzNhZWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM2IwNzY0Ii8+CiAgICA8L3JhZGlhbEdyYWRpZW50PgogICAgPGZpbHRlciBpZD0iZ2xvdyIgeD0iLTMwJSIgeT0iLTMwJSIgd2lkdGg9IjE2MCUiIGhlaWdodD0iMTYwJSI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjYiIHJlc3VsdD0iYmx1ciIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImJsdXIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIGZpbGw9InVybCgjYmcpIiByeD0iNDAiLz4KICA8IS0tIFN0YXJzIC0tPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iMjUiIHI9IjEuMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNCIvPgogIDxjaXJjbGUgY3g9IjE1MCIgY3k9IjQwIiByPSIxIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC4zIi8+CiAgPGNpcmNsZSBjeD0iMTYwIiBjeT0iMTQwIiByPSIxLjUiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjM1Ii8+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIxNTUiIHI9IjEiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz4KICA8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxNjUiIHI9IjEuMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMjUiLz4KICA8IS0tIE9yYiBnbG93IGhhbG8gLS0+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNTgiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMTUiIGZpbHRlcj0idXJsKCNnbG93KSIvPgogIDwhLS0gTWFpbiBvcmIgLS0+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNTIiIGZpbGw9InVybCgjb3JiKSIgZmlsdGVyPSJ1cmwoI2dsb3cpIi8+CiAgPCEtLSBTcGVjdWxhciBoaWdobGlnaHQgLS0+CiAgPGNpcmNsZSBjeD0iNzIiIGN5PSI2OCIgcj0iMTQiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjE2Ii8+CiAgPCEtLSBTbWFsbCBpbm5lciBoaWdobGlnaHQgLS0+CiAgPGNpcmNsZSBjeD0iNjgiIGN5PSI2NCIgcj0iNiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuMjIiLz4KPC9zdmc+">
@@ -221,9 +243,9 @@ body::before{content:'';position:fixed;inset:0;background:
 .spine{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--accent),var(--accent2));opacity:.5;transition:opacity .2s,width .2s}
 .bcard:hover .spine{opacity:1;width:4px;box-shadow:0 0 8px var(--accent)}
 .nbadge{position:absolute;top:.35rem;right:.35rem;background:rgba(6,5,15,.92);border:1px solid var(--border);border-radius:10px;font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);padding:.1rem .32rem}
-.bmeta{padding:.5rem 0 0}
-.bt{font-size:.82rem;font-weight:500;line-height:1.3;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ba{font-size:.68rem;color:var(--muted);margin-top:.06rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bmeta{padding:.55rem 0 0}
+.bt{font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;line-height:1.3;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ba{font-family:'Lato',sans-serif;font-size:.65rem;color:var(--muted);margin-top:.18rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:300;letter-spacing:.02em}
 .btags{display:flex;gap:.18rem;margin-top:.32rem;flex-wrap:wrap}
 .pill{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.22);padding:.07rem .26rem;border-radius:3px}
 .pill.mood{color:var(--ok);background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.18)}
@@ -3940,6 +3962,7 @@ let _bitShareCtx = null; // {titleText, bodyLines, books:[{id,title,cover,author
 function _openShareFilter(titleText, bodyLines, books) {
   _bitShareCtx = {titleText, bodyLines, books};
   const isEN = currentLang === 'en';
+  const CAP = 100;
 
   // Build or reuse the filter modal
   let modal = document.getElementById('mShareFilter');
@@ -3962,17 +3985,14 @@ function _openShareFilter(titleText, bodyLines, books) {
               <button onclick="_selectAllShare(false)" style="background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .55rem;border-radius:5px;cursor:pointer;white-space:nowrap">${isEN?'None':'Ninguno'}</button>
             </div>
           </div>
-          <!-- Sticky generate button at top -->
-          <button onclick="_generateAndShare()" id="sfGenBtnTop" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.62rem;border-radius:8px;cursor:pointer;box-shadow:0 3px 14px var(--glow);transition:opacity .15s">
+          <!-- Single generate button -->
+          <button onclick="_generateAndShare()" id="sfGenBtn" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.62rem;border-radius:8px;cursor:pointer;box-shadow:0 3px 14px var(--glow);transition:opacity .15s">
             ✦ ${isEN?'Generate & Share':'Generar y Compartir'}
           </button>
         </div>
         <div id="sfList" style="overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;padding:.5rem .8rem;display:flex;flex-direction:column;gap:.28rem"></div>
         <div style="padding:.7rem 1.2rem .9rem;border-top:1px solid var(--border);flex-shrink:0">
-          <div style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim);text-align:center;margin-bottom:.5rem" id="sfCount"></div>
-          <button onclick="_generateAndShare()" id="sfGenBtn" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.72rem;border-radius:10px;cursor:pointer;box-shadow:0 4px 20px var(--glow);transition:opacity .15s">
-            ✦ ${isEN?'Generate & Share':'Generar y Compartir'}
-          </button>
+          <div style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim);text-align:center" id="sfCount"></div>
         </div>
       </div>`;
     document.body.appendChild(modal);
@@ -3981,9 +4001,28 @@ function _openShareFilter(titleText, bodyLines, books) {
   // Populate
   document.getElementById('sfTitle').textContent = titleText;
   const n = books.length;
-  document.getElementById('sfSub').textContent = isEN
-    ? `${n} book${n!==1?'s':''} · choose which appear`
-    : `${n} libro${n!==1?'s':''} · elige cuáles aparecen`;
+  const overCap = n > CAP;
+  document.getElementById('sfSub').textContent = overCap
+    ? (isEN ? `${n} books · only 100 will appear in the image` : `${n} libros · solo 100 aparecerán en la imagen`)
+    : (isEN ? `${n} book${n!==1?'s':''} · choose which appear` : `${n} libro${n!==1?'s':''} · elige cuáles aparecen`);
+
+  // Show cap warning banner if over limit
+  let capBanner = document.getElementById('sfCapBanner');
+  if (!capBanner) {
+    capBanner = document.createElement('div');
+    capBanner.id = 'sfCapBanner';
+    capBanner.style.cssText = 'display:none;padding:.5rem .8rem;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;margin:.5rem .8rem 0;font-family:"DM Mono",monospace;font-size:.48rem;color:rgba(251,191,36,.9);letter-spacing:.04em;line-height:1.55';
+    const list = document.getElementById('sfList');
+    if (list) list.parentNode.insertBefore(capBanner, list);
+  }
+  if (overCap) {
+    capBanner.style.display = 'block';
+    capBanner.textContent = isEN
+      ? `⚠ The image shows a maximum of 100 books. The first 100 checked will be used. Deselect the ones you don't want.`
+      : `⚠ La imagen muestra máximo 100 libros. Se usarán los primeros 100 marcados. Quita los que no quieras.`;
+  } else {
+    capBanner.style.display = 'none';
+  }
 
   const list = document.getElementById('sfList');
   list.innerHTML = books.map((b,i) => `
@@ -4016,29 +4055,36 @@ function _selectAllShare(checked=true) {
 }
 
 function _updateSfCount() {
+  const CAP = 100;
+  const isEN = currentLang === 'en';
   const checked = document.querySelectorAll('.sf-chk:checked').length;
   const total = document.querySelectorAll('.sf-chk').length;
-  const isEN = currentLang === 'en';
+  const overCap = checked > CAP;
   const el = document.getElementById('sfCount');
-  if (el) el.textContent = isEN ? `${checked} of ${total} selected` : `${checked} de ${total} seleccionados`;
+  if (el) {
+    el.textContent = isEN
+      ? `${checked} of ${total} selected${overCap ? ' · only first 100 will render' : ''}`
+      : `${checked} de ${total} seleccionados${overCap ? ' · solo los primeros 100 se renderizarán' : ''}`;
+    el.style.color = overCap ? 'rgba(251,191,36,.85)' : 'var(--dim)';
+  }
   const disabled = checked === 0;
-  const opacity = disabled ? '0.4' : '1';
-  ['sfGenBtn','sfGenBtnTop'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) { btn.style.opacity = opacity; btn.disabled = disabled; }
-  });
+  const btn = document.getElementById('sfGenBtn');
+  if (btn) { btn.style.opacity = disabled ? '0.4' : '1'; btn.disabled = disabled; }
 }
 
 async function _generateAndShare() {
   if (!_bitShareCtx) return;
   const isEN = currentLang === 'en';
-  const selected = [...document.querySelectorAll('.sf-chk:checked')].map(c => {
+  const CAP = 100;
+  let selected = [...document.querySelectorAll('.sf-chk:checked')].map(c => {
     return _bitShareCtx.books[parseInt(c.dataset.idx)];
   }).filter(Boolean);
   if (!selected.length) return;
+  // Enforce cap — only first 100
+  if (selected.length > CAP) selected = selected.slice(0, CAP);
 
   const btn = document.getElementById('sfGenBtn');
-  if (btn) { btn.textContent = isEN ? '⏳ Rendering…' : '⏳ Generando…'; btn.style.opacity = '.7'; btn.disabled = true; }
+  if (btn) { btn.style.opacity = '.5'; btn.disabled = true; }
 
   _closeShareFilter();
 
@@ -4092,10 +4138,25 @@ function _renderBitCanvas(titleText, bodyLines, books) {
   // ── Body stats text ──
   let contentTop = labelY + 52;
   if (bodyLines && bodyLines.length) {
-    ctx.fillStyle = '#f0eeff'; ctx.letterSpacing = '0';
-    ctx.font = '700 ' + (bodyLines[0] && bodyLines[0].length > 14 ? '52' : '68') + 'px "Lato",sans-serif';
-    bodyLines.forEach((ln, i) => { ctx.fillText(ln, W/2, contentTop + i * 82); });
-    contentTop += bodyLines.length * 82 + 36;
+    ctx.letterSpacing = '0'; ctx.textAlign = 'center';
+    if (bodyLines.length === 1) {
+      ctx.fillStyle = '#f0eeff';
+      ctx.font = '700 68px "Lato",sans-serif';
+      ctx.fillText(bodyLines[0], W/2, contentTop);
+      contentTop += 90;
+    } else {
+      // First line: category/title in medium Playfair
+      ctx.fillStyle = ac2;
+      ctx.font = '700 52px "Playfair Display",serif';
+      ctx.fillText(bodyLines[0], W/2, contentTop);
+      contentTop += 68;
+      // Second line: stat in smaller Lato
+      ctx.fillStyle = 'rgba(255,255,255,.75)';
+      ctx.font = '400 34px "Lato",sans-serif';
+      ctx.fillText(bodyLines[1], W/2, contentTop);
+      contentTop += 56;
+    }
+    contentTop += 28;
   }
 
   // ── Smart geometric cover layout ──
@@ -4214,15 +4275,24 @@ function _geoPositions(n, availW, availH) {
 
 function _calcGrid(n, availW, availH) {
   const AR = 1.45;
-  const TITLE_H = 32;
-  let best = { cols: 5, cw: 80, ch: 116, gap: 14 };
-  for (let c = 1; c <= Math.min(n, 6); c++) {
+  const TITLE_H = 28;
+  // For large libraries allow up to 7 cols, min cover 55px
+  const maxCols = n > 20 ? 7 : n > 10 ? 6 : 5;
+  let best = { cols: maxCols, cw: 55, ch: Math.round(55*AR), gap: 10 };
+  for (let c = 1; c <= Math.min(n, maxCols); c++) {
     const rows = Math.ceil(n / c);
-    const gap = Math.max(14, Math.min(24, availW * 0.02));
+    const gap = Math.max(10, Math.min(22, availW * 0.018));
     const cw = Math.floor((availW - (c-1) * gap) / c);
     const ch = Math.round(cw * AR);
     const totalH = rows * (ch + TITLE_H) + (rows-1) * gap;
-    if (totalH <= availH && cw >= 70) best = { cols: c, cw, ch, gap };
+    if (totalH <= availH && cw >= 55) best = { cols: c, cw, ch, gap };
+  }
+  // If nothing fits, force max cols with smallest covers
+  if (best.cw < 55) {
+    const c = maxCols;
+    const gap = 10;
+    const cw = Math.max(55, Math.floor((availW - (c-1)*gap) / c));
+    best = { cols: c, cw, ch: Math.round(cw*AR), gap };
   }
   return best;
 }
@@ -4271,25 +4341,18 @@ function _drawCover(ctx, b, bx, by, cw, ch, ac, radius, onDone) {
 }
 
 function _finalizeBitCanvas(ctx, cv, W, H, ac, ac2) {
-  // Footer: semi-transparent bar + orb + ALINEA wordmark
+  // Footer: wordmark only, no orb
   ctx.fillStyle = 'rgba(4,3,12,.7)';
-  ctx.fillRect(0, H - 180, W, 180);
-
-  // Mini orb in footer
-  const fOrbX = W/2, fOrbY = H - 130, fOrbR = 28;
-  const fog = ctx.createRadialGradient(fOrbX - fOrbR*.3, fOrbY - fOrbR*.3, 0, fOrbX, fOrbY, fOrbR);
-  fog.addColorStop(0, '#fff'); fog.addColorStop(.3, ac2); fog.addColorStop(.7, ac); fog.addColorStop(1, ac);
-  ctx.shadowBlur = 30; ctx.shadowColor = ac;
-  ctx.fillStyle = fog; ctx.beginPath(); ctx.arc(fOrbX, fOrbY, fOrbR, 0, Math.PI*2); ctx.fill();
-  ctx.shadowBlur = 0;
+  ctx.fillRect(0, H - 130, W, 130);
 
   ctx.fillStyle = ac2 + 'ee';
   ctx.font = '600 34px "DM Mono",monospace';
   ctx.textAlign = 'center'; ctx.letterSpacing = '10px';
-  ctx.fillText('ALINEA', W/2, H - 82);
+  ctx.shadowBlur = 0;
+  ctx.fillText('ALINEA', W/2, H - 68);
   ctx.fillStyle = ac + '99';
   ctx.font = '400 22px "DM Mono",monospace'; ctx.letterSpacing = '4px';
-  ctx.fillText('@alinea.io', W/2, H - 48);
+  ctx.fillText('@alinea.io', W/2, H - 36);
 
   _exportBitStat(cv);
 }
@@ -4682,7 +4745,7 @@ function initGraph(){
   const maxInCat=Math.max(...cats.map(c=>groups[c].length),1);
 
   // Size calculations
-  const mainR=Math.max(24,Math.min(46,22+(totalBooks+numSystems)*1.1));
+  const mainR=Math.max(28,Math.min(58,24+totalBooks*1.4+numSystems*1.8));
   const maxR=Math.min(W,H)*Math.min(0.45,0.31+numSystems*0.028+totalBooks*0.0045);
   const sysOrbitR=Math.min(maxR*0.88,mainR*3.5+numSystems*32+maxInCat*14);
   const sunR=Math.max(17,Math.min(33,14+maxInCat*2.1));
@@ -4701,7 +4764,7 @@ function initGraph(){
     const catNotes=groups[cat].reduce((s,b)=>s+(b.notes?.length||0),0);
     gSystems.push({cx:sx,cy:sy,cat,books:groups[cat],baseAngle:angle,orbitR:sysOrbitR,sysId});
     gNodes.push({id:sysId,title:translateCat(cat)||cat,x:sx,y:sy,type:'sun',cat,
-      r:Math.max(16,Math.min(34,16+groups[cat].length*2.2+catNotes*.4))});
+      r:Math.max(18,Math.min(42,16+groups[cat].length*3+catNotes*.5))});
     groups[cat].forEach((b,bi)=>{
       const ring=Math.floor(bi/5);
       const r=planetRings[Math.min(ring,planetRings.length-1)];
@@ -4898,15 +4961,27 @@ function drawGraph(){
   // Planets
   gNodes.filter(n=>n.type==='planet').forEach(n=>{
     const col=cc(n.cat)||cc(CAT_PARENT[n.cat]||'');const r=n.r||12;
-    const atm=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r+10);
-    atm.addColorStop(0,col.glow+'0.14)');atm.addColorStop(1,'transparent');
-    ctx.beginPath();ctx.arc(n.x,n.y,r+10,0,Math.PI*2);ctx.fillStyle=atm;ctx.fill();
-    const pg=ctx.createRadialGradient(n.x-r*.3,n.y-r*.3,0,n.x,n.y,r);
-    pg.addColorStop(0,col.sun+'33');pg.addColorStop(.55,col.dark);pg.addColorStop(1,'#06050f');
+    // Parse sun hex to RGB for lighter tint
+    const hex=col.sun.replace('#','');
+    const pr=parseInt(hex.slice(0,2),16),pg2=parseInt(hex.slice(2,4),16),pb=parseInt(hex.slice(4,6),16);
+    // Planet: lighter pastel (mix col.sun with white heavily)
+    const light=`rgba(${Math.min(255,pr+80)},${Math.min(255,pg2+80)},${Math.min(255,pb+80)},.9)`;
+    const mid=`rgba(${Math.min(255,pr+40)},${Math.min(255,pg2+40)},${Math.min(255,pb+40)},.7)`;
+    // Subtle atmosphere
+    const atm=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r+8);
+    atm.addColorStop(0,col.glow+'0.1)');atm.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(n.x,n.y,r+8,0,Math.PI*2);ctx.fillStyle=atm;ctx.fill();
+    // Planet body: bright highlight → mid tint → dark edge (distinctly lighter than sun)
+    const pg=ctx.createRadialGradient(n.x-r*.35,n.y-r*.35,0,n.x,n.y,r);
+    pg.addColorStop(0,'rgba(255,255,255,.85)');
+    pg.addColorStop(.22,light);
+    pg.addColorStop(.6,mid);
+    pg.addColorStop(1,col.dark+'dd');
     ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
-    ctx.strokeStyle=col.sun+'bb';ctx.lineWidth=1.1;ctx.stroke();
+    // Thin rim — same hue but brighter
+    ctx.strokeStyle=light;ctx.lineWidth=.9;ctx.stroke();
     if(gSc>.38){
-      ctx.textAlign='center';ctx.fillStyle=col.sun+'dd';
+      ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.82)';
       ctx.font=Math.max(7,7.5*gSc)+"px 'DM Mono',monospace";
       ctx.fillText(n.title.split(' ').slice(0,2).join(' '),n.x,n.y+r+10);
     }
@@ -5453,11 +5528,11 @@ function renderLib(){
       :b.status==='owned'
         ?'<span class="pill" style="color:var(--accent);background:rgba(139,92,246,.1)">📦 no leído</span>':'';
     if(gv==='list'){
-      card.innerHTML=`<div class="bcover"><span class="spine"></span>${cover}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div><div class="lv-r">${b.category?`<span class="pill">${b.category}</span>`:''}${readBadge}${statusTag}${nc>0?`<span class="pill" style="color:var(--muted)">${nc}n</span>`:''}</div>`;
+      card.innerHTML=`<div class="bcover"><span class="spine"></span>${cover}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>`;
     }else if(libViewMode==='minimal'){
       card.innerHTML=`<div class="bcover"><span class="spine"></span>${cover}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div>${b.rating?`<div style="color:#fbbf24;font-size:.62rem;letter-spacing:-.01em;margin-top:.18rem">${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}</div>`:''}</div>`;
     }else{
-      card.innerHTML=`<div class="bcover"><span class="spine"></span>${cover}${nc>0?`<span class="nbadge">${nc}</span>`:''}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div>${(tags||readBadge||statusTag||b.rating)?`<div class="btags">${tags}${readBadge}${statusTag}${b.rating?`<span style='color:#fbbf24;font-size:.58rem;letter-spacing:-.02em'>${'★'.repeat(b.rating)}${'☆'.repeat(5-b.rating)}</span>`:''}</div>`:''}</div>`;
+      card.innerHTML=`<div class="bcover"><span class="spine"></span>${cover}${nc>0?`<span class="nbadge">${nc}</span>`:''}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>`;
     }
     grid.appendChild(card);
   });
@@ -5477,9 +5552,9 @@ function renderLib(){
       const nc=b.notes?.length||0;
       const cover=b.cover?`<img src="${b.cover}" alt="${b.title}" loading="lazy">`:`<div class="cph"><span>📖</span><p>${b.title}</p></div>`;
       if(gv==='list'){
-        card.innerHTML=`<div class="bcover"><span class="spine" style="background:var(--gold);opacity:.5"></span>${cover}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div><div class="lv-r"><span class="pill wish">🚀</span></div>`;
+        card.innerHTML=`<div class="bcover"><span class="spine" style="background:var(--gold);opacity:.5"></span>${cover}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>`;
       }else{
-        card.innerHTML=`<div class="bcover"><span class="spine" style="background:var(--gold);opacity:.5"></span>${cover}${nc>0?`<span class="nbadge">${nc}</span>`:''}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div><div class="btags"><span class="pill wish">🚀 wishlist</span></div></div>`;
+        card.innerHTML=`<div class="bcover"><span class="spine" style="background:var(--gold);opacity:.5"></span>${cover}${nc>0?`<span class="nbadge">${nc}</span>`:''}</div><div class="bmeta"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>`;
       }
       grid.appendChild(card);
     });
