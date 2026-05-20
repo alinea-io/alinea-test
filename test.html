@@ -329,7 +329,7 @@ body::before{content:'';position:fixed;inset:0;background:
 /* ── GRADIENT HERO TITLES ── */
 .hero-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;line-height:1.25;margin-bottom:.28rem}
 .hero-title em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-title-settings{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.25;margin-bottom:1.2rem;padding-top:24px;background:linear-gradient(120deg,#fff 0%,var(--accent2) 60%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-title-settings{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.25;margin-bottom:2.5rem;padding-top:36px;padding-right:2.5rem;background:linear-gradient(120deg,#fff 0%,var(--accent2) 60%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .bit-hero{margin-bottom:1.8rem;padding-top:.6rem}
 .bit-hero h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.28rem}
 .bit-hero h2 em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -905,7 +905,7 @@ canvas{-webkit-user-select:none;user-select:none}
           <div class="bit-card">
             <div class="bit-card-title" data-i18n="exportJsonTitle">📤 Exportar JSON</div>
             <div style="font-size:.7rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem" data-i18n="exportJsonDesc">Descarga tu biblioteca completa. Ligero, portable, restaurable al instante en cualquier dispositivo.</div>
-            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()" data-i18n="downloadJson">⬇ Descargar JSON</button>
+            <button class="btn-gen" style="font-size:.55rem;padding:.35rem .85rem" onclick="exportJSON()" data-i18n="downloadJson">⬇ Descargar Respaldo</button>
           </div>
           <div class="bit-card">
             <div class="bit-card-title" data-i18n="exportPdfTitle">📄 Exportar PDF</div>
@@ -1081,48 +1081,85 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
 
 <!-- SETTINGS -->
-<div class="modal" id="mSettings" style="width:520px;max-width:95vw">
+<div class="modal" id="mSettings" style="width:520px;max-width:95vw;min-height:320px">
   <button onclick="closeModal('mSettings')" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
   <h2 data-i18n="settingsTitle" class="hero-title-settings">Configuración</h2>
   <!-- TABS -->
-  <div style="display:flex;gap:.3rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
-    <button id="stab1" onclick="switchSettingsTab(1)" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="appearanceTitle">🎨 Apariencia</button>
-    <button id="stab2" onclick="switchSettingsTab(2)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="dataTitle">💾 Datos</button>
-    <button id="stab3" onclick="switchSettingsTab(3)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="iaTitle">⚙️ IA</button>
-    <button id="stab4" onclick="switchSettingsTab(4)" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.38rem .4rem;border-radius:6px;cursor:pointer;transition:all .15s">Help</button>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
+    <button id="stab1" onclick="switchSettingsTab(1)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Apariencia</button>
+    <button id="stab2" onclick="switchSettingsTab(2)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Datos</button>
+    <button id="stab3" onclick="switchSettingsTab(3)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >IA</button>
+    <button id="stab4" onclick="switchSettingsTab(4)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Ayuda</button>
   </div>
 
   <!-- TAB 1: APARIENCIA -->
   <div id="spage1">
+    <!-- Library name -->
     <div class="set-s">
-      <h3>🎨 Apariencia</h3>
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="libNameLabel">Nombre de tu biblioteca</div>
-      <input class="fin" type="text" id="libNameSettings" placeholder="Mi Biblioteca…" oninput="syncLibName(this.value)" style="margin-bottom:.9rem">
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="accentColor">Color de acento</div>
-      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem" id="accentPalette">
-        <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;cursor:pointer;outline:2px solid #c4b5fd;outline-offset:2px;box-shadow:0 0 8px rgba(139,92,246,.6);transition:transform .15s" title="Morado"></button>
-        <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Azul"></button>
-        <button class="accent-swatch" data-theme="green" onclick="setAccentTheme('green',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#047857,#10b981);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Verde"></button>
-        <button class="accent-swatch" data-theme="pink" onclick="setAccentTheme('pink',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#9d174d,#ec4899);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Rosa"></button>
-        <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Naranja"></button>
-        <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Amarillo"></button>
-        <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:2px" title="Rojo"></button>
-      </div>
-      <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem" data-i18n="textSize">Tamaño de texto</div>
-      <div style="display:flex;gap:.3rem">
-        <button onclick="setFontSize('small')" id="fsSmall" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="small">Pequeño</button>
-        <button onclick="setFontSize('normal')" id="fsNormal" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="normal">Normal</button>
-        <button onclick="setFontSize('large')" id="fsLarge" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="large">Grande</button>
-        <button onclick="setFontSize('xl')" id="fsXL" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.35rem;border-radius:6px;cursor:pointer;transition:all .13s" data-i18n="xl">XL</button>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.5rem" data-i18n="libNameLabel">Nombre de tu biblioteca</div>
+      <input class="fin" type="text" id="libNameSettings" placeholder="Mi Biblioteca…" oninput="syncLibName(this.value)">
+    </div>
+
+    <!-- Accent color -->
+    <div class="set-s">
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem" data-i18n="accentColor">Color de acento</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap" id="accentPalette">
+        <button class="accent-swatch active" data-theme="purple" onclick="setAccentTheme('purple',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border:none;cursor:pointer;outline:2px solid #c4b5fd;outline-offset:3px;box-shadow:0 0 10px rgba(139,92,246,.7);transition:transform .15s" title="Morado"></button>
+        <button class="accent-swatch" data-theme="blue" onclick="setAccentTheme('blue',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Azul"></button>
+        <button class="accent-swatch" data-theme="green" onclick="setAccentTheme('green',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#047857,#10b981);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Verde"></button>
+        <button class="accent-swatch" data-theme="pink" onclick="setAccentTheme('pink',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#9d174d,#ec4899);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Rosa"></button>
+        <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Naranja"></button>
+        <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Amarillo"></button>
+        <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Rojo"></button>
       </div>
     </div>
+
+    <!-- Text size -->
     <div class="set-s">
-      <h3>🌐 <span data-i18n="langTitle">Idioma</span></h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.35rem" id="langGrid"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem" data-i18n="textSize">Tamaño de texto</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem">
+        <button onclick="setFontSize('small')" id="fsSmall" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;text-transform:uppercase;padding:.5rem .3rem;border-radius:8px;cursor:pointer;transition:all .13s" data-i18n="small">Pequeño</button>
+        <button onclick="setFontSize('normal')" id="fsNormal" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;text-transform:uppercase;padding:.5rem .3rem;border-radius:8px;cursor:pointer;transition:all .13s" data-i18n="normal">Normal</button>
+        <button onclick="setFontSize('large')" id="fsLarge" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;text-transform:uppercase;padding:.5rem .3rem;border-radius:8px;cursor:pointer;transition:all .13s" data-i18n="large">Grande</button>
+        <button onclick="setFontSize('xl')" id="fsXL" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.52rem;text-transform:uppercase;padding:.5rem .3rem;border-radius:8px;cursor:pointer;transition:all .13s" data-i18n="xl">XL</button>
+      </div>
     </div>
-    <div class="set-s" style="border:none;margin-top:.2rem">
+
+    <!-- Language -->
+    <div class="set-s">
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem" data-i18n="langTitle">Idioma</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.35rem" id="langGrid"></div>
+    </div>
+
+    <!-- Galaxy category colors -->
+    <div class="set-s">
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.18rem">Galaxia</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);margin-bottom:.65rem">Personaliza el color de tus categorías</div>
+      <div id="catColorGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem"></div>
+    </div>
+
+    <!-- Tutorial -->
+    <div class="set-s">
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.4rem" data-i18n="onboardingTitle">Tutorial de inicio</div>
+      <button onclick="closeModal('mSettings');setTimeout(()=>forceShowOnboarding(),200)" style="width:100%;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.52rem;border-radius:8px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
+    </div>
+
+    <!-- Desarrollado por -->
+    <div class="set-s">
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem" data-i18n="devBy">Desarrollado por</div>
+      <a href="https://instagram.com/miguel_valdez1" target="_blank" style="display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:.9rem 1rem;text-decoration:none;transition:border-color .15s;background-image:radial-gradient(ellipse at 20% 60%,rgba(139,92,246,.14) 0%,transparent 55%),radial-gradient(1px 1px at 12% 22%,rgba(220,210,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 82% 18%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 58% 72%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 91% 58%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 28% 82%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 68% 35%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 42% 12%,rgba(255,255,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 14px rgba(139,92,246,.55);flex-shrink:0"></div>
+        <div>
+          <div style="font-family:'Lato',sans-serif;font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.12rem">Miguel Valdez</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.03em">@miguel_valdez1</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Nota del autor -->
+    <div class="set-s" style="border:none">
       <h3 style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;cursor:pointer" onclick="toggleAuthorNote()" id="authorNoteHeader">
-        <span>✦ <span data-i18n="authorNoteTitle">Nota del autor</span></span>
+        <span style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">✦ <span data-i18n="authorNoteTitle">Nota del autor</span></span>
         <span id="authorNoteChevron" style="font-size:.7rem;color:var(--muted);transition:transform .2s">▼</span>
       </h3>
       <div id="authorNoteBody" style="display:none;margin-top:.65rem">
@@ -1142,47 +1179,6 @@ canvas{-webkit-user-select:none;user-select:none}
         </div>
       </div>
     </div>
-    <div class="set-s" style="border-bottom:none;padding-bottom:.5rem">
-      <h3 data-i18n="onboardingTitle">Tutorial de inicio</h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.6rem" data-i18n="onboardingDesc">¿Quieres volver a ver la guía de bienvenida?</p>
-      <button onclick="closeModal('mSettings');setTimeout(()=>forceShowOnboarding(),200)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .15s" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
-    </div>
-    <div class="set-s" style="border-bottom:1px solid var(--border)">
-      <h3 style="display:flex;align-items:center;gap:.5rem">💬 <span data-i18n="helpTitle">Help & Feedback</span></h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.7rem" data-i18n="helpDesc">¿Tienes dudas o sugerencias? Escríbenos.</p>
-      <div style="display:flex;flex-direction:column;gap:.45rem">
-        <a href="mailto:hello.alinea.io@gmail.com" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
-          <span style="font-size:1.1rem">✉️</span>
-          <div>
-            <div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpEmailLabel">Soporte por email</div>
-            <div style="font-size:.64rem;color:var(--muted)">hello.alinea.io@gmail.com</div>
-          </div>
-          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
-        </a>
-        <a href="https://instagram.com/alinea.io" target="_blank" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
-          <span style="font-size:1.1rem">📸</span>
-          <div>
-            <div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpIgLabel">Instagram oficial</div>
-            <div style="font-size:.64rem;color:var(--muted)">@alinea.io</div>
-          </div>
-          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
-        </a>
-      </div>
-    </div>
-    <div class="set-s" style="border:none">
-      <h3 data-i18n="devBy">Desarrollado por</h3>
-      <div style="display:flex;align-items:center;gap:.8rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.8rem">
-        <div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e0d4ff,#7c3aed);box-shadow:0 0 10px rgba(139,92,246,.5);flex-shrink:0"></div>
-        <div>
-          <div style="font-size:.8rem;font-weight:500;color:var(--text)">Miguel Valdez</div>
-          <a href="https://instagram.com/miguel_valdez1" target="_blank" style="font-size:.66rem;color:var(--accent2);text-decoration:none">@miguel_valdez1</a>
-          <div style="margin-top:.35rem">
-            <a href="https://instagram.com/miguel_valdez1" target="_blank" style="font-family:'DM Mono',monospace;font-size:.54rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:.15rem .45rem;border-radius:4px">Instagram ↗</a>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:.5rem;text-align:center;font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim)">ALINEA · @alinea.io · <span data-i18n="allRightsReserved">All rights reserved</span></div>
-    </div>
   </div>
 
   <!-- TAB 2: DATOS & GALAXIA -->
@@ -1193,37 +1189,49 @@ canvas{-webkit-user-select:none;user-select:none}
       <p id="localFirstNote" style="font-size:.63rem;color:rgba(251,191,36,.9);line-height:1.7;margin:0"></p>
     </div>
     <div class="set-s">
-      <h3 data-i18n="backupTitle">Datos & Respaldo</h3>
-      <p style="font-size:.64rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem" data-i18n="dataDesc">Tu biblioteca vive solo en este navegador. Respalda para no perderla.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="jsonRealBackup">JSON — Respaldo real</div>
-          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem" data-i18n="jsonDesc">Todos tus libros, notas y keywords.</p>
-          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportJSON()" data-i18n="downloadJson">Descargar JSON</button>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.9rem" data-i18n="backupTitle">Respaldo de datos</div>
+
+      <!-- Backup button -->
+      <button onclick="exportJSON()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--accent);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;background-image:radial-gradient(ellipse at 30% 50%,rgba(139,92,246,.18) 0%,transparent 60%),radial-gradient(1px 1px at 10% 25%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 80% 15%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 90% 55%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 25% 80%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 70% 40%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 40% 10%,rgba(255,255,255,.35) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent2)'" onmouseout="this.style.borderColor='var(--accent)'">
+        <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">💾</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Descargar Respaldo <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
+          <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em" data-i18n="jsonDesc">Libros, notas y keywords — guárdalo bien</div>
         </div>
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="pdfForReading">PDF — Para leer</div>
-          <p style="font-size:.6rem;color:var(--muted);line-height:1.5;margin-bottom:.4rem" data-i18n="pdfDesc">Versión visual para archivar o imprimir.</p>
-          <button class="btn-gen" style="font-size:.48rem;padding:.25rem .6rem;width:100%" onclick="exportPDF()" data-i18n="downloadPdf">Descargar PDF</button>
+        </button>
+
+      <!-- Restore — same starfield style as backup -->
+      <label style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;box-sizing:border-box;background-image:radial-gradient(ellipse at 70% 50%,rgba(139,92,246,.1) 0%,transparent 55%),radial-gradient(1px 1px at 15% 20%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 85% 25%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 75%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 92% 65%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 20% 85%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 65% 10%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 38% 45%,rgba(255,255,255,.25) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📂</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Restaurar Respaldo <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
+          <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">Importa un archivo de respaldo anterior</div>
         </div>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.4rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.48rem;text-transform:uppercase;color:var(--accent2);margin-bottom:.28rem" data-i18n="importTitle">📥 Restaurar desde JSON</div>
-        <label style="display:inline-flex;align-items:center;gap:.35rem;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;text-transform:uppercase;padding:.28rem .7rem;border-radius:6px;cursor:pointer">
-          <span data-i18n="selectFile">Seleccionar archivo</span><input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
-        </label>
-      </div>
+        <input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
+      </label>
+
+      <!-- PDF button -->
+      <button onclick="exportPDF()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.7rem;text-align:left;background-image:radial-gradient(ellipse at 70% 40%,rgba(196,181,253,.1) 0%,transparent 55%),radial-gradient(1px 1px at 20% 30%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 75% 20%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 50% 65%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 85% 60%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 15% 75%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 60% 85%,rgba(220,210,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 35% 15%,rgba(255,255,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📄</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem" data-i18n="downloadPdf">Descargar PDF</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em" data-i18n="pdfDesc">Versión visual para archivar o imprimir</div>
+        </div>
+        </button>
+
       <div id="storageInfo" style="font-size:.58rem;color:var(--dim);line-height:1.6">Calculando…</div>
     </div>
 
     <div class="set-s" style="border:none">
-      <h3 style="color:rgba(248,113,113,.7)" data-i18n="dangerTitle">⚠ Zona de peligro</h3>
-      <button onclick="hardReset()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:var(--err);font-family:'DM Mono',monospace;font-size:.56rem;text-transform:uppercase;padding:.35rem .85rem;border-radius:6px;cursor:pointer" data-i18n="hardReset">Borrar todo y reiniciar</button>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(248,113,113,.7);margin-bottom:.5rem" data-i18n="dangerTitle">⚠ Zona de peligro</div>
+      <button onclick="hardReset()" style="width:100%;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.25);color:var(--err);font-family:'DM Mono',monospace;font-size:.55rem;text-transform:uppercase;padding:.5rem;border-radius:8px;cursor:pointer;transition:all .15s" data-i18n="hardReset">Borrar todo y reiniciar</button>
     </div>
   </div>
 
   <!-- TAB 3: HERRAMIENTAS IA -->
   <div id="spage3" style="display:none">
+    <!-- IA CONTENT — hidden until ready, do not delete -->
+    <div style="display:none" id="iaContentHidden">
     <div class="set-s">
       <h3 data-i18n="providerLabel">Proveedor IA</h3>
       <div class="prow" style="flex-wrap:wrap;gap:.3rem;margin-bottom:.55rem">
@@ -1253,45 +1261,46 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)" data-i18n="horizonteBtn">Horizonte de sucesos</button>
       </div>
     </div>
-    <div class="set-s" style="border:none;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(196,181,253,.03));border-radius:12px;padding:1.1rem 1.2rem;border:1.5px solid var(--accent)">
-      <div style="position:absolute;top:-24px;right:-24px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.22),transparent 70%);pointer-events:none"></div>
-      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
-        <span style="font-size:1rem">✦</span>
-        <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent2)" data-i18n="comingSoon">Próximamente</span>
+    </div><!-- /iaContentHidden -->
+
+    <!-- Próximamente card — visible -->
+    <div class="set-s" style="border:none;margin-top:.5rem">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.75rem;background:#06050f;border:1.5px solid var(--accent);border-radius:14px;padding:2.2rem 1.5rem;min-height:200px;background-image:radial-gradient(ellipse at 80% 20%,rgba(139,92,246,.18) 0%,transparent 55%),radial-gradient(1px 1px at 8% 18%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 78% 12%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 52% 68%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 88% 52%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 22% 78%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 65% 32%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 38% 8%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 15% 60%,rgba(220,210,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 92% 82%,rgba(220,210,255,.25) 0%,transparent 100%)">
+        <div style="width:44px;height:44px;border-radius:11px;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem">✦</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.35rem" data-i18n="comingSoon">Próximamente</div>
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)">IA integrada en <span style="font-family:'DM Mono',monospace;color:var(--accent2);letter-spacing:.08em">ALINEA</span></div>
+        </div>
       </div>
-      <p style="font-size:.66rem;color:rgba(240,238,255,.75);line-height:1.65;margin:0" data-i18n="comingSoonDesc">Mapas de conceptos, análisis de tendencias, resúmenes automáticos y recomendaciones personalizadas.</p>
+    </div>
     </div>
   </div>
 
   <!-- TAB 4: HELP & LEGAL -->
-  <div id="spage4" style="display:none">
-    <div class="set-s">
-      <h3>💬 Soporte</h3>
-      <div style="display:flex;flex-direction:column;gap:.4rem">
-        <a href="mailto:hello.alinea.io@gmail.com" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
-          <span style="font-size:1.1rem">✉️</span>
-          <div><div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpEmailLabel">Soporte por email</div><div style="font-size:.64rem;color:var(--muted)">hello.alinea.io@gmail.com</div></div>
-          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
-        </a>
-        <a href="https://instagram.com/alinea.io" target="_blank" style="display:flex;align-items:center;gap:.75rem;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;text-decoration:none;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--glow)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--card)'">
-          <span style="font-size:1.1rem">📸</span>
-          <div><div style="font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent2);margin-bottom:.1rem" data-i18n="helpIgLabel">Instagram oficial</div><div style="font-size:.64rem;color:var(--muted)">@alinea.io</div></div>
-          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.52rem;color:var(--dim)">↗</span>
-        </a>
+  <div id="spage4" style="display:none;padding:.2rem 0">
+    <p style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem">Contacto</p>
+
+    <a href="mailto:hello.alinea.io@gmail.com" style="display:flex;align-items:center;gap:.9rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;text-decoration:none;margin-bottom:.45rem;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">✉️</div>
+      <div>
+        <div style="font-family:'Lato',sans-serif;font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:.08rem">Email de soporte</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted)">hello.alinea.io@gmail.com</div>
       </div>
-    </div>
-    <div class="set-s">
-      <h3>🎁 Regalo Premium</h3>
-      <p style="font-size:.65rem;color:var(--muted);line-height:1.65;margin-bottom:.7rem">Descarga nuestro kit de separadores de libros imprimibles — diseñados para tu galaxia.</p>
-      <button onclick="generateWelcomeKit()" style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.09em;text-transform:uppercase;padding:.48rem 1rem;border-radius:8px;cursor:pointer;box-shadow:0 2px 14px var(--glow);transition:all .15s" onmouseover="this.style.opacity='.88'" onmouseout="this.style.opacity='1'">🔖 Download Welcome Kit</button>
-    </div>
-    <div class="set-s" style="border:none">
-      <h3>📄 Legal</h3>
-      <div style="display:flex;flex-direction:column;gap:.3rem">
-        <p style="font-size:.62rem;color:var(--dim);line-height:1.65">ALINEA es una herramienta personal de gestión de conocimiento. Todos tus datos viven únicamente en tu dispositivo.</p>
-        <p style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);letter-spacing:.04em">© 2025 ALINEA · Miguel Valdez · All rights reserved</p>
+    </a>
+
+    <a href="https://instagram.com/alinea.io" target="_blank" style="display:flex;align-items:center;gap:.9rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;text-decoration:none;margin-bottom:1.2rem;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📸</div>
+      <div>
+        <div style="font-family:'Lato',sans-serif;font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:.08rem">Instagram oficial</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted)">@alinea.io</div>
       </div>
-    </div>
+    </a>
+
+    <p style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem">Regalo Premium</p>
+    <p style="font-size:.62rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem">Separadores de libros imprimibles diseñados para tu galaxia.</p>
+    <button onclick="generateWelcomeKit()" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.09em;text-transform:uppercase;padding:.58rem;border-radius:8px;cursor:pointer;margin-bottom:1.2rem">🔖 Descargar Welcome Kit</button>
+
+    <p style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);letter-spacing:.04em">© 2026 ALINEA · Miguel Valdez · All rights reserved</p>
   </div>
 
   <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
@@ -1454,7 +1463,7 @@ es:{name:'Español',t:{
   progress:'Progreso',rating:'Rating',editBook:'Editar libro',deleteBook:'Eliminar libro',
   accentColor:'Color de acento',textSize:'Tamaño de texto',libNameLabel:'Nombre de tu biblioteca',
   small:'Pequeño',normal:'Normal',large:'Grande',xl:'XL',
-  appearanceTitle:'🎨 Apariencia',dataTitle:'💾 Datos & Respaldo',iaTitle:'✦ IA',
+  appearanceTitle:'Apariencia',dataTitle:'Datos',iaTitle:'IA',
   dataDesc:'Tu biblioteca vive solo en este navegador. Respalda para no perderla.',
   jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords.',
   pdfTitle:'PDF — Para leer',pdfDesc:'Versión visual para archivar o imprimir.',
@@ -1463,7 +1472,7 @@ es:{name:'Español',t:{
   copyCodeBtn:'Copiar mi código para compartir',
   dangerTitle:'⚠ Zona de peligro',
   iaDesc:'Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.',
-  comingSoon:'🚧 Próximamente',comingSoonDesc:'Más herramientas de análisis IA en desarrollo.',
+  comingSoon:'Próximamente',comingSoonDesc:'Más herramientas de análisis IA en desarrollo.',
   welcomeQ:'¿Y si pudieras ver tu conocimiento?',
   welcomeP1:'Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.',
   welcomeP2:'ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.',
@@ -1498,7 +1507,7 @@ es:{name:'Español',t:{
   backupIntro:'Tu biblioteca vive solo en este navegador — ningún servidor la guarda. Si cambias de dispositivo o borras el historial, podrías perderla. El respaldo es tu seguro de vida.',
   jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords en un archivo ligero. Puedes reimportarlo aquí en cualquier dispositivo al instante.',
   pdfTitle:'PDF — Para leer e imprimir',pdfDesc:'Versión visual de tu biblioteca. No sirve para restaurar, pero es ideal para archivar, compartir o imprimir.',
-  downloadJson:'Descargar JSON',downloadPdf:'Descargar PDF',
+  downloadJson:'Descargar Respaldo',downloadPdf:'Descargar PDF',
   importTitle:'Restaurar desde JSON',importDesc:'¿Cambiaste de dispositivo? Sube tu archivo JSON y tu galaxia aparece al instante.',importWarning:'Reemplaza los datos actuales.',selectFile:'Seleccionar archivo',
   friendsTitle:'Galaxias de amigos',friendsDesc:'Pega el JSON de un amigo para ver su galaxia junto a la tuya.',
   friendName:'Nombre del amigo…',friendJsonPlaceholder:'Pega aquí el JSON exportado (Descargar JSON)…',addGalaxy:'Agregar',copyCode:'Copiar mi código para compartir',
@@ -1563,7 +1572,7 @@ en:{name:'English',t:{
   progress:'Progress',rating:'Rating',editBook:'Edit book',deleteBook:'Delete book',
   accentColor:'Accent color',textSize:'Text size',libNameLabel:'Your library name',
   small:'Small',normal:'Normal',large:'Large',xl:'XL',
-  appearanceTitle:'🎨 Appearance',dataTitle:'💾 Data & Backup',iaTitle:'✦ AI',
+  appearanceTitle:'Appearance',dataTitle:'Datos',iaTitle:'AI',
   dataDesc:'Your library lives only in this browser. Back it up to keep it safe.',
   jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords.',
   pdfTitle:'PDF — For reading',pdfDesc:'Visual version for archiving or printing.',
@@ -1572,7 +1581,7 @@ en:{name:'English',t:{
   copyCodeBtn:'Copy my sharing code',
   dangerTitle:'⚠ Danger zone',
   iaDesc:'Your API key lives only in your browser — never sent to any ALINEA server.',
-  comingSoon:'🚧 Coming soon',comingSoonDesc:'More AI analysis tools in development.',
+  comingSoon:'Coming soon',comingSoonDesc:'More AI analysis tools in development.',
   welcomeQ:'What if you could see your knowledge?',
   welcomeP1:'We read, we highlight, we annotate — and over time, that wisdom fades. Not because we cannot retain it physically or mentally, although we wish we could.',
   welcomeP2:'ALINEA is for everyone who always carries a book in their pocket — or more. For book devourers. And for those who are just starting to create, and even more, to visualize their knowledge.',
@@ -1607,7 +1616,7 @@ en:{name:'English',t:{
   backupIntro:'Your library lives only in this browser — no server stores it. If you change devices or clear history, you could lose it. Backup is your life insurance.',
   jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords in a lightweight file. You can reimport it here on any device instantly.',
   pdfTitle:'PDF — For reading & printing',pdfDesc:'Visual version of your library. Can\'t be used to restore, but ideal for archiving, sharing or printing.',
-  downloadJson:'Download JSON',downloadPdf:'Download PDF',
+  downloadJson:'Download Backup',downloadPdf:'Download PDF',
   importTitle:'Restore from JSON',importDesc:'Changed devices? Upload your JSON file and your galaxy appears instantly.',importWarning:'Replaces current data.',selectFile:'Select file',
   friendsTitle:'Friend galaxies',friendsDesc:'Paste a friend\'s JSON to see their galaxy next to yours.',
   friendName:'Friend\'s name…',friendJsonPlaceholder:'Paste exported JSON here (Download JSON)…',addGalaxy:'Add',copyCode:'Copy my sharing code',
@@ -1689,7 +1698,7 @@ _pt_disabled:{name:'Português',t:{
   backupIntro:'Sua biblioteca vive só neste navegador. Se mudar de dispositivo ou limpar o histórico, pode perdê-la. O backup é seu seguro de vida.',
   jsonTitle:'JSON — Backup real',jsonDesc:'Todos seus livros, notas e palavras-chave num arquivo leve. Você pode reimportá-lo aqui em qualquer dispositivo.',
   pdfTitle:'PDF — Para ler e imprimir',pdfDesc:'Versão visual da sua biblioteca. Não serve para restaurar, mas ideal para arquivar ou imprimir.',
-  downloadJson:'Baixar JSON',downloadPdf:'Baixar PDF',
+  downloadJson:'Baixar Backup',downloadPdf:'Baixar PDF',
   importTitle:'Restaurar do JSON',importDesc:'Mudou de dispositivo? Envie seu arquivo JSON e sua galáxia aparece instantaneamente.',importWarning:'Substitui os dados atuais.',selectFile:'Selecionar arquivo',
   friendsTitle:'Galáxias de amigos',friendsDesc:'Cole o JSON de um amigo para ver a galáxia dele ao lado da sua.',
   friendName:'Nome do amigo…',friendJsonPlaceholder:'Cole aqui o JSON exportado…',addGalaxy:'Adicionar',copyCode:'Copiar meu código para compartilhar',
@@ -1754,7 +1763,7 @@ _fr_disabled:{name:'Français',t:{
   progress:'Progrès',rating:'Note',editBook:'Modifier le livre',deleteBook:'Supprimer le livre',
   accentColor:"Couleur d'accent",textSize:'Taille du texte',libNameLabel:'Nom de votre bibliothèque',
   small:'Petit',normal:'Normal',large:'Grand',xl:'XL',
-  appearanceTitle:'🎨 Apparence',dataTitle:'💾 Données & Sauvegarde',iaTitle:'✦ IA',
+  appearanceTitle:'Apparence',dataTitle:'Données & Sauvegarde',iaTitle:'IA',
   dataDesc:'Votre bibliothèque vit uniquement dans ce navigateur. Sauvegardez-la.',
   jsonTitle:'JSON — Vraie sauvegarde',jsonDesc:'Tous vos livres, notes et mots-clés.',
   pdfTitle:'PDF — Pour lire',pdfDesc:'Version visuelle pour archiver ou imprimer.',
@@ -1763,7 +1772,7 @@ _fr_disabled:{name:'Français',t:{
   copyCodeBtn:'Copier mon code de partage',
   dangerTitle:'⚠ Zone de danger',
   iaDesc:"Votre clé API vit uniquement dans votre navigateur.",
-  comingSoon:'🚧 Bientôt disponible',comingSoonDesc:"Plus d'outils d'analyse IA en développement.",
+  comingSoon:'Bientôt disponible',comingSoonDesc:"Plus d'outils d'analyse IA en développement.",
   welcomeQ:'Et si vous pouviez voir votre connaissance ?',
   welcomeP1:'Nous lisons, soulignons, annotons — et avec le temps, cette sagesse perd de son éclat. Nous aimerions tout retenir, mais c’est impossible.',
   welcomeP2:'ALINEA est pour tous ceux qui portent toujours un livre dans leur poche — ou plus. Pour les dévoreurs de livres et ceux qui veulent visualiser leur connaissance.',
@@ -1798,7 +1807,7 @@ _fr_disabled:{name:'Français',t:{
   backupIntro:'Votre bibliothèque vit uniquement dans ce navigateur. Si vous changez d\'appareil, vous pourriez la perdre. La sauvegarde est votre assurance.',
   jsonTitle:'JSON — Sauvegarde réelle',jsonDesc:'Tous vos livres, notes et mots-clés dans un fichier léger. Réimportable instantanément.',
   pdfTitle:'PDF — Pour lire et imprimer',pdfDesc:'Version visuelle de votre bibliothèque. Idéal pour archiver ou partager.',
-  downloadJson:'Télécharger JSON',downloadPdf:'Télécharger PDF',
+  downloadJson:'Télécharger sauvegarde',downloadPdf:'Télécharger PDF',
   importTitle:'Restaurer depuis JSON',importDesc:'Changé d\'appareil? Importez votre JSON et votre galaxie apparaît.',importWarning:'Remplace les données actuelles.',selectFile:'Sélectionner un fichier',
   friendsTitle:'Galaxies d\'amis',friendsDesc:'Collez le JSON d\'un ami pour voir sa galaxie à côté de la vôtre.',
   friendName:'Nom de l\'ami…',friendJsonPlaceholder:'Collez ici le JSON exporté…',addGalaxy:'Ajouter',copyCode:'Copier mon code de partage',
@@ -1831,7 +1840,7 @@ _ja_disabled:{name:'日本語',t:{
   library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
   accentColor:'アクセントカラー',textSize:'テキストサイズ',libNameLabel:'ライブラリ名',
   small:'小',normal:'標準',large:'大',xl:'特大',
-  appearanceTitle:'🎨 外観',dataTitle:'💾 データ & バックアップ',iaTitle:'✦ AI',
+  appearanceTitle:'外観',dataTitle:'データ & バックアップ',iaTitle:'AI',
   dataDesc:'ライブラリはこのブラウザにのみ存在します。バックアップを取ってください。',
   jsonTitle:'JSON — 本当のバックアップ',jsonDesc:'すべての本、メモ、キーワード。',
   pdfTitle:'PDF — 閲覧用',pdfDesc:'アーカイブや印刷のためのビジュアル版。',
@@ -1840,7 +1849,7 @@ _ja_disabled:{name:'日本語',t:{
   copyCodeBtn:'共有コードをコピー',
   dangerTitle:'⚠ 危険ゾーン',
   iaDesc:'APIキーはブラウザのみに保存されます — ALINEAのサーバーには送信されません。',
-  comingSoon:'🚧 近日公開',comingSoonDesc:'AIツールを開発中です。',
+  comingSoon:'近日公開',comingSoonDesc:'AIツールを開発中です。',
   welcomeQ:'あなたの知識を見ることができたら？',
   welcomeP1:'私たちは読み、線を引き、メモする — そして時間とともに、その知恵は輝きを失っていきます。記憶できないのではなく、すべての本を物理的にも精神的にも持ち続けることができないからです。',
   welcomeP2:'ALINEAは、いつもポケットに本を入れている人のために — あるいは複数の本を。本の虫のために。そして、知識を作り、さらには可視化し始めたばかりの人のためにも。',
@@ -1887,7 +1896,7 @@ _ja_disabled:{name:'日本語',t:{
   backupIntro:'ライブラリはこのブラウザにのみ存在します。デバイスを変更すると失う可能性があります。バックアップはあなたの生命保険です。',
   jsonTitle:'JSON — 本物のバックアップ',jsonDesc:'全書籍、ノート、キーワードを含む軽量ファイル。どのデバイスでも即座に再インポートできます。',
   pdfTitle:'PDF — 読むために印刷',pdfDesc:'ライブラリのビジュアル版。復元には使えませんが、アーカイブや共有に最適。',
-  downloadJson:'JSONダウンロード',downloadPdf:'PDFダウンロード',
+  downloadJson:'バックアップをダウンロード',downloadPdf:'PDFダウンロード',
   importTitle:'JSONから復元',importDesc:'デバイスを変更しましたか？JSONファイルをアップロードしてください。',importWarning:'現在のデータを置き換えます。',selectFile:'ファイルを選択',
   friendsTitle:'友達の銀河',friendsDesc:'友達のJSONを貼り付けて、自分の銀河の隣に表示。',
   friendName:'友達の名前…',friendJsonPlaceholder:'エクスポートされたJSONをここに貼り付け…',addGalaxy:'追加',copyCode:'共有コードをコピー',
@@ -2053,6 +2062,84 @@ Object.entries(CAT_TAXONOMY).forEach(([parent,data])=>{
 
 function cc(cat){return CAT_COLORS[cat]||CAT_COLORS[''];}
 
+// ── Category color overrides ──────────────────────────────
+let catColorOverrides=JSON.parse(localStorage.getItem('eter2_catColors')||'{}');
+
+function persistCatColors(){localStorage.setItem('eter2_catColors',JSON.stringify(catColorOverrides));}
+
+function applyCatColorOverrides(){
+  Object.entries(catColorOverrides).forEach(([cat,hex])=>{
+    const glow=hexToGlow(hex);
+    const dark=hexToDark(hex);
+    CAT_COLORS[cat]={sun:hex,dark,glow};
+    // Apply to all subs if this is a parent
+    if(CAT_TAXONOMY[cat]){
+      Object.keys(CAT_TAXONOMY[cat].subs||{}).forEach(sub=>{
+        CAT_COLORS[sub]={sun:hex,dark,glow};
+      });
+    }
+  });
+}
+
+function hexToGlow(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},`;
+}
+function hexToDark(hex){
+  const r=Math.max(0,parseInt(hex.slice(1,3),16)-140);
+  const g=Math.max(0,parseInt(hex.slice(3,5),16)-140);
+  const b=Math.max(0,parseInt(hex.slice(5,7),16)-140);
+  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+}
+function lightenHex(hex){
+  const r=Math.min(255,parseInt(hex.slice(1,3),16)+90);
+  const g=Math.min(255,parseInt(hex.slice(3,5),16)+90);
+  const b=Math.min(255,parseInt(hex.slice(5,7),16)+90);
+  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+}
+function darkenHex(hex){
+  const r=Math.max(0,parseInt(hex.slice(1,3),16)-80);
+  const g=Math.max(0,parseInt(hex.slice(3,5),16)-80);
+  const b=Math.max(0,parseInt(hex.slice(5,7),16)-80);
+  return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+}
+
+function renderCatColorGrid(){
+  const grid=document.getElementById('catColorGrid');
+  if(!grid)return;
+  const realBooks=lib.filter(b=>!b.isWishlist);
+  const usedParents=[...new Set(realBooks.map(b=>CAT_PARENT[b.category||'']||b.category||'').filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+  if(!usedParents.length){grid.innerHTML=`<div style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim)">Agrega libros con categorías para personalizar colores.</div>`;return;}
+  grid.innerHTML=usedParents.map(cat=>{
+    const col=CAT_COLORS[cat]||CAT_COLORS[''];
+    const currentHex=catColorOverrides[cat]||col.sun;
+    const booksN=realBooks.filter(b=>(CAT_PARENT[b.category||'']||b.category||'')===cat).length;
+    return`<label style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.3rem;background:${currentHex}18;border:1.5px solid ${currentHex}66;border-radius:10px;padding:.6rem .4rem;cursor:pointer;transition:border-color .15s;position:relative;min-height:64px" onmouseover="this.style.borderColor='${currentHex}'" onmouseout="this.style.borderColor='${currentHex}66'">
+      <input type="color" value="${currentHex}" onchange="setCatColor('${cat.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}',this.value,this.closest('label'))" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
+      <div style="font-family:'Lato',sans-serif;font-size:.62rem;font-weight:700;color:var(--text);line-height:1.3">${translateCat(cat)||cat}</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.46rem;color:${currentHex}cc">${booksN} libro${booksN!==1?'s':''}</div>
+    </label>`;
+  }).join('');
+}
+
+function setCatColor(cat,hex,row){
+  catColorOverrides[cat]=hex;
+  persistCatColors();
+  applyCatColorOverrides();
+  if(row){
+    row.style.background=hex+'18';
+    row.style.borderColor=hex+'66';
+    const sub=row.querySelector('div:last-child');
+    if(sub)sub.style.color=hex+'cc';
+  }
+  if(document.getElementById('viewGalaxia')?.classList.contains('active')&&typeof initGraph==='function'){
+    setTimeout(initGraph,50);
+  }
+}
+
+// Apply overrides on load
+applyCatColorOverrides();
+
 // ══════════════════════════
 // SETTINGS TABS
 // ══════════════════════════
@@ -2081,6 +2168,7 @@ function openSettings(tab){
   // Render lists safely
   if(typeof updateStorageInfo==='function')updateStorageInfo();
   if(typeof renderLangGrid==='function')renderLangGrid();
+  if(typeof renderCatColorGrid==='function')renderCatColorGrid();
   // Restore provider state — use optional chaining, elements may be in hidden tab
   const _pmap={anthropic:'provA',openai:'provO',gemini:'provG',grok:'provX',custom:'provC'};
   ['provA','provO','provG','provX','provC'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
@@ -2333,7 +2421,7 @@ function setAccentTheme(name,btn){
 
 function applyFontSize(size){
   const isMobile=window.innerWidth<768;
-  const sizes=isMobile?{small:'14px',normal:'16px',large:'17px',xl:'18px'}:{small:'15px',normal:'17px',large:'19px',xl:'21px'};
+  const sizes=isMobile?{small:'15px',normal:'17px',large:'19px',xl:'21px'}:{small:'15px',normal:'17px',large:'19px',xl:'21px'};
   document.documentElement.style.fontSize=sizes[size]||'17px';
   const ids={small:'fsSmall',normal:'fsNormal',large:'fsLarge',xl:'fsXL'};
   document.querySelectorAll('#fsSmall,#fsNormal,#fsLarge,#fsXL').forEach(btn=>{
@@ -3022,18 +3110,17 @@ function updateBcount(){
 function renderLangGrid(){
   const el=document.getElementById('langGrid');if(!el)return;
   const visible=['es','en'];
-  el.innerHTML=visible.map(code=>{const lang=LANGS[code];return`
+  el.innerHTML=visible.map(code=>{const lang=LANGS[code];const active=currentLang===code;return`
     <button onclick="setLang('${code}')" style="
-      display:flex;align-items:center;gap:.4rem;
-      background:${currentLang===code?'rgba(139,92,246,.2)':'var(--card)'};
-      border:1px solid ${currentLang===code?'var(--accent)':'var(--border)'};
-      color:${currentLang===code?'var(--accent2)':'var(--muted)'};
-      font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.05em;
-      padding:.35rem .6rem;border-radius:6px;cursor:pointer;transition:all .15s;
-      text-align:left;width:100%
+      display:flex;align-items:center;justify-content:center;
+      background:${active?'var(--glow)':'var(--card)'};
+      border:1.5px solid ${active?'var(--accent)':'var(--border)'};
+      color:${active?'var(--accent2)':'var(--muted)'};
+      font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.05em;
+      padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s;
+      text-align:center;width:100%
     ">
-      <span>${lang.name}</span>
-      ${currentLang===code?'<span style="margin-left:auto;color:var(--accent2)">✓</span>':''}
+      ${lang.name}
     </button>`}).join('');
 }
 
@@ -3055,7 +3142,7 @@ function selProv(p,_=true){
   };
   document.getElementById('apiGuide').innerHTML=(guides[p]||'')+`<br><span style="color:var(--dim)">Guardada solo en tu navegador.</span>`;
 }
-function saveSettings(){cfg.apiKey=document.getElementById('apiKeyIn').value.trim();const _ep=document.getElementById('customEndpointIn');if(_ep&&_ep.value)cfg.customEndpoint=_ep.value.trim();const _cm=document.getElementById('customModelIn');if(_cm&&_cm.value)cfg.customModel=_cm.value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
+function saveSettings(){const _ak=document.getElementById('apiKeyIn');if(_ak)cfg.apiKey=_ak.value.trim();const _ep=document.getElementById('customEndpointIn');if(_ep&&_ep.value)cfg.customEndpoint=_ep.value.trim();const _cm=document.getElementById('customModelIn');if(_cm&&_cm.value)cfg.customModel=_cm.value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
 function updateApiSt(){const el=document.getElementById('apiSt');if(!el)return;el.className=cfg.apiKey?'api-st ok':'api-st none';el.textContent=cfg.apiKey?('● '+t('apiKeySaved')):('○ '+t('noApiKey'));}
 async function testKey(){
   const key=document.getElementById('apiKeyIn').value.trim();if(!key){alert('Ingresa una API key primero.');return;}
@@ -5787,7 +5874,23 @@ function updateStorageInfo(){
     const kb=(dataSize/1024).toFixed(1);
     const books=lib.filter(b=>!b.isWishlist).length;
     const notes=lib.reduce((s,b)=>s+(b.notes?.length||0),0);
-    el.innerHTML=`<strong style="color:var(--text)">${kb} KB</strong> usados<br>${books} libros · ${notes} notas<br><span style="color:var(--dim)">Límite ~5MB por dominio</span>`;
+    const pct=Math.min(100,(dataSize/(5*1024*1024))*100).toFixed(1);
+    const barColor=pct>80?'rgba(248,113,113,.8)':pct>50?'rgba(251,191,36,.8)':'var(--accent2)';
+    el.innerHTML=`
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.7rem .9rem;margin-top:.4rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem">
+          <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Almacenamiento local</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.55rem;color:${barColor};font-weight:500">${kb} KB</span>
+        </div>
+        <div style="background:var(--border);border-radius:4px;height:5px;overflow:hidden;margin-bottom:.5rem">
+          <div style="background:linear-gradient(90deg,var(--accent),${barColor});height:100%;border-radius:4px;width:${pct}%;transition:width .4s ease"></div>
+        </div>
+        <div style="display:flex;gap:1rem">
+          <div style="display:flex;align-items:center;gap:.3rem"><span style="font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--text)">${books}</span><span style="font-family:'DM Mono',monospace;font-size:.44rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">libros</span></div>
+          <div style="display:flex;align-items:center;gap:.3rem"><span style="font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--text)">${notes}</span><span style="font-family:'DM Mono',monospace;font-size:.44rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">notas</span></div>
+          <div style="margin-left:auto;font-family:'DM Mono',monospace;font-size:.44rem;color:var(--dim)">de ~5 MB</div>
+        </div>
+      </div>`;
   }catch{el.textContent='No disponible';}
 }
 
