@@ -1187,6 +1187,10 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Naranja"></button>
         <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Amarillo"></button>
         <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Rojo"></button>
+        <button id="customColorBtn" onclick="document.getElementById('customColorIn').click()" style="width:36px;height:36px;border-radius:50%;background:conic-gradient(#f87171,#fb923c,#fbbf24,#4ade80,#60a5fa,#a78bfa,#f472b6,#f87171);border:2px solid rgba(255,255,255,.25);cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px;position:relative" title="Color personalizado">
+          <span style="position:absolute;inset:0;border-radius:50%;background:rgba(6,5,15,.35);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:rgba(255,255,255,.85);pointer-events:none">✦</span>
+        </button>
+        <input type="color" id="customColorIn" value="#8b5cf6" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none" oninput="applyCustomColor(this.value)" onchange="applyCustomColor(this.value)">
       </div>
     </div>
 
@@ -1489,6 +1493,10 @@ canvas{-webkit-user-select:none;user-select:none}
           <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
           <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
           <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
+          <button onclick="document.getElementById('customColorIn2').click()" style="width:34px;height:34px;border-radius:50%;background:conic-gradient(#f87171,#fb923c,#fbbf24,#4ade80,#60a5fa,#a78bfa,#f472b6,#f87171);border:2px solid rgba(255,255,255,.2);cursor:pointer;outline:2px solid transparent;outline-offset:2px;position:relative" title="Color personalizado">
+            <span style="position:absolute;inset:0;border-radius:50%;background:rgba(6,5,15,.35);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,.85);pointer-events:none">✦</span>
+          </button>
+          <input type="color" id="customColorIn2" value="#8b5cf6" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none" oninput="applyCustomColor(this.value)" onchange="applyCustomColor(this.value)">
         </div>
       </div>
     </div>
@@ -2757,6 +2765,30 @@ function setAccentTheme(name,btn){
   localStorage.setItem('eter2_theme',name);
   applyAccentTheme(name);
 }
+function applyCustomColor(hex){
+  // Derive accent2 (lighter) and accent3 (darker) from the picked color
+  const _hex2hsl=h=>{let r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H,S,L=(mx+mn)/2;if(mx===mn){H=S=0;}else{const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:H=((g-b)/d+(g<b?6:0))/6;break;case g:H=((b-r)/d+2)/6;break;default:H=((r-g)/d+4)/6;}}return[H*360,S*100,L*100];};
+  const _hsl2hex=(h,s,l)=>{s/=100;l/=100;const a=s*Math.min(l,1-l);const f=n=>{const k=(n+h/30)%12;const c=l-a*Math.max(Math.min(k-3,9-k,1),-1);return Math.round(255*c).toString(16).padStart(2,'0');};return '#'+f(0)+f(8)+f(4);};
+  const [H,S,L]=_hex2hsl(hex);
+  const accent=hex;
+  const accent2=_hsl2hex(H,Math.max(S-10,20),Math.min(L+28,90));
+  const accent3=_hsl2hex(H,Math.min(S+10,100),Math.max(L-22,10));
+  const glowRgb=`rgba(${parseInt(hex.slice(1,3),16)},${parseInt(hex.slice(3,5),16)},${parseInt(hex.slice(5,7),16)}`;
+  const customTheme={accent,accent2,accent3,glow:glowRgb+',.15)',glow2:glowRgb+',.07)',dim:_hsl2hex(H,40,15),border:_hsl2hex(H,35,12),border2:_hsl2hex(H,30,20),muted:_hsl2hex(H,20,55),conflictCats:[]};
+  // Store as 'custom' theme
+  ACCENT_THEMES.custom=customTheme;
+  currentTheme='custom';
+  localStorage.setItem('eter2_theme','custom');
+  localStorage.setItem('eter2_customColor',hex);
+  applyAccentTheme('custom');
+  // Update custom swatch outlines
+  document.querySelectorAll('#customColorBtn,#customColorIn2+button,[id^=customColorBtn]').forEach(b=>{b.style.outline='2px solid '+accent2;b.style.outlineOffset='2px';});
+  // Sync color inputs
+  const ci1=document.getElementById('customColorIn');if(ci1)ci1.value=hex;
+  const ci2=document.getElementById('customColorIn2');if(ci2)ci2.value=hex;
+}
+// Restore custom color on load
+(()=>{const saved=localStorage.getItem('eter2_customColor');if(saved&&localStorage.getItem('eter2_theme')==='custom'){const ci1=document.getElementById('customColorIn');const ci2=document.getElementById('customColorIn2');if(ci1)ci1.value=saved;if(ci2)ci2.value=saved;applyCustomColor(saved);}})();
 
 function applyFontSize(size){
   const isMobile=window.innerWidth<768;
@@ -4196,11 +4228,25 @@ async function shareQuoteAsStory(){
   lineH=fontSize*lineHeightMult;
   const totalQH=lines.length*lineH;
   const startY=zoneTop+(zoneH-totalQH)/2+fontSize;
-  ctx.fillStyle='#f0eeff';ctx.textAlign='center';
-  // For long text, add subtle letter-spacing improvement
-  if(isLong){ctx.letterSpacing='-0.5px';}
-  lines.forEach((ln,i)=>ctx.fillText(ln,W/2,startY+i*lineH));
-  ctx.letterSpacing='0px';
+  ctx.fillStyle='#f0eeff';
+  const _jLeft=W/2-maxW/2, _jRight=W/2+maxW/2;
+  // Justified text: spread words to fill maxW, last line centered
+  lines.forEach((ln,i)=>{
+    const isLast=(i===lines.length-1);
+    const words=ln.split(' ');
+    if(isLast||words.length<=1){
+      // Last line or single word: center it
+      ctx.textAlign='center';ctx.letterSpacing='0px';
+      ctx.fillText(ln,W/2,startY+i*lineH);
+    } else {
+      ctx.textAlign='left';
+      const totalWordsW=words.reduce((s,w)=>s+ctx.measureText(w).width,0);
+      const gap=(maxW-totalWordsW)/(words.length-1);
+      let xPos=_jLeft;
+      words.forEach(w=>{ctx.fillText(w,xPos,startY+i*lineH);xPos+=ctx.measureText(w).width+gap;});
+    }
+  });
+  ctx.textAlign='center';ctx.letterSpacing='0px';
 
   // Author first, then book title
   const afterQ=startY+lines.length*lineH+60;
@@ -4214,27 +4260,20 @@ async function shareQuoteAsStory(){
     ctx.fillText('\u2014 '+(_qpBookTitle||''),W/2,afterQ);
   }
 
-  // ── Brand Footer (4 elements) ──
-  const _qfH=260;
+  // ── Brand Footer (3 elements — sin orb) ──
+  const _qfH=180;
   ctx.fillStyle='rgba(4,3,12,.82)';ctx.fillRect(0,H-_qfH,W,_qfH);
-  ctx.strokeStyle=ac+'55';ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(W*.3,H-_qfH+2);ctx.lineTo(W*.7,H-_qfH+2);ctx.stroke();
-  // 1. Orb
-  const _qfo={x:W/2,y:H-_qfH+52,r:32};
-  const _qfog=ctx.createRadialGradient(_qfo.x-_qfo.r*.3,_qfo.y-_qfo.r*.3,0,_qfo.x,_qfo.y,_qfo.r);
-  _qfog.addColorStop(0,'#fff');_qfog.addColorStop(.25,ac2);_qfog.addColorStop(.65,ac);_qfog.addColorStop(1,ac3);
-  ctx.shadowBlur=40;ctx.shadowColor=glowStrong;
-  ctx.fillStyle=_qfog;ctx.beginPath();ctx.arc(_qfo.x,_qfo.y,_qfo.r,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;
-  // 2. ALINEA
+  ctx.strokeStyle=ac+'40';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(W*.3,H-_qfH+1);ctx.lineTo(W*.7,H-_qfH+1);ctx.stroke();
+  // 1. ALINEA
   ctx.fillStyle=ac2+'ee';ctx.font='600 46px "DM Mono",monospace';ctx.letterSpacing='14px';ctx.textAlign='center';
-  ctx.fillText('ALINEA',W/2,H-_qfH+134);
-  // 3. @alinea.io
+  ctx.fillText('ALINEA',W/2,H-_qfH+68);
+  // 2. @alinea.io
   ctx.fillStyle=ac+'cc';ctx.font='400 32px "DM Mono",monospace';ctx.letterSpacing='5px';
-  ctx.fillText('@alinea.io',W/2,H-_qfH+184);
-  // 4. #MakingVisibleTheInvisible
+  ctx.fillText('@alinea.io',W/2,H-_qfH+116);
+  // 3. #MakingVisibleTheInvisible
   ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 24px "DM Mono",monospace';ctx.letterSpacing='1px';
-  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-_qfH+226);
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-_qfH+156);
   ctx.letterSpacing='0px';
 
   if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
@@ -4403,7 +4442,7 @@ function renderBitacora(){
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('wishlist')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('wishlistStat')||'Wishlist'} ✦</div></div>
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('notes')"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('notasStat')||'Notas'} ✦</div></div>
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('keywords')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('keywordsStat')||'Keywords'} ✦</div></div>
-      ${avgRating?`<div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('rating')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('ratingProm')||'Rating prom.'}</div></div>`:''}
+      ${avgRating?`<div class="bit-card" style="text-align:center"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('ratingProm')||'Rating prom.'}</div></div>`:''}
     </div>
     ${mostAnnotated.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.7rem">
       <div class="sec" style="margin-bottom:.45rem">${t('masAnotados')||'📝 Más anotados'}</div>
@@ -5750,27 +5789,26 @@ function shareGalaxySnapshot(){
     ctx.fillStyle='rgba(255,255,255,'+(rng(i*5.9)*.55+.1)+')';ctx.fill();
   }
   ctx.drawImage(cv,0,0,W,H);
-  // ── Footer: dark bar + Orb + ALINEA + @alinea.io ──
-  const fH=Math.round(H*0.1);
-  ctx.fillStyle='rgba(4,3,12,.72)';ctx.fillRect(0,H-fH,W,fH);
-  // Orb
-  const orbX=W/2-Math.round(W*.12),orbY=H-fH/2,orbR=Math.round(fH*.32);
+  // ── Brand Footer: ALINEA + @alinea.io + #hashtag (sin orb) ──
+  const fH=Math.round(H*0.13);
+  ctx.fillStyle='rgba(4,3,12,.80)';ctx.fillRect(0,H-fH,W,fH);
   const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
   const ac=theme.accent,ac2=theme.accent2;
-  const og=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
-  og.addColorStop(0,'#fff');og.addColorStop(.25,ac2);og.addColorStop(.65,ac);og.addColorStop(1,ac);
-  ctx.shadowBlur=orbR*.8;ctx.shadowColor=ac;
-  ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;
-  // ALINEA text
-  const fs=Math.round(fH*.3);
-  ctx.fillStyle=ac2+'ee';ctx.font='700 '+fs+'px "DM Mono",monospace';
-  ctx.textAlign='left';ctx.letterSpacing='3px';
-  ctx.fillText('ALINEA',orbX+orbR+Math.round(W*.015),H-fH/2-fs*.1);
+  ctx.strokeStyle=ac+'40';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W*.25,H-fH+1);ctx.lineTo(W*.75,H-fH+1);ctx.stroke();
+  const fs=Math.round(fH*.26);
+  // ALINEA
+  ctx.fillStyle=ac2+'ee';ctx.font='600 '+fs+'px "DM Mono",monospace';
+  ctx.textAlign='center';ctx.letterSpacing='4px';
+  ctx.fillText('ALINEA',W/2,H-fH+fH*.34);
   // @alinea.io
-  ctx.fillStyle=ac+'99';ctx.font='400 '+Math.round(fs*.62)+'px "DM Mono",monospace';
-  ctx.letterSpacing='1px';
-  ctx.fillText('@alinea.io',orbX+orbR+Math.round(W*.015),H-fH/2+Math.round(fs*.7));
+  ctx.fillStyle=ac+'cc';ctx.font='400 '+Math.round(fs*.72)+'px "DM Mono",monospace';
+  ctx.letterSpacing='2px';
+  ctx.fillText('@alinea.io',W/2,H-fH+fH*.62);
+  // #MakingVisibleTheInvisible
+  ctx.fillStyle='rgba(255,255,255,.25)';ctx.font='300 '+Math.round(fs*.54)+'px "DM Mono",monospace';
+  ctx.letterSpacing='0.5px';
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-fH+fH*.88);
   ctx.letterSpacing='0px';
   if(btn){btn.textContent='📸';btn.style.pointerEvents='';}
   out.toBlob(async blob=>{
@@ -6244,24 +6282,36 @@ async function exportPDF(){
   };
   addPageBg();
 
-  // ── Title ──
-  doc.setTextColor(_ac2[0],_ac2[1],_ac2[2]);
-  doc.setFontSize(22);doc.setFont('helvetica','bold');
+  // ── Header: Orb (canvas embed) + ALINEA + separador + nombre biblioteca ──
   const _libName=(appState.libName||'Mi Biblioteca').replace(/[^\x20-\x7E]/g,'?');
-  // Draw orb using a small offscreen canvas for gradient effect
-  // Header
-  y+=10;
-  doc.setFontSize(10);doc.setTextColor(_ac[0],_ac[1],_ac[2]);doc.setFont('helvetica','normal');
-  doc.text('ALINEA',W/2,y,{align:'center'});y+=8;
-  doc.setFontSize(24);doc.setTextColor(_ac2[0],_ac2[1],_ac2[2]);doc.setFont('helvetica','bold');
+  const _pdfHeaderTheme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
+  const _hac=_pdfHeaderTheme.accent,_hac2=_pdfHeaderTheme.accent2,_hac3=_pdfHeaderTheme.accent3;
+  const _orbCv=document.createElement('canvas');_orbCv.width=120;_orbCv.height=120;
+  const _orbCtx=_orbCv.getContext('2d');
+  const _og=_orbCtx.createRadialGradient(40,38,0,60,60,60);
+  _og.addColorStop(0,'#ffffff');_og.addColorStop(.22,_hac2);_og.addColorStop(.62,_hac);_og.addColorStop(1,_hac3);
+  _orbCtx.shadowBlur=28;_orbCtx.shadowColor=_hac;
+  _orbCtx.fillStyle=_og;_orbCtx.beginPath();_orbCtx.arc(60,60,56,0,Math.PI*2);_orbCtx.fill();
+  const _spec=_orbCtx.createRadialGradient(44,42,0,44,42,18);
+  _spec.addColorStop(0,'rgba(255,255,255,.55)');_spec.addColorStop(1,'rgba(255,255,255,0)');
+  _orbCtx.fillStyle=_spec;_orbCtx.beginPath();_orbCtx.arc(44,42,18,0,Math.PI*2);_orbCtx.fill();
+  const _orbImg=_orbCv.toDataURL('image/png');
+  y+=4;
+  const _orbMM=16;
+  doc.addImage(_orbImg,'PNG',W/2-_orbMM/2,y,_orbMM,_orbMM);
+  y+=_orbMM+3;
+  doc.setFontSize(10);doc.setTextColor(_ac[0],_ac[1],_ac[2]);doc.setFont('helvetica','bold');
+  doc.text('ALINEA',W/2,y,{align:'center',charSpace:2});y+=6;
+  doc.setDrawColor(_ac[0],_ac[1],_ac[2]);doc.setLineWidth(.3);
+  doc.line(W/2-26,y,W/2+26,y);y+=5;
+  doc.setFontSize(20);doc.setTextColor(_ac2[0],_ac2[1],_ac2[2]);doc.setFont('helvetica','bold');
   doc.text(_libName,W/2,y,{align:'center'});y+=9;
-  doc.setFontSize(9);doc.setTextColor(_ac[0],_ac[1],_ac[2]);
+  doc.setFontSize(9);doc.setTextColor(_ac[0],_ac[1],_ac[2]);doc.setFont('helvetica','normal');
   doc.text('Hagamos visible lo invisible.',W/2,y,{align:'center'});y+=6;
-  doc.setFontSize(9);doc.setTextColor(Math.round(_ac[0]*.7),Math.round(_ac[1]*.7),Math.round(_ac[2]*.7));
+  doc.setFontSize(8);doc.setTextColor(Math.round(_ac[0]*.7),Math.round(_ac[1]*.7),Math.round(_ac[2]*.7));
   doc.text('Exportado el '+new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}),W/2,y,{align:'center'});y+=5;
   doc.text(lib.filter(b=>!b.isWishlist).length+' libros  ·  '+lib.filter(b=>b.isWishlist).length+' en wishlist',W/2,y,{align:'center'});y+=7;
-  doc.setDrawColor(60,50,90);doc.line(margin,y,W-margin,y);y+=6;
-
+  doc.setDrawColor(60,50,90);doc.setLineWidth(.5);doc.line(margin,y,W-margin,y);y+=6;
   // ── Galaxy snapshot ──
   try{
     const snapCv=document.createElement('canvas');
@@ -6358,33 +6408,37 @@ async function exportPDF(){
     y+=4;
   });
   // ── Brand Footer on last page ──
-  // Add new page for footer if too close to bottom
-  if(y>260){doc.addPage();addPageBg();y=margin;}
-  const _pfY=297; // A4 height mm
-  const _pfH=28;  // footer block height mm
-  // Dark footer bar
+  const _pfY=297;
+  const _pfH=32;
   doc.setFillColor(4,3,12);
   doc.rect(0,_pfY-_pfH,W,_pfH,'F');
-  // Separator line
   doc.setDrawColor(_ac[0],_ac[1],_ac[2]);doc.setLineWidth(.2);
   doc.line(margin*2,_pfY-_pfH+.5,W-margin*2,_pfY-_pfH+.5);
-  // 1. Orb — small circle with gradient fill (jsPDF: simulate with layered circles)
-  const _pfCx=W/2,_pfCy=_pfY-_pfH+6.5,_pfR=3.2;
-  doc.setFillColor(196,181,253);doc.circle(_pfCx,_pfCy,_pfR+1.8,'F'); // glow halo
-  doc.setFillColor(139,92,246);doc.circle(_pfCx,_pfCy,_pfR,'F');       // core
-  doc.setFillColor(220,210,255);doc.circle(_pfCx-_pfR*.3,_pfCy-_pfR*.3,_pfR*.4,'F'); // specular
-  // 2. ALINEA
+  // Orb via canvas (same technique as header)
+  const _fOrbCv=document.createElement('canvas');_fOrbCv.width=120;_fOrbCv.height=120;
+  const _fOrbCtx=_fOrbCv.getContext('2d');
+  const _fog2=_fOrbCtx.createRadialGradient(40,38,0,60,60,60);
+  const _fTheme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
+  _fog2.addColorStop(0,'#ffffff');_fog2.addColorStop(.22,_fTheme.accent2);_fog2.addColorStop(.62,_fTheme.accent);_fog2.addColorStop(1,_fTheme.accent3);
+  _fOrbCtx.shadowBlur=28;_fOrbCtx.shadowColor=_fTheme.accent;
+  _fOrbCtx.fillStyle=_fog2;_fOrbCtx.beginPath();_fOrbCtx.arc(60,60,56,0,Math.PI*2);_fOrbCtx.fill();
+  const _fSpec=_fOrbCtx.createRadialGradient(44,42,0,44,42,18);
+  _fSpec.addColorStop(0,'rgba(255,255,255,.55)');_fSpec.addColorStop(1,'rgba(255,255,255,0)');
+  _fOrbCtx.fillStyle=_fSpec;_fOrbCtx.beginPath();_fOrbCtx.arc(44,42,18,0,Math.PI*2);_fOrbCtx.fill();
+  const _fOrbImg=_fOrbCv.toDataURL('image/png');
+  const _fOrbMM=8;
+  doc.addImage(_fOrbImg,'PNG',W/2-_fOrbMM/2,_pfY-_pfH+3,_fOrbMM,_fOrbMM);
+  // ALINEA
   doc.setFontSize(9);doc.setFont('helvetica','bold');
   doc.setTextColor(_ac2[0],_ac2[1],_ac2[2]);
-  doc.text('ALINEA',W/2,_pfY-_pfH+13.5,{align:'center',charSpace:2});
-  // 3. @alinea.io
+  doc.text('ALINEA',W/2,_pfY-_pfH+15,{align:'center',charSpace:2});
+  // @alinea.io
   doc.setFontSize(7);doc.setFont('helvetica','normal');
   doc.setTextColor(_ac[0],_ac[1],_ac[2]);
-  doc.text('@alinea.io',W/2,_pfY-_pfH+19,{align:'center',charSpace:.5});
-  // 4. #MakingVisibleTheInvisible
-  doc.setFontSize(6);
-  doc.setTextColor(80,75,110);
-  doc.text('#MakingVisibleTheInvisible',W/2,_pfY-_pfH+24.5,{align:'center',charSpace:.2});
+  doc.text('@alinea.io',W/2,_pfY-_pfH+21,{align:'center',charSpace:.5});
+  // #MakingVisibleTheInvisible
+  doc.setFontSize(6);doc.setTextColor(80,75,110);
+  doc.text('#MakingVisibleTheInvisible',W/2,_pfY-_pfH+27,{align:'center',charSpace:.2});
 
   doc.save('alinea-biblioteca-'+new Date().toISOString().slice(0,10)+'.pdf');
 }
