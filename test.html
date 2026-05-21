@@ -336,8 +336,8 @@ body::before{content:'';position:fixed;inset:0;background:
 .bit-hero h2 em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .bit-hero p{font-size:.72rem;color:var(--muted);line-height:1.6}
 .bit-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.8rem}
-.bit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .18s,box-shadow .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.bit-card:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px var(--glow)}
+.bit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .2s,box-shadow .2s,transform .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.bit-card:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 18px var(--glow),0 0 35px rgba(139,92,246,.18);transform:translateY(-1px)}
 .bit-card-title{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem;display:flex;align-items:center;justify-content:center;gap:.4rem}
 .bit-stat{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.25rem;text-align:center}
 .bit-stat-label{font-size:.68rem;color:var(--muted);text-align:center}
@@ -498,9 +498,9 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .nitem.just-added{animation:noteIn .32s cubic-bezier(.22,1,.36,1) both;border-color:rgba(139,92,246,.45);box-shadow:0 0 0 3px rgba(139,92,246,.1)}
 .nitem:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px rgba(139,92,246,.2);background:rgba(139,92,246,.05)}
 .npg{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);letter-spacing:.1em;margin-bottom:.3rem;text-transform:uppercase;opacity:.9}
-.ntxt{font-size:.82rem;line-height:1.72;color:#f0eeff;font-style:italic;font-family:'Playfair Display',serif}
+.ntxt{font-size:.82rem;line-height:1.82;color:#f0eeff;font-family:'Lato',sans-serif;font-weight:400}
 .ntxt mark{background:rgba(139,92,246,.2);color:var(--accent2);border-radius:2px;padding:0 .1em;font-style:italic}
-.ncmt{font-size:.65rem;color:rgba(196,181,253,.75);margin-top:.28rem;line-height:1.5}
+.ncmt{font-size:.65rem;color:rgba(196,181,253,.75);margin-top:.28rem;line-height:1.65;font-family:'Lato',sans-serif}
 .nai{display:flex;gap:.18rem;flex-wrap:wrap;margin-top:.35rem}
 .naitag{font-family:'DM Mono',monospace;font-size:.48rem;padding:.07rem .28rem;border-radius:3px;background:var(--glow);border:1px solid rgba(139,92,246,.18);color:var(--accent2)}
 .naitag.mood{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.18);color:var(--ok)}
@@ -596,7 +596,7 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 #quotePopup.open{display:flex}
 #quotePopupBg{position:absolute;inset:0;background:rgba(3,2,10,.82);backdrop-filter:blur(6px)}
 #quotePopupCard{position:relative;z-index:1;background:linear-gradient(135deg,#07060f,#0c0a1a);border:1px solid var(--border2);border-radius:16px;padding:1.6rem 1.5rem 1.2rem;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
-.qp-quote{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:.8rem}
+.qp-quote{font-family:'Lato',sans-serif;font-size:.95rem;font-weight:400;color:var(--text);line-height:1.82;margin-bottom:.8rem}
 .qp-source{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.05em;margin-bottom:1.1rem}
 .qp-actions{display:flex;gap:.5rem;align-items:center}
 .qp-share{flex:1;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.52rem .9rem;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 2px 12px var(--glow);transition:all .15s}
@@ -990,6 +990,45 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
     <div><label class="flbl" data-i18n="keywordsInitial">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…" data-i18n-ph="kwPlaceholder"></div>
     <div>
+      <label class="flbl">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega la dirección directa de la imagen)</span></label>
+      <input class="fin" type="text" id="addUrl" placeholder="https://… termina en .jpg  .jpeg  .png" oninput="prevAddUrl()">
+      <div id="addUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
+        ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
+        <span style="color:var(--muted)">Asegúrate de copiar la dirección de la <em>imagen</em>, no la página.</span>
+      </div>
+      <img class="url-prev" id="addUrlPrev" src="" alt="" style="margin-top:.32rem">
+      <div id="addUrlGuide" style="margin-top:.55rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.13);border-radius:8px;overflow:hidden">
+        <button onclick="(function(){const b=document.getElementById('addUrlGuideBody');const a=document.getElementById('addUrlGuideArrow');const open=b.style.display!=='none'&&b.style.display!=='';b.style.display=open?'none':'flex';a.textContent=open?'▸':'▾';})()" style="width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:.45rem .7rem;color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.09em;text-transform:uppercase">
+          <span>💡 ¿Cómo copiar la URL correcta?</span>
+          <span id="addUrlGuideArrow" style="font-size:.7rem;opacity:.7">▸</span>
+        </button>
+        <div id="addUrlGuideBody" style="display:none;padding:.1rem .7rem .65rem;flex-direction:column;gap:.45rem">
+          <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem">Busca el libro en Google Imágenes, luego:</div>
+          <div style="display:flex;align-items:flex-start;gap:.55rem">
+            <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">💻</span>
+            <div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Computadora (PC / Mac)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Clic derecho sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span><br><span style="color:rgba(139,92,246,.45);font-size:.55rem">NO el link de la barra de navegación de arriba</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.55rem">
+            <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">📱</span>
+            <div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">iPhone (iOS / Safari)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Mantener presionado 1 segundo la portada → menú de Apple → <span style="color:var(--accent2)">"Copiar"</span> o <span style="color:var(--accent2)">"Copiar enlace de la imagen"</span></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.55rem">
+            <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">🤖</span>
+            <div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Android (Chrome)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Dejar presionado el dedo sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
       <label class="flbl" data-i18n="statusLabel">Estado del libro</label>
       <select class="fin" id="addStatus" data-i18n-select="statusOptions"></select>
     </div>
@@ -1015,9 +1054,44 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
   </div>
   <div style="margin-top:.65rem">
-    <label class="flbl" data-i18n="coverUrlLabel">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega aquí la dirección de imagen de Google)</span></label>
-    <input class="fin" type="text" id="editUrl" placeholder="https://… clic derecho en Google Images → Copiar dirección de imagen" oninput="prevUrl()">
+    <label class="flbl" data-i18n="coverUrlLabel">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega la dirección directa de la imagen)</span></label>
+    <input class="fin" type="text" id="editUrl" placeholder="https://…termina en .jpg  .jpeg  .png" oninput="prevUrl()">
+    <div id="editUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
+      ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
+      <span style="color:var(--muted)">Asegúrate de copiar la dirección de la <em>imagen</em>, no la página.</span>
+    </div>
     <img class="url-prev" id="urlPrev" src="" alt="">
+    <!-- URL GUIDE -->
+    <div id="editUrlGuide" style="margin-top:.55rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.13);border-radius:8px;overflow:hidden">
+      <button onclick="(function(){const b=document.getElementById('editUrlGuideBody');const a=document.getElementById('editUrlGuideArrow');const open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▸':'▾';})()" style="width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:.45rem .7rem;color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.09em;text-transform:uppercase">
+        <span>💡 ¿Cómo copiar la URL correcta?</span>
+        <span id="editUrlGuideArrow" style="font-size:.7rem;opacity:.7">▸</span>
+      </button>
+      <div id="editUrlGuideBody" style="display:none;padding:.1rem .7rem .65rem;display:flex;flex-direction:column;gap:.45rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem">Busca el libro en Google Imágenes, luego:</div>
+        <div style="display:flex;align-items:flex-start;gap:.55rem">
+          <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">💻</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Computadora (PC / Mac)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Clic derecho sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span><br><span style="color:rgba(139,92,246,.45);font-size:.55rem">NO el link de la barra de navegación de arriba</span></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:.55rem">
+          <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">📱</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">iPhone (iOS / Safari)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Mantener presionado 1 segundo la portada → menú de Apple → <span style="color:var(--accent2)">"Copiar"</span> o <span style="color:var(--accent2)">"Copiar enlace de la imagen"</span></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:.55rem">
+          <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">🤖</span>
+          <div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Android (Chrome)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Dejar presionado el dedo sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div style="margin-top:.65rem">
     <label class="flbl">Categoría</label>
@@ -1630,7 +1704,7 @@ es:{name:'Español',t:{
   addBookTitle:'Agregar libro',addBookSub:'Escribe el título — la portada se carga automáticamente.',keywordsInitial:'Keywords iniciales (coma)',kwPlaceholder:'inversión, mentalidad…',ownedRead:'📚 Leído (ya lo tengo y lo leí)',ownedUnreadOpt:'📖 Lo tengo, no lo he leído',reading2:'📖 Leyendo ahora',wishlist2:'🚀 Lo quiero (Wishlist)',topFive:'TU TOP 5',filterNone:'Ninguna',category:'Categorías',explore2:'Explorar ideas',
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
   secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
-  terminados:'Terminados',leyendo:'Leyendo',wishlistStat:'Wishlist',notasStat:'Notas',keywordsStat:'Keywords',ratingProm:'Rating prom.',masAnotados:'📝 Más anotados',keywordsFrecuentes:'🔑 Keywords frecuentes',borrarReiniciar:'☢ Borrar todo y reiniciar',colisionBtn:'Colisión de ideas',horizonteBtn:'Horizonte de sucesos',colisionTitle:'Colisión de ideas ✦',horizonteTitle:'Horizonte de sucesos',footerText:'ALINEA · Biblioteca Mental · Todos los derechos reservados',exploreSub:'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.',exportarImportar:'💾 Exportar, importar y herramientas avanzadas',densestSystem:'🌟 Sistema más denso',gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
+  terminados:'Terminados',leyendo:'Leyendo',wishlistStat:'Wishlist',notasStat:'Notas',keywordsStat:'Keywords',ratingProm:'Rating prom.',masAnotados:'📝 Más anotados',keywordsFrecuentes:'🔑 Keywords frecuentes',borrarReiniciar:'☢ Borrar todo y reiniciar',colisionBtn:'Colisión de ideas',horizonteBtn:'Horizonte de sucesos',colisionTitle:'Colisión de ideas ✦',horizonteTitle:'Horizonte de sucesos',footerText:'ALINEA · Biblioteca Mental · Todos los derechos reservados',exploreSub:'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.',exportarImportar:'💾 Exportar, importar y herramientas avanzadas',densestSystem:'Sistema más denso',gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
 }},
 en:{name:'English',t:{
   library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
@@ -1738,7 +1812,7 @@ en:{name:'English',t:{
   filterAll:'All',filterNone:'None',category:'Categories',explore2:'Explore ideas',
   titleLabel:'Title',authorLabel:'Author',categoryLabel:'Category',statusLabel:'Book status',coverUrlLabel:'Cover URL',
   secNotas:'Notes & Highlights',secKeywords:'Keywords',secRelated:'Related books',
-  terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'🌟 Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
+  terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
 }},
 _pt_disabled:{name:'Português',t:{
   library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
@@ -1809,7 +1883,7 @@ _pt_disabled:{name:'Português',t:{
   footerText:'ALINEA · Biblioteca Mental · Todos os direitos reservados',
   exploreSub:'As palavras flutuam acima. Arraste-as, agrupe-as ou escreva para buscar.',
   exportarImportar:'💾 Exportar, importar e ferramentas avançadas → botão',
-  densestSystem:'🌟 Sistema mais denso',
+  densestSystem:'Sistema mais denso',
   welcomeQ:'E se você pudesse ver seu conhecimento?',
   welcomeP1:'Lemos, sublinhamos, anotamos — e com o tempo, essa sabedoria vai perdendo brilho.',
   welcomeP2:'ALINEA é para todos aqueles que sempre carregam um livro no bolso — ou mais.',
@@ -1909,7 +1983,7 @@ _fr_disabled:{name:'Français',t:{
   addBookTitle:'Ajouter un livre',addBookSub:'Écrivez le titre — la couverture se charge automatiquement.',keywordsInitial:'Mots-clés initiaux (virgule)',kwPlaceholder:'investissement, mentalité…',ownedRead:'📚 Lu (je l’ai et je l’ai lu)',ownedUnreadOpt:'📖 Je l’ai, pas encore lu',reading2:'📖 En train de lire',wishlist2:'🚀 Je le veux (Wishlist)',topFive:'VOTRE TOP 5',filterNone:'Aucune',category:'Catégories',explore2:'Explorer les idées',
   titleLabel:'Titre',authorLabel:'Auteur',categoryLabel:'Catégorie',statusLabel:'Statut du livre',coverUrlLabel:'URL de couverture',
   secNotas:'Notes & Surlignements',secKeywords:'Mots-clés',secRelated:'Livres liés',
-  terminados:'Terminés',leyendo:'En cours',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Mots-clés',ratingProm:'Note moy.',masAnotados:'📝 Plus annotés',keywordsFrecuentes:'🔑 Mots-clés fréquents',borrarReiniciar:'☢ Tout supprimer',colisionBtn:'Collision d’idées',horizonteBtn:'Horizon des événements',colisionTitle:'Collision d’idées ✔',horizonteTitle:'Horizon des événements',footerText:'ALINEA · Bibliothèque Mentale · Tous droits réservés',exploreSub:'Les mots flottent. Glissez-les ou écrivez pour chercher.',exportarImportar:'💾 Exporter, importer et outils avancés',densestSystem:'🌟 Système le plus dense',gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
+  terminados:'Terminés',leyendo:'En cours',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Mots-clés',ratingProm:'Note moy.',masAnotados:'📝 Plus annotés',keywordsFrecuentes:'🔑 Mots-clés fréquents',borrarReiniciar:'☢ Tout supprimer',colisionBtn:'Collision d’idées',horizonteBtn:'Horizon des événements',colisionTitle:'Collision d’idées ✔',horizonteTitle:'Horizon des événements',footerText:'ALINEA · Bibliothèque Mentale · Tous droits réservés',exploreSub:'Les mots flottent. Glissez-les ou écrivez pour chercher.',exportarImportar:'💾 Exporter, importer et outils avancés',densestSystem:'Système le plus dense',gravOff:'Gravité: OFF',gravOn:'Gravité: ON',
 }},
 _ja_disabled:{name:'日本語',t:{
   library:'ライブラリ',galaxy:'ギャラクシー',explore:'探索',log:'ログ',myLibrary:'マイライブラリ…',splashSub:'見えないものを見えるようにしよう。',
@@ -1998,7 +2072,7 @@ _ja_disabled:{name:'日本語',t:{
   filterAll:'全て',filterNone:'なし',category:'カテゴリ',explore2:'アイデアを探索',
   titleLabel:'タイトル',authorLabel:'著者',categoryLabel:'カテゴリ',statusLabel:'本のステータス',coverUrlLabel:'表紙URL',
   secNotas:'メモ & ハイライト',secKeywords:'キーワード',secRelated:'関連書籍',
-  terminados:'読了',leyendo:'読書中',wishlistStat:'ウィッシュリスト',notasStat:'メモ',keywordsStat:'キーワード',ratingProm:'平均評価',masAnotados:'📝 最もメモが多い',keywordsFrecuentes:'🔑 よく使うキーワード',borrarReiniciar:'☢ すべて削除して再起動',colisionBtn:'アイデアの衝突',horizonteBtn:'事象の地平線',colisionTitle:'アイデアの衝突 ✦',horizonteTitle:'事象の地平線',footerText:'ALINEA · メンタルライブラリ · 全著作権所有',exploreSub:'言葉が上に浮かびます。ドラッグ、グループ化、または検索。',exportarImportar:'💾 エクスポートとインポート',densestSystem:'🌟 最も密なシステム',gravOff:'重力: OFF',gravOn:'重力: ON',
+  terminados:'読了',leyendo:'読書中',wishlistStat:'ウィッシュリスト',notasStat:'メモ',keywordsStat:'キーワード',ratingProm:'平均評価',masAnotados:'📝 最もメモが多い',keywordsFrecuentes:'🔑 よく使うキーワード',borrarReiniciar:'☢ すべて削除して再起動',colisionBtn:'アイデアの衝突',horizonteBtn:'事象の地平線',colisionTitle:'アイデアの衝突 ✦',horizonteTitle:'事象の地平線',footerText:'ALINEA · メンタルライブラリ · 全著作権所有',exploreSub:'言葉が上に浮かびます。ドラッグ、グループ化、または検索。',exportarImportar:'💾 エクスポートとインポート',densestSystem:'最も密なシステム',gravOff:'重力: OFF',gravOn:'重力: ON',
 }},
 };
 var currentLang=(()=>{const l=localStorage.getItem('eter_lang')||'es';return(l==='es'||l==='en')?l:'es';})();
@@ -2235,10 +2309,29 @@ function _renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2){
   if(checks.f_status&&b.readingStatus){const statMap={done:'Terminado',reading:'Leyendo',owned:'Lo tengo'};ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='400 26px "DM Mono",monospace';ctx.fillText((statMap[b.readingStatus]||b.readingStatus).toUpperCase(),W/2,y);y+=48;}
   if(checks.f_rating&&b.rating){ctx.fillStyle='#fbbf24';ctx.font='400 42px serif';ctx.fillText('★'.repeat(b.rating)+'☆'.repeat(5-b.rating),W/2,y);y+=62;}
   if(checks.f_kw&&b.keywords&&b.keywords.length){ctx.fillStyle=ac2;ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='2px';const kwLine=b.keywords.slice(0,6).join('  ·  ');ctx.fillText(kwLine,W/2,y);}
-  // Footer
-  ctx.fillStyle='rgba(4,3,12,.7)';ctx.fillRect(0,H-120,W,120);
-  ctx.fillStyle=ac2+'ee';ctx.font='600 32px "DM Mono",monospace';ctx.letterSpacing='10px';ctx.fillText('ALINEA',W/2,H-62);
-  ctx.fillStyle=ac+'99';ctx.font='400 20px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText('@alinea.io',W/2,H-32);
+  // ── Brand Footer (4 elements) ──
+  const _bfH=200;
+  ctx.fillStyle='rgba(4,3,12,.82)';ctx.fillRect(0,H-_bfH,W,_bfH);
+  // Separator line
+  ctx.strokeStyle=ac+'55';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(W*.28,H-_bfH+1);ctx.lineTo(W*.72,H-_bfH+1);ctx.stroke();
+  // 1. Orb
+  const _fo={x:W/2,y:H-_bfH+38,r:22};
+  const _fog=ctx.createRadialGradient(_fo.x-_fo.r*.3,_fo.y-_fo.r*.3,0,_fo.x,_fo.y,_fo.r);
+  _fog.addColorStop(0,'#fff');_fog.addColorStop(.25,ac2);_fog.addColorStop(.65,ac);_fog.addColorStop(1,ac3||ac);
+  ctx.shadowBlur=22;ctx.shadowColor=ac;
+  ctx.fillStyle=_fog;ctx.beginPath();ctx.arc(_fo.x,_fo.y,_fo.r,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+  // 2. ALINEA
+  ctx.fillStyle=ac2+'ee';ctx.font='600 30px "DM Mono",monospace';ctx.letterSpacing='10px';ctx.textAlign='center';
+  ctx.fillText('ALINEA',W/2,H-_bfH+88);
+  // 3. @alinea.io
+  ctx.fillStyle=ac+'cc';ctx.font='400 20px "DM Mono",monospace';ctx.letterSpacing='3px';
+  ctx.fillText('@alinea.io',W/2,H-_bfH+122);
+  // 4. #MakingVisibleTheInvisible
+  ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 16px "DM Mono",monospace';ctx.letterSpacing='1px';
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-_bfH+152);
+  ctx.letterSpacing='0';
   _exportBitStat(cv);
 }
 
@@ -3098,6 +3191,9 @@ function openAdd(){
   document.getElementById('fAdd').value='';
   document.getElementById('addStatus').value='read';
   pendCover=null;manCover=false;clearTimeout(cvT);
+  const _au=document.getElementById('addUrl');if(_au)_au.value='';
+  const _aup=document.getElementById('addUrlPrev');if(_aup){_aup.src='';_aup.style.display='none';}
+  const _auw=document.getElementById('addUrlWarn');if(_auw)_auw.style.display='none';
   populateCatSelect('addCat');
   populateStatusSelect('addStatus','read');
   showModal('mAdd');
@@ -3169,8 +3265,40 @@ function onEditFile(e){
 function prevUrl(){
   const url=document.getElementById('editUrl').value.trim();
   const p=document.getElementById('urlPrev');
-  if(url){p.src=url;p.style.display='block';p.onload=()=>{editCover=url;document.getElementById('cpickEImg').src=url;document.getElementById('cpickEImg').style.display='block';document.getElementById('cpickEPh').style.display='none';};p.onerror=()=>p.style.display='none';}
-  else p.style.display='none';
+  const warn=document.getElementById('editUrlWarn');
+  if(!url){p.style.display='none';if(warn)warn.style.display='none';return;}
+  const hasValidExt=/\.(jpe?g|png)(\?.*)?$/i.test(url);
+  if(warn)warn.style.display=hasValidExt?'none':'block';
+  p.src=url;p.style.display='block';
+  p.onload=()=>{
+    editCover=url;
+    document.getElementById('cpickEImg').src=url;
+    document.getElementById('cpickEImg').style.display='block';
+    document.getElementById('cpickEPh').style.display='none';
+    if(warn)warn.style.display='none';
+  };
+  p.onerror=()=>{p.style.display='none';};
+}
+function prevAddUrl(){
+  const url=document.getElementById('addUrl').value.trim();
+  const p=document.getElementById('addUrlPrev');
+  const warn=document.getElementById('addUrlWarn');
+  if(!url){p.style.display='none';if(warn)warn.style.display='none';return;}
+  const hasValidExt=/\.(jpe?g|png)(\?.*)?$/i.test(url);
+  if(warn)warn.style.display=hasValidExt?'none':'block';
+  p.src=url;p.style.display='block';
+  p.onload=()=>{
+    pendCover=url;
+    document.getElementById('cpickImg').src=url;
+    document.getElementById('cpickImg').style.display='block';
+    document.getElementById('cpickPh').style.display='none';
+    document.getElementById('cpickSpin').style.display='none';
+    if(warn)warn.style.display='none';
+    const msg=document.getElementById('addMsg');
+    msg.className='fmsg ok';msg.textContent='✓ Portada cargada';
+    setTimeout(()=>{msg.className='fmsg';msg.textContent='';},1800);
+  };
+  p.onerror=()=>{p.style.display='none';};
 }
 function saveEdit(){
   const id=document.getElementById('mEdit')._id;
@@ -3324,7 +3452,7 @@ function applyLang(){
   if(_bht)_bht.innerHTML=t('logTitleBase')+' <em>'+t('logTitleEm')+'</em>';
   // 15. Top 5 title
   const _t5=document.getElementById('bitTopFiveTitle');
-  if(_t5)_t5.textContent='📊 '+t('topFive');
+  if(_t5)_t5.textContent='✦ '+t('topFive')+' ✦';
   // 16. Explore hero title with em
   const _eht=document.getElementById('exploreHeroTitle');
   if(_eht)_eht.innerHTML=t('exploreTitleBase')+' <em>'+t('exploreTitleEm')+'</em>';
@@ -4086,9 +4214,28 @@ async function shareQuoteAsStory(){
     ctx.fillText('\u2014 '+(_qpBookTitle||''),W/2,afterQ);
   }
 
-  // Watermark — only @alinea.io
-  ctx.fillStyle=ac+'90';ctx.font='400 34px "DM Mono",monospace';
-  ctx.letterSpacing='6px';ctx.textAlign='center';ctx.fillText('@alinea.io',W/2,H*.94);
+  // ── Brand Footer (4 elements) ──
+  const _qfH=260;
+  ctx.fillStyle='rgba(4,3,12,.82)';ctx.fillRect(0,H-_qfH,W,_qfH);
+  ctx.strokeStyle=ac+'55';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(W*.3,H-_qfH+2);ctx.lineTo(W*.7,H-_qfH+2);ctx.stroke();
+  // 1. Orb
+  const _qfo={x:W/2,y:H-_qfH+52,r:32};
+  const _qfog=ctx.createRadialGradient(_qfo.x-_qfo.r*.3,_qfo.y-_qfo.r*.3,0,_qfo.x,_qfo.y,_qfo.r);
+  _qfog.addColorStop(0,'#fff');_qfog.addColorStop(.25,ac2);_qfog.addColorStop(.65,ac);_qfog.addColorStop(1,ac3);
+  ctx.shadowBlur=40;ctx.shadowColor=glowStrong;
+  ctx.fillStyle=_qfog;ctx.beginPath();ctx.arc(_qfo.x,_qfo.y,_qfo.r,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+  // 2. ALINEA
+  ctx.fillStyle=ac2+'ee';ctx.font='600 46px "DM Mono",monospace';ctx.letterSpacing='14px';ctx.textAlign='center';
+  ctx.fillText('ALINEA',W/2,H-_qfH+134);
+  // 3. @alinea.io
+  ctx.fillStyle=ac+'cc';ctx.font='400 32px "DM Mono",monospace';ctx.letterSpacing='5px';
+  ctx.fillText('@alinea.io',W/2,H-_qfH+184);
+  // 4. #MakingVisibleTheInvisible
+  ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 24px "DM Mono",monospace';ctx.letterSpacing='1px';
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-_qfH+226);
+  ctx.letterSpacing='0px';
 
   if(btn){btn.style.opacity='1';document.getElementById('qpShareLabel').textContent=origLabel;}
 
@@ -4162,31 +4309,46 @@ function renderBitacora(){
   document.getElementById('bitStats').innerHTML=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem">
     <div class="bit-card" style="cursor:pointer" onclick="openBitModal('volumen')">
-      <div class="bit-card-title">📚 ${t('volumen')||'Volumen'}</div>
+      <div class="bit-card-title">✦ ${t('volumen')||'Volumen'} ✦</div>
       <div class="bit-stat">${realBooks.length}</div>
       <div class="bit-stat-label">${t('booksInGalaxy')}</div>
       ${lib.filter(b=>b.isWishlist).length?`<div style="margin-top:.5rem;font-size:.64rem;color:var(--gold)">${lib.filter(b=>b.isWishlist).length} ${t('inWishlist')}</div>`:''}
     </div>
     <div class="bit-card" style="cursor:pointer" onclick="openBitModal('knowledge')">
-      <div class="bit-card-title">✦ ${t('knowledge')||'Conocimiento'}</div>
+      <div class="bit-card-title">✦ ${t('knowledge')||'Conocimiento'} ✦</div>
       <div class="bit-stat">${totalNotes}</div>
       <div class="bit-stat-label">${(t('notesAndKeywords')||'{kw} notas · {kw2} keywords').replace('{kw}',totalNotes).replace('{kw2}',totalKw).replace('{kw}',totalKw)}</div>
     </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem">
     <div class="bit-card" style="cursor:pointer;grid-column:1/-1" onclick="openBitModal('densest')">
-      <div class="bit-card-title">🌟 ${t('densestSystem')||'Sistema más denso'}</div>
+      <div class="bit-card-title" style="justify-content:center">✦ &nbsp;${t('densestSystem')||'Sistema más denso'}&nbsp; ✦</div>
       ${topCat?`<div class="bit-stat" style="font-size:1.4rem;font-family:'Playfair Display',serif">${topCat.c}</div><div class="bit-stat-label">${topCat.n} ${t('booksCount')||'libros'}</div>`:`<div style="color:var(--dim);font-size:.74rem">${t('addBooksWithCats')}</div>`}
     </div>
-    <div class="bit-card" style="cursor:pointer;grid-column:1/-1" onclick="openBitModal('top5')">
-      <div class="bit-card-title" id="bitTopFiveTitle">📊 Tu Top 5</div>
-      <div style="margin-top:.3rem">
-        ${[...cats].sort((a,b)=>realBooks.filter(x=>x.category===b).length-realBooks.filter(x=>x.category===a).length).slice(0,5).map(c=>{
-          const n=realBooks.filter(b=>b.category===c).length;
-          const max=topCat?.n||1;
-          return`<div class="bit-bar-row"><div class="bit-bar-label">${translateCat(c)}</div><div class="bit-bar-wrap"><div class="bit-bar-fill" style="width:${Math.round(n/max*100)}%;background:linear-gradient(to right,var(--accent3),var(--accent2))"></div></div><div class="bit-bar-n">${n}</div></div>`;
-        }).join('')||`<div style="color:var(--dim);font-size:.7rem">${t('noCatsYet')}</div>`}
+    <div onclick="openBitModal('top5')" style="cursor:pointer;grid-column:1/-1;background:linear-gradient(135deg,rgba(12,10,24,.9),rgba(8,6,18,.95));border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:1.2rem;transition:all .2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 0 1px var(--accent),0 0 22px var(--glow)'" onmouseout="this.style.borderColor='rgba(139,92,246,.3)';this.style.boxShadow='none'">
+      <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 70%);pointer-events:none"></div>
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.9rem">
+        <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2)">✦ Tu Top 5 ✦</span>
       </div>
+      ${[...cats].sort((a,b)=>realBooks.filter(x=>x.category===b).length-realBooks.filter(x=>x.category===a).length).slice(0,5).map((c,idx)=>{
+        const n=realBooks.filter(b=>b.category===c).length;
+        const max=topCat?.n||1;
+        const pct=Math.round(n/max*100);
+        const numColor='var(--accent2)';
+        const numSize=1.0;
+        return`<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.55rem">
+          <span style="font-family:'Playfair Display',serif;font-size:${numSize}rem;font-weight:700;color:${numColor};min-width:18px;line-height:1">${idx+1}</span>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.22rem">
+              <span style="font-family:'Lato',sans-serif;font-size:.68rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${translateCat(c)}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--dim);flex-shrink:0;margin-left:.4rem">${n}</span>
+            </div>
+            <div style="background:rgba(139,92,246,.12);border-radius:4px;height:4px;overflow:hidden">
+              <div style="height:100%;border-radius:4px;width:${pct}%;background:linear-gradient(to right,var(--accent3),var(--accent2));box-shadow:0 0 6px var(--glow);transition:width .6s ease"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join('')||`<div style="color:var(--dim);font-size:.7rem">${t('noCatsYet')}</div>`}
     </div>
     </div>
     `;
@@ -4236,12 +4398,12 @@ function renderBitacora(){
     const mostAnnotated=withNotes.sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).slice(0,4);
     insightEl.innerHTML=`
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem">
-      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('done')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('terminados')||'Terminados'}</div></div>
-      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('reading')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('leyendo')||'Leyendo'}</div></div>
-      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('wishlist')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">${t('wishlistStat')||'Wishlist'}</div></div>
-      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('notes')"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">${t('notasStat')||'Notas'}</div></div>
-      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('keywords')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('keywordsStat')||'Keywords'}</div></div>
-      ${avgRating?`<div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('rating')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">${t('ratingProm')||'Rating prom.'}</div></div>`:''}
+      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('done')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('terminados')||'Terminados'} ✦</div></div>
+      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('reading')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('leyendo')||'Leyendo'} ✦</div></div>
+      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('wishlist')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('wishlistStat')||'Wishlist'} ✦</div></div>
+      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('notes')"><div style="font-size:1.55rem;font-weight:700;color:var(--ok);font-family:'Playfair Display',serif">${realBooks.reduce((a,b)=>a+(b.notes||[]).length,0)}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('notasStat')||'Notas'} ✦</div></div>
+      <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('keywords')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${allKW.length}</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('keywordsStat')||'Keywords'} ✦</div></div>
+      ${avgRating?`<div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('rating')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${avgRating}★</div><div class="bit-card-title" style="margin-top:.2rem">✦ ${t('ratingProm')||'Rating prom.'}</div></div>`:''}
     </div>
     ${mostAnnotated.length?`<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.7rem;margin-bottom:.7rem">
       <div class="sec" style="margin-bottom:.45rem">${t('masAnotados')||'📝 Más anotados'}</div>
@@ -4492,42 +4654,67 @@ function _renderBitCanvas(titleText, bodyLines, books) {
   if (bodyLines && bodyLines.length) {
     ctx.letterSpacing = '0'; ctx.textAlign = 'center';
     if (bodyLines.length === 1) {
+      // Single stat — centered large
       ctx.fillStyle = '#f0eeff';
       ctx.font = '700 68px "Lato",sans-serif';
+      ctx.textAlign = 'center';
       ctx.fillText(bodyLines[0], W/2, contentTop);
       contentTop += 90;
     } else if (bodyLines.length <= 3) {
-      // First line bigger (stat/title), rest smaller
+      // First line: stat/title in Playfair centered
       ctx.fillStyle = ac2;
-      ctx.font = '700 56px "Playfair Display",serif';
+      ctx.font = '700 52px "Playfair Display",serif';
+      ctx.textAlign = 'center';
       ctx.fillText(bodyLines[0], W/2, contentTop);
-      contentTop += 74;
-      ctx.fillStyle = 'rgba(255,255,255,.75)';
-      ctx.font = '400 32px "Lato",sans-serif';
+      contentTop += 70;
+      // Rest: justified editorial text
+      ctx.fillStyle = 'rgba(255,255,255,.82)';
+      ctx.font = '400 30px "Lato",sans-serif';
+      const jMargin = 80;
+      const jW = W - jMargin * 2;
       for (let i = 1; i < bodyLines.length; i++) {
-        ctx.fillText(bodyLines[i], W/2, contentTop);
-        contentTop += 48;
+        const lh = _justifyTextBlock(ctx, bodyLines[i], jMargin, contentTop, jW, 46, 30);
+        contentTop += lh + 8;
       }
     } else {
-      // Many lines — keywords mode: compact pill-like text layout
-      ctx.fillStyle = ac2;
-      ctx.font = '700 40px "DM Mono",monospace';
-      ctx.letterSpacing = '6px';
-      ctx.fillText(bodyLines[0], W/2, contentTop);
-      contentTop += 60;
-      ctx.letterSpacing = '0';
-      ctx.font = '400 28px "DM Mono",monospace';
-      ctx.fillStyle = 'rgba(255,255,255,.72)';
-      const cols = 3;
-      const colW = (W - 120) / cols;
-      bodyLines.slice(1).forEach((kw, i) => {
-        const col = i % cols;
-        const row = Math.floor(i / cols);
-        const x = 60 + col * colW + colW/2;
-        const y = contentTop + row * 52;
-        ctx.fillText(kw, x, y);
-      });
-      contentTop += Math.ceil((bodyLines.length - 1) / cols) * 52 + 40;
+      // Many lines — long quote: editorial justified layout
+      const isQuote = bodyLines[0].startsWith('"') || bodyLines[0].startsWith('"') || bodyLines.length > 6;
+      if(isQuote) {
+        // Big opening quote mark
+        ctx.fillStyle = ac2 + '55';
+        ctx.font = '300 180px "Playfair Display",serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('"', 50, contentTop + 80);
+        // Justified text block
+        ctx.fillStyle = '#f0eeff';
+        ctx.font = '400 34px "Lato",sans-serif';
+        const qMargin = 90;
+        const qW = W - qMargin * 2;
+        const fullText = bodyLines.join(' ');
+        const used = _justifyTextBlock(ctx, fullText, qMargin, contentTop + 40, qW, 56, 34);
+        contentTop += used + 60;
+      } else {
+        // Keywords mode: DM Mono grid
+        ctx.fillStyle = ac2;
+        ctx.font = '700 38px "DM Mono",monospace';
+        ctx.letterSpacing = '6px';
+        ctx.textAlign = 'center';
+        ctx.fillText(bodyLines[0], W/2, contentTop);
+        contentTop += 58;
+        ctx.letterSpacing = '0';
+        ctx.font = '400 26px "DM Mono",monospace';
+        ctx.fillStyle = 'rgba(255,255,255,.72)';
+        const cols = 3;
+        const colW = (W - 120) / cols;
+        bodyLines.slice(1).forEach((kw, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const x = 60 + col * colW + colW/2;
+          const y = contentTop + row * 50;
+          ctx.fillText(kw, x, y);
+        });
+        contentTop += Math.ceil((bodyLines.length - 1) / cols) * 50 + 38;
+      }
     }
     contentTop += 28;
   }
@@ -4714,6 +4901,44 @@ function _drawCover(ctx, b, bx, by, cw, ch, ac, radius, onDone) {
   }
 }
 
+
+// ── Canvas justified text block ───────────────────────────
+function _justifyTextBlock(ctx, text, x, y, maxWidth, lineHeight, fontSize){
+  const words = text.split(' ');
+  const lines = [];
+  let currentLine = [];
+  // Break into lines
+  words.forEach(word => {
+    const testLine = [...currentLine, word].join(' ');
+    if(ctx.measureText(testLine).width > maxWidth && currentLine.length > 0){
+      lines.push(currentLine);
+      currentLine = [word];
+    } else {
+      currentLine.push(word);
+    }
+  });
+  if(currentLine.length > 0) lines.push(currentLine);
+  // Draw each line — justify all except the last
+  lines.forEach((lineWords, li) => {
+    const isLast = li === lines.length - 1;
+    if(isLast || lineWords.length === 1){
+      // Last line or single word — left align
+      ctx.textAlign = 'left';
+      ctx.fillText(lineWords.join(' '), x, y + li * lineHeight);
+    } else {
+      // Justify: distribute spaces evenly
+      const totalWordW = lineWords.reduce((acc, w) => acc + ctx.measureText(w).width, 0);
+      const spaceW = (maxWidth - totalWordW) / (lineWords.length - 1);
+      let cx = x;
+      lineWords.forEach((word, wi) => {
+        ctx.fillText(word, cx, y + li * lineHeight);
+        cx += ctx.measureText(word).width + spaceW;
+      });
+    }
+  });
+  return lines.length * lineHeight;
+}
+
 function _finalizeBitCanvas(ctx, cv, W, H, ac, ac2) {
   // Footer: wordmark only, no orb
   ctx.fillStyle = 'rgba(4,3,12,.7)';
@@ -4858,7 +5083,7 @@ function openBitModal(type){
   };
 
   if(type==='volumen'){
-    titleText='📚 '+(t('volumen')||'Volumen');
+    titleText='✦ '+(t('volumen')||'Volumen')+' ✦';
     html=_bitCoverGrid(realBooks,isEN?'No books yet.':'Sin libros aún.')+
       shareBtn(isEN?'My Galaxy':'Mi Galaxia',[],realBooks);
   } else if(type==='knowledge'){
@@ -4872,7 +5097,7 @@ function openBitModal(type){
       <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">${isEN?'unique keywords':'keywords únicas'}</div>
     </div>`+shareBtn(titleText,[`${totalNotes} ${isEN?'notes':'notas'}`,`${totalKw} keywords`],realBooks);
   } else if(type==='densest'){
-    titleText='🌟 '+(t('densestSystem')||'Sistema más denso');
+    titleText='✦ '+(t('densestSystem')||'Sistema más denso')+' ✦';
     const cats=[...new Set(realBooks.map(b=>b.category).filter(Boolean))];
     const sorted=cats.map(c=>({c,books:realBooks.filter(b=>b.category===c)})).sort((a,b)=>b.books.length-a.books.length);
     // Show all categories with bar chart (text-only), but share shows books of selected category
@@ -4888,17 +5113,17 @@ function openBitModal(type){
       ${shareBtn(titleText,[sorted[0]?.c||'',`${sorted[0]?.books.length||0} ${isEN?'books':'libros'}`],sorted[0]?.books||[])}`
     :`<div style="color:var(--dim);font-size:.7rem;padding:1rem 0">${isEN?'Add categories.':'Agrega categorías.'}</div>`;
   } else if(type==='top5'){
-    titleText='📊 '+(t('topFive')||'Top 5');
+    titleText='✦ '+(t('topFive')||'Top 5')+' ✦';
     const cats=[...new Set(realBooks.map(b=>b.category).filter(Boolean))];
     const sorted=cats.map(c=>({c,books:realBooks.filter(b=>b.category===c)})).sort((a,b)=>b.books.length-a.books.length).slice(0,5);
     const maxN=sorted[0]?.books.length||1;
     // Pure text ranking — no grids
     html=sorted.length?`
       <div style="display:flex;flex-direction:column;gap:.75rem">
-        ${sorted.map(({c,books},idx)=>{const rc=idx===0?'#fbbf24':'var(--accent2)';return`
+        ${sorted.map(({c,books},idx)=>{const rc='var(--accent2)';const mSz=1.4;return`
           <div>
             <div style="display:flex;align-items:baseline;gap:.6rem;margin-bottom:.28rem">
-              <span style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:${rc};line-height:1;min-width:28px">${idx+1}</span>
+              <span style="font-family:'Playfair Display',serif;font-size:${mSz}rem;font-weight:700;color:${rc};line-height:1;min-width:28px">${idx+1}</span>
               <div style="flex:1">
                 <div style="font-size:.78rem;font-weight:600;color:var(--text)">${translateCat(c)}</div>
                 <div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--muted)">${books.length} ${isEN?'books':'libros'}</div>
@@ -4910,19 +5135,19 @@ function openBitModal(type){
       ${shareBtn(titleText,sorted.map(({c,books})=>`${translateCat(c)}  ${books.length}`),[])}`
     :`<div style="color:var(--dim);font-size:.7rem">${isEN?'No categories yet.':'Sin categorías aún.'}</div>`;
   } else if(type==='done'){
-    titleText='✅ '+(t('terminados')||'Terminados');
+    titleText='✦ '+(t('terminados')||'Terminados')+' ✦';
     const doneBooks=realBooks.filter(b=>b.readingStatus==='done'||b.status==='done'||b.status==='read');
     html=_bitCoverGrid(doneBooks,isEN?'No finished books yet.':'Sin libros terminados aún.')+shareBtn(isEN?'Finished':'Terminados',[],doneBooks);
   } else if(type==='reading'){
-    titleText='📖 '+(t('leyendo')||'Leyendo');
+    titleText='✦ '+(t('leyendo')||'Leyendo')+' ✦';
     const readingBooks=realBooks.filter(b=>b.readingStatus==='reading'||b.status==='reading');
     html=_bitCoverGrid(readingBooks,isEN?'Not reading anything.':'No estás leyendo.')+shareBtn(isEN?'Reading':'Leyendo',[],readingBooks);
   } else if(type==='wishlist'){
-    titleText='🚀 Wishlist';
+    titleText='✦ Wishlist ✦';
     const wishBooks=lib.filter(b=>b.isWishlist||b.status==='wishlist');
     html=_bitCoverGrid(wishBooks,isEN?'Your wishlist is empty.':'Tu wishlist está vacía.')+shareBtn('Wishlist',[],wishBooks);
   } else if(type==='notes'){
-    titleText='📝 '+(t('notasStat')||'Notas');
+    titleText='✦ '+(t('notasStat')||'Notas')+' ✦';
     const sorted=[...realBooks].sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).filter(b=>(b.notes||[]).length>0);
     html=sorted.length?sorted.map(b=>`
       <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border)">
@@ -4931,7 +5156,7 @@ function openBitModal(type){
         <button onclick="closeBitModal();setTimeout(()=>openBook(${b.id}),150)" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .65rem;border-radius:6px;cursor:pointer;flex-shrink:0">+ nota</button>
       </div>`).join(''):`<div style="color:var(--dim);font-size:.7rem;padding:1rem 0">${isEN?'No notes yet.':'Sin notas aún.'}</div>`;
   } else if(type==='keywords'){
-    titleText='🔑 '+(t('keywordsStat')||'Keywords');
+    titleText='✦ '+(t('keywordsStat')||'Keywords')+' ✦';
     const allKW=[...new Set(realBooks.flatMap(b=>b.keywords||[]))].sort();
     html=`<div id="kwModalBody">
       <div style="display:flex;gap:.3rem;margin-bottom:.75rem">
@@ -4949,7 +5174,7 @@ function openBitModal(type){
       </div>
     </div>`;
   } else if(type==='rating'){
-    titleText='⭐ '+(t('ratingProm')||'Rating');
+    titleText=(t('ratingProm')||'Rating Prom.');
     const rated=[...realBooks].filter(b=>b.rating).sort((a,b)=>b.rating-a.rating);
     const unrated=realBooks.filter(b=>!b.rating);
     html=`${rated.map(b=>`<div style="display:flex;align-items:center;gap:.65rem;padding:.5rem 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="closeBitModal();setTimeout(()=>openBook(${b.id}),150)">
@@ -5122,10 +5347,10 @@ function initGraph(){
   // Size calculations
   const mainR=Math.max(28,Math.min(58,24+totalBooks*1.4+numSystems*1.8));
   const maxR=Math.min(W,H)*Math.min(0.45,0.31+numSystems*0.028+totalBooks*0.0045);
-  const sysOrbitR=Math.min(maxR*0.88,mainR*3.5+numSystems*32+maxInCat*14);
+  const sysOrbitR=Math.min(maxR*0.94,mainR*4.2+numSystems*40+maxInCat*18);
   const sunR=Math.max(17,Math.min(33,14+maxInCat*2.1));
-  const gap=Math.max(44,sunR*1.8+maxInCat*7);
-  const planetRings=[sunR+gap,sunR+gap*1.9,sunR+gap*2.8,sunR+gap*3.7];
+  const gap=Math.max(56,sunR*2.1+maxInCat*9);
+  const planetRings=[sunR+gap,sunR+gap*2.1,sunR+gap*3.2,sunR+gap*4.4];
 
   // Main sun
   gNodes.push({id:'__main',title:libName,x:cx,y:cy,type:'main',r:mainR});
@@ -5245,7 +5470,7 @@ function drawGraph(){
     rings.forEach(r=>{
       if(r<8)return;
       ctx.beginPath();ctx.arc(sun.x,sun.y,r,0,Math.PI*2);
-      ctx.strokeStyle=col.glow+'0.18)';ctx.lineWidth=1.1;ctx.setLineDash([4,12]);ctx.stroke();
+      ctx.strokeStyle=col.glow+'0.29)';ctx.lineWidth=1.4;ctx.setLineDash([5,10]);ctx.stroke();
       ctx.setLineDash([]);
     });
   });
@@ -5257,7 +5482,7 @@ function drawGraph(){
       const r=Math.hypot(suns[0].x-main.x,suns[0].y-main.y);
       if(r>20){
         ctx.beginPath();ctx.arc(main.x,main.y,r,0,Math.PI*2);
-        ctx.strokeStyle='rgba(196,181,253,.15)';ctx.lineWidth=1.1;ctx.setLineDash([8,16]);ctx.stroke();
+        ctx.strokeStyle='rgba(196,181,253,.3)';ctx.lineWidth=1.3;ctx.setLineDash([6,12]);ctx.stroke();
         ctx.setLineDash([]);
       }
     }
@@ -5280,7 +5505,7 @@ function drawGraph(){
     grad.addColorStop(.5,'rgba(196,181,253,'+(alpha+.15)+')');
     grad.addColorStop(1,'rgba(196,181,253,'+alpha+')');
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
-    ctx.strokeStyle=grad;ctx.lineWidth=.9+e.s*.35;ctx.setLineDash([3,6]);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle=grad;ctx.lineWidth=1.2+e.s*.5;ctx.setLineDash([4,7]);ctx.stroke();ctx.setLineDash([]);
     const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
     const dg=ctx.createRadialGradient(mx,my,0,mx,my,5);
     dg.addColorStop(0,'rgba(196,181,253,.9)');dg.addColorStop(1,'rgba(196,181,253,0)');
@@ -5328,8 +5553,14 @@ function drawGraph(){
     ctx.strokeStyle=col.sun+'cc';ctx.lineWidth=1.3;ctx.stroke();
     if(gSc>.38){
       ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.92)';
-      ctx.font='600 '+Math.max(9,10*gSc)+"px 'Playfair Display',serif";
-      ctx.fillText(n.title,n.x,n.y+3);
+      const sfs=Math.max(9,10*gSc);
+      ctx.font='600 '+sfs+"px 'Lato',sans-serif";
+      const maxSW=Math.max(80,r*4.5);
+      const sWords=n.title.split(' ');let sLine='',sLines=[];
+      sWords.forEach(w=>{const tt=sLine?sLine+' '+w:w;if(ctx.measureText(tt).width>maxSW&&sLine){sLines.push(sLine);sLine=w;}else sLine=tt;});
+      if(sLine)sLines.push(sLine);
+      const sStart=n.y-(sLines.length-1)*(sfs+1)/2+2;
+      sLines.slice(0,3).forEach((l,i)=>ctx.fillText(l,n.x,sStart+i*(sfs+2)));
     }
   });
 
@@ -5357,8 +5588,14 @@ function drawGraph(){
     ctx.strokeStyle=light;ctx.lineWidth=.9;ctx.stroke();
     if(gSc>.38){
       ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.82)';
-      ctx.font=Math.max(7,7.5*gSc)+"px 'DM Mono',monospace";
-      ctx.fillText(n.title.split(' ').slice(0,2).join(' '),n.x,n.y+r+10);
+      const pfs=Math.max(7,7.5*gSc);
+      ctx.font=pfs+"px 'DM Mono',monospace";
+      const maxPW=Math.max(60,r*4);
+      const words=n.title.split(' ');
+      let pLine='',pLines=[];
+      words.forEach(w=>{const t=pLine?pLine+' '+w:w;if(ctx.measureText(t).width>maxPW&&pLine){pLines.push(pLine);pLine=w;}else pLine=t;});
+      if(pLine)pLines.push(pLine);
+      pLines.slice(0,2).forEach((l,i)=>ctx.fillText(l,n.x,n.y+r+10+i*(pfs+2)));
     }
   });
 
@@ -5513,9 +5750,28 @@ function shareGalaxySnapshot(){
     ctx.fillStyle='rgba(255,255,255,'+(rng(i*5.9)*.55+.1)+')';ctx.fill();
   }
   ctx.drawImage(cv,0,0,W,H);
-  const wm=Math.round(W*.022);
-  ctx.fillStyle='rgba(196,181,253,.55)';ctx.font='500 '+wm+'px "DM Mono",monospace';
-  ctx.textAlign='center';ctx.fillText('@alinea.io',W/2,H-18);
+  // ── Footer: dark bar + Orb + ALINEA + @alinea.io ──
+  const fH=Math.round(H*0.1);
+  ctx.fillStyle='rgba(4,3,12,.72)';ctx.fillRect(0,H-fH,W,fH);
+  // Orb
+  const orbX=W/2-Math.round(W*.12),orbY=H-fH/2,orbR=Math.round(fH*.32);
+  const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
+  const ac=theme.accent,ac2=theme.accent2;
+  const og=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
+  og.addColorStop(0,'#fff');og.addColorStop(.25,ac2);og.addColorStop(.65,ac);og.addColorStop(1,ac);
+  ctx.shadowBlur=orbR*.8;ctx.shadowColor=ac;
+  ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+  // ALINEA text
+  const fs=Math.round(fH*.3);
+  ctx.fillStyle=ac2+'ee';ctx.font='700 '+fs+'px "DM Mono",monospace';
+  ctx.textAlign='left';ctx.letterSpacing='3px';
+  ctx.fillText('ALINEA',orbX+orbR+Math.round(W*.015),H-fH/2-fs*.1);
+  // @alinea.io
+  ctx.fillStyle=ac+'99';ctx.font='400 '+Math.round(fs*.62)+'px "DM Mono",monospace';
+  ctx.letterSpacing='1px';
+  ctx.fillText('@alinea.io',orbX+orbR+Math.round(W*.015),H-fH/2+Math.round(fs*.7));
+  ctx.letterSpacing='0px';
   if(btn){btn.textContent='📸';btn.style.pointerEvents='';}
   out.toBlob(async blob=>{
     if(!blob)return;
@@ -6101,7 +6357,36 @@ async function exportPDF(){
     });
     y+=4;
   });
-  doc.save('eter-biblioteca-'+new Date().toISOString().slice(0,10)+'.pdf');
+  // ── Brand Footer on last page ──
+  // Add new page for footer if too close to bottom
+  if(y>260){doc.addPage();addPageBg();y=margin;}
+  const _pfY=297; // A4 height mm
+  const _pfH=28;  // footer block height mm
+  // Dark footer bar
+  doc.setFillColor(4,3,12);
+  doc.rect(0,_pfY-_pfH,W,_pfH,'F');
+  // Separator line
+  doc.setDrawColor(_ac[0],_ac[1],_ac[2]);doc.setLineWidth(.2);
+  doc.line(margin*2,_pfY-_pfH+.5,W-margin*2,_pfY-_pfH+.5);
+  // 1. Orb — small circle with gradient fill (jsPDF: simulate with layered circles)
+  const _pfCx=W/2,_pfCy=_pfY-_pfH+6.5,_pfR=3.2;
+  doc.setFillColor(196,181,253);doc.circle(_pfCx,_pfCy,_pfR+1.8,'F'); // glow halo
+  doc.setFillColor(139,92,246);doc.circle(_pfCx,_pfCy,_pfR,'F');       // core
+  doc.setFillColor(220,210,255);doc.circle(_pfCx-_pfR*.3,_pfCy-_pfR*.3,_pfR*.4,'F'); // specular
+  // 2. ALINEA
+  doc.setFontSize(9);doc.setFont('helvetica','bold');
+  doc.setTextColor(_ac2[0],_ac2[1],_ac2[2]);
+  doc.text('ALINEA',W/2,_pfY-_pfH+13.5,{align:'center',charSpace:2});
+  // 3. @alinea.io
+  doc.setFontSize(7);doc.setFont('helvetica','normal');
+  doc.setTextColor(_ac[0],_ac[1],_ac[2]);
+  doc.text('@alinea.io',W/2,_pfY-_pfH+19,{align:'center',charSpace:.5});
+  // 4. #MakingVisibleTheInvisible
+  doc.setFontSize(6);
+  doc.setTextColor(80,75,110);
+  doc.text('#MakingVisibleTheInvisible',W/2,_pfY-_pfH+24.5,{align:'center',charSpace:.2});
+
+  doc.save('alinea-biblioteca-'+new Date().toISOString().slice(0,10)+'.pdf');
 }
 function importJSON(event){
   const file=event.target.files[0];if(!file)return;
