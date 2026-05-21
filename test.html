@@ -334,13 +334,13 @@ body::before{content:'';position:fixed;inset:0;background:
 .bit-hero h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.28rem}
 .bit-hero h2 em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .bit-hero p{font-size:.72rem;color:var(--muted);line-height:1.6}
-.bit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.8rem}
-.bit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .18s,box-shadow .18s}
+.bit-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.8rem}
+.bit-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:border-color .18s,box-shadow .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .bit-card:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 4px 20px var(--glow)}
-.bit-card-title{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
-.bit-stat{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.25rem}
-.bit-stat-label{font-size:.68rem;color:var(--muted)}
-.bit-bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.38rem}
+.bit-card-title{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.bit-stat{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:.25rem;text-align:center}
+.bit-stat-label{font-size:.68rem;color:var(--muted);text-align:center}
+.bit-bar-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem}
 .bit-bar-label{font-size:.65rem;color:var(--muted);width:90px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;word-break:break-word}
 .bit-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
 .bit-bar-fill{height:100%;background:linear-gradient(to right,var(--accent3),var(--accent2));border-radius:3px;transition:width .6s ease}
@@ -685,7 +685,7 @@ canvas{-webkit-user-select:none;user-select:none}
     padding:1.2rem 1rem;
     max-width:100%;
   }
-  .bit-grid{grid-template-columns:1fr 1fr}
+  .bit-grid{grid-template-columns:repeat(3,1fr)}
   .modal{width:94vw;padding:1rem;max-height:82vh;overflow-y:auto;overflow-x:hidden}
 
   /* SISTEMA — fix right-drift */
@@ -852,7 +852,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <div class="view" id="viewBitacora">
       <div>
         <div class="bit-hero"><h2 id="bitHeroTitle"></h2><p data-i18n="logSubtitle">Reportes de tu galaxia — qué áreas crecen más, conexiones encontradas, síntesis de conocimiento.</p></div>
-        <div id="bitStats" class="bit-grid"></div>
+        <div id="bitStats"></div>
         <!-- READING PACE & INSIGHTS -->
         <div id="bitInsights" style="margin-bottom:1.2rem"></div>
         <div class="bit-summary" id="bitSummary" style="display:none"></div>
@@ -1081,9 +1081,10 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
 
 <!-- SETTINGS -->
-<div class="modal" id="mSettings" style="width:520px;max-width:95vw;min-height:320px">
+<div class="modal" id="mSettings" style="width:520px;max-width:95vw;display:flex;flex-direction:column;padding:0;overflow:hidden">
   <button onclick="closeModal('mSettings')" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
-  <h2 data-i18n="settingsTitle" class="hero-title-settings">Configuración</h2>
+    <div style="overflow-y:auto;flex:1;padding:1.62rem 1.62rem .5rem;-webkit-overflow-scrolling:touch">
+<h2 data-i18n="settingsTitle" class="hero-title-settings">Configuración</h2>
   <!-- TABS -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
     <button id="stab1" onclick="switchSettingsTab(1)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Apariencia</button>
@@ -1273,7 +1274,6 @@ canvas{-webkit-user-select:none;user-select:none}
         </div>
       </div>
     </div>
-    </div>
   </div>
 
   <!-- TAB 4: HELP & LEGAL -->
@@ -1302,8 +1302,8 @@ canvas{-webkit-user-select:none;user-select:none}
 
     <p style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);letter-spacing:.04em">© 2026 ALINEA · Miguel Valdez · All rights reserved</p>
   </div>
-
-  <div class="macts"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
+  </div>
+  <div class="macts" style="padding:.8rem 1.62rem;border-top:1px solid var(--border);flex-shrink:0;margin:0"><button class="btn-ghost" onclick="closeModal('mSettings')" data-i18n="close">Cerrar</button><button class="btn-ok" onclick="saveSettings()" data-i18n="save">Guardar</button></div>
 </div>
 
 
@@ -1499,7 +1499,7 @@ es:{name:'Español',t:{
   statusRead:'Leído (ya lo tengo y lo leí)',statusOwned:'Lo tengo, no lo he leído',statusWishlist:'Wishlist (aún no lo tengo)',
   wishlistTitle:'Próximas Misiones',wishlistSub:'Libros que viajan hacia tu galaxia.',
   quickAddWishlist:'Agregar a wishlist rápido',quickAddBtn:'Agregar',wishTitlePlaceholder:'Título del libro…',wishAuthorPlaceholder:'Autor…',
-  iAlreadyHave:'Ya lo tengo',markRead:'Ya lo leí',
+  iAlreadyHave:'Ya lo conseguí',markRead:'Ya lo leí',
   settingsTitle:'Configuración',settingsSub:'Conecta tu IA para análisis automático y Visión IA.',
   langTitle:'Idioma',langDesc:'Cambia el idioma de toda la interfaz de ALINEA.',
   aiTitle:'Sobre la IA',aiDesc:'Al agregar notas extrae keywords y mood. En Explorar y Bitácora genera síntesis. Visión IA lee páginas con la cámara. Tu key solo vive en tu navegador.',
@@ -1608,7 +1608,7 @@ en:{name:'English',t:{
   statusRead:'Read (I own and read it)',statusOwned:'I own it, not read yet',statusWishlist:'Wishlist (I don\'t have it yet)',
   wishlistTitle:'Upcoming Missions',wishlistSub:'Books traveling toward your galaxy.',
   quickAddWishlist:'Quick add to wishlist',quickAddBtn:'Add',wishTitlePlaceholder:'Book title…',wishAuthorPlaceholder:'Author…',
-  iAlreadyHave:'I have it',markRead:'Already read',
+  iAlreadyHave:'Got it!',markRead:'Already read',
   settingsTitle:'Settings',settingsSub:'Connect your AI for automatic analysis and Vision AI.',
   langTitle:'Language',langDesc:'Change the language of the entire ALINEA interface.',
   aiTitle:'About AI',aiDesc:'When adding notes it extracts keywords and mood. In Explore and Log it generates synthesis. Vision AI reads pages with the camera. Your key lives only in your browser.',
@@ -2062,7 +2062,111 @@ Object.entries(CAT_TAXONOMY).forEach(([parent,data])=>{
 
 function cc(cat){return CAT_COLORS[cat]||CAT_COLORS[''];}
 
-// ── Category color overrides ──────────────────────────────
+// ── Book share filter ──────────────────────────────────────
+function _openBookShareFilter(bookId){
+  const b=lib.find(x=>x.id===bookId);if(!b)return;
+  const isEN=currentLang==='en';
+  const avg=b.rating?'★'.repeat(b.rating)+'☆'.repeat(5-b.rating):'';
+  // Build selectable fields
+  const fields=[
+    {id:'f_cover',label:isEN?'Cover':'Portada',checked:true,required:false},
+    {id:'f_title',label:isEN?'Title':'Título',checked:true,required:true},
+    {id:'f_author',label:isEN?'Author':'Autor',checked:true,required:true},
+    {id:'f_cat',label:isEN?'Category':'Categoría',checked:!!b.category,required:false},
+    {id:'f_status',label:isEN?'Status':'Estado',checked:!!b.readingStatus,required:false},
+    {id:'f_rating',label:isEN?'Rating':'Rating',checked:!!b.rating,required:false},
+    {id:'f_kw',label:'Keywords',checked:!!(b.keywords&&b.keywords.length),required:false},
+  ];
+  // Store context
+  window._bookShareCtx={bookId,fields};
+  // Show or create modal
+  let modal=document.getElementById('mBookShare');
+  if(!modal){
+    modal=document.createElement('div');modal.id='mBookShare';
+    modal.style.cssText='position:fixed;inset:0;z-index:900;display:flex;align-items:flex-end;justify-content:center';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML=`
+    <div onclick="_closeBookShare()" style="position:absolute;inset:0;background:rgba(4,3,12,.85);backdrop-filter:blur(12px)"></div>
+    <div style="position:relative;z-index:1;background:var(--surface);border:1.5px solid var(--accent);border-radius:18px 18px 0 0;width:100%;max-width:480px;max-height:72vh;display:flex;flex-direction:column;box-shadow:0 -12px 60px rgba(0,0,0,.8),0 0 40px var(--glow)">
+      <div style="padding:1rem 1.2rem .75rem;border-bottom:1px solid var(--border);flex-shrink:0">
+        <div style="width:36px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto .75rem"></div>
+        <div style="font-family:'Lato',sans-serif;font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:.12rem">${b.title}</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);margin-bottom:.6rem">${b.author||''}</div>
+        <button onclick="_generateBookShare()" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.62rem;border-radius:8px;cursor:pointer;box-shadow:0 3px 14px var(--glow)">✦ ${isEN?'Generate & Share':'Generar y Compartir'}</button>
+      </div>
+      <div style="overflow-y:auto;flex:1;padding:.6rem 1.2rem;display:flex;flex-direction:column;gap:.3rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.3rem">${isEN?'Show in image:':'Mostrar en imagen:'}</div>
+        ${fields.map(f=>`
+          <label style="display:flex;align-items:center;gap:.65rem;padding:.42rem .5rem;border-radius:8px;cursor:${f.required?'default':'pointer'};opacity:${f.required?'.7':'1'}">
+            <input type="checkbox" class="bsf-chk" data-field="${f.id}" ${f.checked?'checked':''} ${f.required?'disabled':''} style="width:16px;height:16px;accent-color:var(--accent);cursor:${f.required?'default':'pointer'}">
+            <span style="font-size:.7rem;color:var(--text)">${f.label}${f.required?` <span style="font-family:'DM Mono',monospace;font-size:.44rem;color:var(--dim)">${isEN?'(always)':'(siempre)'}</span>`:''}</span>
+          </label>`).join('')}
+      </div>
+    </div>`;
+  modal.style.display='flex';
+}
+function _closeBookShare(){const m=document.getElementById('mBookShare');if(m)m.style.display='none';}
+async function _generateBookShare(){
+  const ctx=window._bookShareCtx;if(!ctx)return;
+  const b=lib.find(x=>x.id===ctx.bookId);if(!b)return;
+  const checks={};
+  document.querySelectorAll('.bsf-chk').forEach(c=>{checks[c.dataset.field]=c.checked||c.disabled;});
+  _closeBookShare();
+  setTimeout(()=>_renderBookCanvas(b,checks),80);
+}
+function _renderBookCanvas(b,checks){
+  const W=1080,H=1920;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
+  const ac=theme.accent,ac2=theme.accent2;
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  // Background
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  for(let i=0;i<300;i++){ctx.beginPath();ctx.arc(rng(i*7.3)*W,rng(i*3.7)*H,rng(i*11)*1.2+.1,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.55+.08})`;ctx.fill();}
+  // Orb
+  const orbX=W/2,orbY=140,orbR=52;
+  const og=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
+  og.addColorStop(0,'#fff');og.addColorStop(.3,ac2);og.addColorStop(.7,ac);og.addColorStop(1,ac);
+  ctx.shadowBlur=50;ctx.shadowColor=ac;ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  // ALINEA
+  ctx.fillStyle=ac2;ctx.font='700 60px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='12px';
+  ctx.fillText('ALINEA',W/2,orbY+orbR+58);
+  ctx.strokeStyle=theme.glow.replace(/[\d.]+\)$/,'0.4)');ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(W*.18,orbY+orbR+82);ctx.lineTo(W*.82,orbY+orbR+82);ctx.stroke();
+  let y=orbY+orbR+160;
+  // Cover
+  if(checks.f_cover&&b.cover){
+    const img=new Image();img.crossOrigin='anonymous';
+    img.onload=()=>{
+      const cw=520,ch=Math.round(cw*1.45),cx=(W-cw)/2;
+      ctx.save();
+      const r=20;ctx.beginPath();ctx.moveTo(cx+r,y);ctx.lineTo(cx+cw-r,y);ctx.arcTo(cx+cw,y,cx+cw,y+r,r);ctx.lineTo(cx+cw,y+ch-r);ctx.arcTo(cx+cw,y+ch,cx+cw-r,y+ch,r);ctx.lineTo(cx+r,y+ch);ctx.arcTo(cx,y+ch,cx,y+ch-r,r);ctx.lineTo(cx,y+r);ctx.arcTo(cx,y,cx+r,y,r);ctx.closePath();ctx.clip();
+      ctx.drawImage(img,cx,y,cw,ch);ctx.restore();
+      y+=ch+48;_renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2);
+    };
+    img.onerror=()=>_renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2);
+    img.src=b.cover;
+  }else{_renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2);}
+}
+function _renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2){
+  ctx.textAlign='center';ctx.letterSpacing='0';
+  if(checks.f_title){ctx.fillStyle='#f0eeff';ctx.font='700 62px "Lato",sans-serif';const words=b.title.split(' ');let line='',lY=y;words.forEach(w=>{const t2=line?line+' '+w:w;if(ctx.measureText(t2).width>W-120&&line){ctx.fillText(line,W/2,lY);lY+=78;line=w;}else line=t2;});ctx.fillText(line,W/2,lY);y=lY+68;}
+  if(checks.f_author&&b.author){ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='300 36px "Lato",sans-serif';ctx.fillText(b.author,W/2,y);y+=58;}
+  if(checks.f_cat&&b.category){ctx.fillStyle=ac2;ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText((translateCat(b.category)||b.category).toUpperCase(),W/2,y);y+=50;ctx.letterSpacing='0';}
+  if(checks.f_status&&b.readingStatus){const statMap={done:'Terminado',reading:'Leyendo',owned:'Lo tengo'};ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='400 26px "DM Mono",monospace';ctx.fillText((statMap[b.readingStatus]||b.readingStatus).toUpperCase(),W/2,y);y+=48;}
+  if(checks.f_rating&&b.rating){ctx.fillStyle='#fbbf24';ctx.font='400 42px serif';ctx.fillText('★'.repeat(b.rating)+'☆'.repeat(5-b.rating),W/2,y);y+=62;}
+  if(checks.f_kw&&b.keywords&&b.keywords.length){ctx.fillStyle=ac2;ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='2px';const kwLine=b.keywords.slice(0,6).join('  ·  ');ctx.fillText(kwLine,W/2,y);}
+  // Footer
+  ctx.fillStyle='rgba(4,3,12,.7)';ctx.fillRect(0,H-120,W,120);
+  ctx.fillStyle=ac2+'ee';ctx.font='600 32px "DM Mono",monospace';ctx.letterSpacing='10px';ctx.fillText('ALINEA',W/2,H-62);
+  ctx.fillStyle=ac+'99';ctx.font='400 20px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText('@alinea.io',W/2,H-32);
+  _exportBitStat(cv);
+}
+
+
 let catColorOverrides=JSON.parse(localStorage.getItem('eter2_catColors')||'{}');
 
 function persistCatColors(){localStorage.setItem('eter2_catColors',JSON.stringify(catColorOverrides));}
@@ -2965,7 +3069,7 @@ function openWishlist(){
           <div style="font-size:.66rem;color:var(--muted)">${b.author}</div>
           ${b.category?`<span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.2);padding:.06rem .24rem;border-radius:3px">${translateCat(b.category)}</span>`:''}
         </div>
-        <button onclick="event.stopPropagation();markOwned(${b.id})" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .5rem;border-radius:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">📦 Tengo</button>
+        <button onclick="event.stopPropagation();markOwned(${b.id})" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .5rem;border-radius:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">✅ Ya lo conseguí</button>
       </div>`).join('');
   }
   // Populate category select
@@ -3228,7 +3332,7 @@ async function addNote(bookId){
   if(bmTagsEl)bmTagsEl.innerHTML=(b.keywords||[]).slice(0,6).map(k=>`<span class="pill">${k}</span>`).join('');
   renderLib();buildMagWords();
 }
-function delNote(bookId,idx){const b=lib.find(x=>x.id===bookId);if(!b)return;b.notes.splice(idx,1);persist();renderNotes(b);renderLib();}
+function delNote(bookId,idx){const b=lib.find(x=>x.id===bookId);if(!b)return;const isEN=currentLang==="en";if(!confirm(isEN?"Delete this note? This can't be undone.":"¿Borrar esta nota? Esta acción no se puede deshacer."))return;b.notes.splice(idx,1);persist();renderNotes(b);renderLib();}
 
 function editNote(bookId,idx){
   const b=lib.find(x=>x.id===bookId);if(!b)return;
@@ -3282,23 +3386,36 @@ function saveNoteEdit(bookId,idx,btn){
   persist();renderNotes(b);renderLib();
 }
 
+function toggleNotesSort(bookId){
+  const b=lib.find(x=>x.id===bookId);if(!b)return;
+  b._noteSort=b._noteSort==='asc'?'desc':'asc';
+  renderNotes(b);
+}
+
 function renderNotes(b, query='', newIdx=-1, page=0){
   const list=document.getElementById('notesList');if(!list)return;
   const q=(query||'').toLowerCase().trim();
-  const notes=b.notes||[];
+  const rawNotes=b.notes||[];
+  // Default sort: newest first (reverse index = last added first)
+  const sortDir=b._noteSort||'desc';
+  const sorted=sortDir==='asc'?rawNotes.map((n,i)=>({n,i})):[...rawNotes.map((n,i)=>({n,i}))].reverse();
   const PAGE_SIZE=10;
   // Filter by query if present
   const visible=q
-    ? notes.map((n,i)=>({n,i})).filter(({n})=>
+    ? sorted.filter(({n})=>
         n.text.toLowerCase().includes(q)||
         (n.page&&String(n.page).toLowerCase().includes(q))||
         (n.comment&&n.comment.toLowerCase().includes(q))||
         (n.keywords||[]).some(k=>k.toLowerCase().includes(q)))
-    : notes.map((n,i)=>({n,i}));
+    : sorted;
+
+  // Update sort button
+  const sortBtn=document.getElementById('notesSortBtn'+b.id);
+  if(sortBtn)sortBtn.textContent=(sortDir==='asc'?'↑ Antiguo':'↓ Reciente');
 
   // Update count badge
   const countEl=document.getElementById('notesCount');
-  if(countEl) countEl.textContent=q?`${visible.length}/${notes.length}`:`${notes.length} nota${notes.length!==1?'s':''}`;
+  if(countEl) countEl.textContent=q?`${visible.length}/${rawNotes.length}`:`${rawNotes.length} nota${rawNotes.length!==1?'s':''}`;
 
   // Paginate: if appending (page>0), keep existing items
   if(page===0) list.innerHTML='';
@@ -3901,6 +4018,7 @@ function renderBitacora(){
   const topCat=cats.map(c=>({c,n:realBooks.filter(b=>b.category===c).length})).sort((a,b)=>b.n-a.n)[0];
 
   document.getElementById('bitStats').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem">
     <div class="bit-card" style="cursor:pointer" onclick="openBitModal('volumen')">
       <div class="bit-card-title">📚 ${t('volumen')||'Volumen'}</div>
       <div class="bit-stat">${realBooks.length}</div>
@@ -3912,21 +4030,26 @@ function renderBitacora(){
       <div class="bit-stat">${totalNotes}</div>
       <div class="bit-stat-label">${(t('notesAndKeywords')||'{kw} notas · {kw2} keywords').replace('{kw}',totalNotes).replace('{kw2}',totalKw).replace('{kw}',totalKw)}</div>
     </div>
-    <div class="bit-card" style="cursor:pointer" onclick="openBitModal('densest')">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem">
+    <div class="bit-card" style="cursor:pointer;grid-column:1/-1" onclick="openBitModal('densest')">
       <div class="bit-card-title">🌟 ${t('densestSystem')||'Sistema más denso'}</div>
       ${topCat?`<div class="bit-stat" style="font-size:1.4rem;font-family:'Playfair Display',serif">${topCat.c}</div><div class="bit-stat-label">${topCat.n} ${t('booksCount')||'libros'}</div>`:`<div style="color:var(--dim);font-size:.74rem">${t('addBooksWithCats')}</div>`}
     </div>
-    <div class="bit-card" style="cursor:pointer" onclick="openBitModal('top5')">
+    <div class="bit-card" style="cursor:pointer;grid-column:1/-1" onclick="openBitModal('top5')">
       <div class="bit-card-title" id="bitTopFiveTitle">📊 Tu Top 5</div>
       <div style="margin-top:.3rem">
         ${[...cats].sort((a,b)=>realBooks.filter(x=>x.category===b).length-realBooks.filter(x=>x.category===a).length).slice(0,5).map(c=>{
           const n=realBooks.filter(b=>b.category===c).length;
           const max=topCat?.n||1;
-          return`<div class="bit-bar-row"><div class="bit-bar-label">${translateCat(c)}</div><div class="bit-bar-wrap"><div class="bit-bar-fill" style="width:${Math.round(n/max*100)}%"></div></div><div class="bit-bar-n">${n}</div></div>`;
+          return`<div class="bit-bar-row"><div class="bit-bar-label">${translateCat(c)}</div><div class="bit-bar-wrap"><div class="bit-bar-fill" style="width:${Math.round(n/max*100)}%;background:linear-gradient(to right,var(--accent3),var(--accent2))"></div></div><div class="bit-bar-n">${n}</div></div>`;
         }).join('')||`<div style="color:var(--dim);font-size:.7rem">${t('noCatsYet')}</div>`}
       </div>
-    </div>`;
+    </div>
+    </div>
+    `;
 
+  // 6-stat cards rendered in insightEl below
   // Connections
   const conns=[];
   for(let i=0;i<realBooks.length;i++)for(let j=i+1;j<realBooks.length;j++){
@@ -3970,7 +4093,7 @@ function renderBitacora(){
     const kwFreq=allKW.map(kw=>({kw,n:realBooks.filter(b=>(b.keywords||[]).includes(kw)).length})).sort((a,b)=>b.n-a.n).slice(0,12);
     const mostAnnotated=withNotes.sort((a,b)=>(b.notes||[]).length-(a.notes||[]).length).slice(0,4);
     insightEl.innerHTML=`
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;margin-bottom:1rem">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem">
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('done')"><div style="font-size:1.55rem;font-weight:700;color:var(--accent2);font-family:'Playfair Display',serif">${readDone.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('terminados')||'Terminados'}</div></div>
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('reading')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">${reading.length}</div><div class="bit-card-title" style="margin-top:.2rem">${t('leyendo')||'Leyendo'}</div></div>
       <div class="bit-card" style="text-align:center;cursor:pointer" onclick="openBitModal('wishlist')"><div style="font-size:1.55rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif">🚀 ${wishCount}</div><div class="bit-card-title" style="margin-top:.2rem">${t('wishlistStat')||'Wishlist'}</div></div>
@@ -4059,7 +4182,7 @@ function _openShareFilter(titleText, bodyLines, books) {
     modal.style.cssText = 'position:fixed;inset:0;z-index:900;display:flex;align-items:flex-end;justify-content:center;padding:0';
     modal.innerHTML = `
       <div onclick="_closeShareFilter()" style="position:absolute;inset:0;background:rgba(4,3,12,.85);backdrop-filter:blur(12px)"></div>
-      <div id="mShareFilterCard" style="position:relative;z-index:1;background:var(--surface);border:1.5px solid var(--accent);border-radius:18px 18px 0 0;width:100%;max-width:480px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 -12px 60px rgba(0,0,0,.8),0 0 40px var(--glow)">
+      <div id="mShareFilterCard" style="position:relative;z-index:1;background:var(--surface);border:1.5px solid var(--accent);border-radius:18px 18px 0 0;width:100%;max-width:480px;max-height:72vh;display:flex;flex-direction:column;box-shadow:0 -12px 60px rgba(0,0,0,.8),0 0 40px var(--glow)">
         <div style="padding:1rem 1.2rem .75rem;border-bottom:1px solid var(--border);flex-shrink:0">
           <div style="width:36px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto .75rem"></div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.6rem">
@@ -4231,28 +4354,50 @@ function _renderBitCanvas(titleText, bodyLines, books) {
       ctx.font = '700 68px "Lato",sans-serif';
       ctx.fillText(bodyLines[0], W/2, contentTop);
       contentTop += 90;
-    } else {
-      // First line: category/title in medium Playfair
+    } else if (bodyLines.length <= 3) {
+      // First line bigger (stat/title), rest smaller
       ctx.fillStyle = ac2;
-      ctx.font = '700 52px "Playfair Display",serif';
+      ctx.font = '700 56px "Playfair Display",serif';
       ctx.fillText(bodyLines[0], W/2, contentTop);
-      contentTop += 68;
-      // Second line: stat in smaller Lato
+      contentTop += 74;
       ctx.fillStyle = 'rgba(255,255,255,.75)';
-      ctx.font = '400 34px "Lato",sans-serif';
-      ctx.fillText(bodyLines[1], W/2, contentTop);
-      contentTop += 56;
+      ctx.font = '400 32px "Lato",sans-serif';
+      for (let i = 1; i < bodyLines.length; i++) {
+        ctx.fillText(bodyLines[i], W/2, contentTop);
+        contentTop += 48;
+      }
+    } else {
+      // Many lines — keywords mode: compact pill-like text layout
+      ctx.fillStyle = ac2;
+      ctx.font = '700 40px "DM Mono",monospace';
+      ctx.letterSpacing = '6px';
+      ctx.fillText(bodyLines[0], W/2, contentTop);
+      contentTop += 60;
+      ctx.letterSpacing = '0';
+      ctx.font = '400 28px "DM Mono",monospace';
+      ctx.fillStyle = 'rgba(255,255,255,.72)';
+      const cols = 3;
+      const colW = (W - 120) / cols;
+      bodyLines.slice(1).forEach((kw, i) => {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        const x = 60 + col * colW + colW/2;
+        const y = contentTop + row * 52;
+        ctx.fillText(kw, x, y);
+      });
+      contentTop += Math.ceil((bodyLines.length - 1) / cols) * 52 + 40;
     }
     contentTop += 28;
   }
 
-  // ── Smart geometric cover layout ──
+  // ── Smart covers grid or text-only if no books ──
   const n = books.length;
   const coverZoneTop = contentTop + 20;
   const coverZoneH = H - coverZoneTop - 200;
   const coverZoneW = W - 100;
 
   if (n === 0) {
+    // Text-only visual — bodyLines already rendered above, just finalize
     _finalizeBitCanvas(ctx, cv, W, H, ac, ac2);
     return;
   }
@@ -4620,7 +4765,7 @@ function openBitModal(type){
             <div style="background:var(--border);border-radius:3px;height:4px"><div style="background:linear-gradient(90deg,var(--accent3),var(--accent));height:100%;border-radius:3px;width:${Math.round(books.length/maxN*100)}%;transition:width .4s ease"></div></div>
           </div>`;}).join('')}
       </div>
-      ${shareBtn(titleText,sorted.map(({c,books})=>`${translateCat(c)}  ${books.length}`),sorted.flatMap(s=>s.books))}`
+      ${shareBtn(titleText,sorted.map(({c,books})=>`${translateCat(c)}  ${books.length}`),[])}`
     :`<div style="color:var(--dim);font-size:.7rem">${isEN?'No categories yet.':'Sin categorías aún.'}</div>`;
   } else if(type==='done'){
     titleText='✅ '+(t('terminados')||'Terminados');
@@ -4678,7 +4823,7 @@ function openBitModal(type){
       </div>`).join('')}
     </div>`:''}`;
     const avg=rated.length?(rated.reduce((a,b)=>a+b.rating,0)/rated.length).toFixed(1):null;
-    if(avg)html+=shareBtn(titleText,[`${avg}★`,isEN?'avg rating':'rating promedio'],rated);
+    if(avg)html+=shareBtn(titleText,[`${avg}★`,'rating promedio',...rated.slice(0,5).map(b=>b.title)],[]);
   }
 
   title.textContent=titleText;
@@ -4737,21 +4882,22 @@ function renderCatFilterPanel(){
   const usedCats=[...new Set(realBooks.map(b=>{const p=CAT_PARENT[b.category||'']||b.category||'';return p;}).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
   if(!usedCats.length){list.innerHTML=`<div style="font-size:.64rem;color:var(--dim);font-style:italic">${t('noCatsYet')}</div>`;return;}
   // 3x3 grid of category pills
-  list.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:.32rem;margin-bottom:.45rem';
+  list.style.cssText='display:flex;flex-direction:column;gap:.28rem;margin-bottom:.45rem';
   list.innerHTML=usedCats.map(cat=>{
     const col=cc(cat);
     const n=realBooks.filter(b=>(CAT_PARENT[b.category||'']||b.category||'')===cat).length;
     const hidden=hiddenCats.includes(cat);
     const safecat=cat.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return`<button onclick="event.stopPropagation();toggleHiddenCat('${safecat}')" style="
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;
-      background:${hidden?'transparent':'rgba('+col.sun.replace(/^#/,'').match(/.{2}/g).map(h=>parseInt(h,16)).join(',')+',.12)'};
+      display:flex;align-items:center;gap:.55rem;
+      background:${hidden?'transparent':'rgba('+col.sun.replace(/^#/,'').match(/.{2}/g).map(h=>parseInt(h,16)).join(',')+',.1)'};
       border:1px solid ${hidden?'var(--border)':col.sun+'55'};
-      border-radius:7px;padding:.32rem .2rem;cursor:pointer;transition:all .12s;
+      border-radius:8px;padding:.45rem .65rem;cursor:pointer;transition:all .12s;width:100%;text-align:left;
       ${hidden?'opacity:.45':''}
     " title="${cat} (${n})">
-      <span style="width:7px;height:7px;border-radius:50%;background:${col.sun};box-shadow:0 0 5px ${col.sun}88;flex-shrink:0"></span>
-      <span style="font-family:'DM Mono',monospace;font-size:.44rem;color:${hidden?'var(--dim)':'var(--text)'};text-align:center;line-height:1.2;word-break:break-word;max-width:100%">${translateCat(cat).split(' ').slice(0,2).join(' ')}</span>
+      <span style="width:8px;height:8px;border-radius:50%;background:${col.sun};box-shadow:0 0 5px ${col.sun}88;flex-shrink:0"></span>
+      <span style="font-family:'DM Mono',monospace;font-size:.52rem;color:${hidden?'var(--dim)':'var(--text)'};flex:1">${translateCat(cat)}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim)">${n}</span>
     </button>`;
   }).join('');
 }
@@ -5311,17 +5457,18 @@ function openBook(id){
   document.getElementById('bmBody').innerHTML=`
     <div>
       <div class="sec">${t('secNotas')||'Notas & Subrayados'}</div>
+      <button onclick="_openBookShareFilter(${b.id})" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--glow);border:1px solid var(--accent);border-radius:9px;padding:.52rem;cursor:pointer;font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);transition:all .15s;margin-bottom:.55rem">✦ Compartir libro como Story</button>
       <div class="note-box">
         <textarea id="noteText" placeholder="${t('notePlaceholder')||'Escribe un subrayado, idea o reflexión…'}" rows="3"></textarea>
         <div class="nrow">
           <input type="text" id="notePg" class="nri pg" placeholder="${t('pagePlaceholder')||'Pág.'}">
           <input type="text" id="noteCmt" class="nri cmt" placeholder="${t('commentPlaceholder')||'Comentario (opcional)'}">
           <button class="btn-note btn-note-primary" onclick="addNote(${b.id})" data-i18n="addNote">${t("addNote")||"＋ Nota"}</button>
-          <button class="btn-note" onclick="showCamPremiumNotice()" data-i18n="camera">${t("camera")||"Cámara"}</button>
           <button class="btn-note" id="micBtn${b.id}" onclick="toggleDictation(${b.id})" data-i18n="dictate">${t("dictate")||"Dictar"}</button>
+          <button class="btn-note" onclick="showCamPremiumNotice()" data-i18n="camera">${t("camera")||"Cámara"}</button>
         </div>
       </div>
-      <div class="notes-search" id="notesSearchBox" style="margin-top:.65rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.55rem;margin-bottom:.25rem"><span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim)" id="notesSortLabel"></span><button onclick="toggleNotesSort(${b.id})" id="notesSortBtn${b.id}" style="background:var(--glow);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .5rem;border-radius:5px;cursor:pointer">↓ Reciente</button></div><div class="notes-search" id="notesSearchBox" style="margin-top:.3rem">
         <span class="notes-search-icon">⌕</span>
         <input type="text" id="notesSearchIn" placeholder="${t('searchNotes')||'Buscar por palabra, página…'}" oninput="filterNotes(${b.id},this.value)">
         <span class="notes-count" id="notesCount"></span>
