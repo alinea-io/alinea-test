@@ -311,14 +311,14 @@ body::before{content:'';position:fixed;inset:0;background:
 .ai-box{background:linear-gradient(135deg,rgba(139,92,246,.11),rgba(196,181,253,.05));border:1px solid rgba(139,92,246,.28);border-radius:10px;padding:.95rem 1.1rem;margin-bottom:1.2rem;position:relative;overflow:hidden;display:none}
 .ai-box::before{content:'✦';position:absolute;top:.7rem;right:.95rem;font-size:1rem;opacity:.18;color:var(--accent2)}
 .ai-lbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:.42rem}
-.ai-txt{font-family:'Playfair Display',serif;font-size:.82rem;font-style:italic;line-height:1.72;color:var(--text)}
+.ai-txt{font-family:'Lato',sans-serif;font-size:.82rem;font-style:italic;line-height:1.72;color:var(--text)}
 .ai-ld{display:flex;align-items:center;gap:.38rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--accent2);animation:pulse .85s infinite}
 @keyframes pulse{0%,100%{opacity:.2}50%{opacity:1}}
 .exp-res{display:flex;flex-direction:column;gap:.52rem}
 .ec{background:rgba(12,10,24,.93);border:1px solid var(--border);border-radius:8px;padding:.88rem 1rem;transition:border-color .18s,box-shadow .18s;cursor:pointer;animation:fadeUp .2s ease}
 .ec:hover{border-color:var(--accent);box-shadow:0 3px 16px rgba(139,92,246,.12)}
-.ec-q{font-family:'Playfair Display',serif;font-size:.83rem;font-style:italic;line-height:1.72;color:var(--text);margin-bottom:.42rem}
+.ec-q{font-family:'Lato',sans-serif;font-size:.83rem;font-style:italic;line-height:1.72;color:var(--text);margin-bottom:.42rem}
 .ec-m{display:flex;align-items:center;gap:.42rem;flex-wrap:wrap}
 .ec-bk{font-size:.64rem;color:var(--muted)}
 .ec-bk strong{color:var(--text);font-weight:500}
@@ -330,7 +330,9 @@ body::before{content:'';position:fixed;inset:0;background:
 /* ── GRADIENT HERO TITLES ── */
 .hero-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;line-height:1.25;margin-bottom:.28rem}
 .hero-title em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-title-settings{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.25;margin-bottom:2.5rem;padding-top:36px;padding-right:2.5rem;background:linear-gradient(120deg,#fff 0%,var(--accent2) 60%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-title-settings{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;line-height:1.25;margin-bottom:.28rem;padding-top:0;padding-right:2.5rem}
+.hero-title-settings em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-settings-sub{font-size:.72rem;color:var(--muted);margin-bottom:1.6rem;line-height:1.5}
 .bit-hero{margin-bottom:1.8rem;padding-top:.6rem}
 .bit-hero h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.28rem}
 .bit-hero h2 em{font-style:italic;background:linear-gradient(120deg,var(--accent2) 0%,#fff 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -522,7 +524,7 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .notes-count{font-family:'DM Mono',monospace;font-size:.5rem;color:var(--dim);flex-shrink:0;white-space:nowrap}
 .note-box{background:rgba(26,23,48,.95);border:1.5px solid var(--border2);border-radius:8px;padding:.85rem;transition:border-color .2s;box-shadow:inset 0 0 0 1px rgba(139,92,246,.08)}
 .note-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow),inset 0 0 0 1px rgba(139,92,246,.15)}
-.note-box textarea{width:100%;background:none;border:none;color:var(--text);font-family:'Playfair Display',serif;font-size:.78rem;font-style:italic;line-height:1.7;resize:none;outline:none;min-height:72px}
+.note-box textarea{width:100%;background:none;border:none;color:var(--text);font-family:'Lato',sans-serif;font-size:.78rem;font-style:italic;line-height:1.7;resize:none;outline:none;min-height:72px}
 .note-box textarea::placeholder{color:rgba(196,181,253,.35);font-style:italic}
 .nrow{display:flex;gap:.32rem;margin-top:.42rem;align-items:center;flex-wrap:wrap}
 .nri{background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.26rem .45rem;border-radius:5px;outline:none;transition:border-color .18s}
@@ -580,7 +582,7 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .cam-wrap{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;position:relative;min-height:175px;display:flex;align-items:center;justify-content:center}
 .cam-wrap video{width:100%;display:block}
 .cam-ph{font-size:1.8rem;opacity:.15}
-.vis-res{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:.72rem;min-height:48px;font-family:'Playfair Display',serif;font-size:.75rem;font-style:italic;line-height:1.65;color:var(--text);margin-top:.26rem}
+.vis-res{background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:.72rem;min-height:48px;font-family:'Lato',sans-serif;font-size:.75rem;font-style:italic;line-height:1.65;color:var(--text);margin-top:.26rem}
 
 .star-rating{display:flex;gap:.15rem;align-items:center}
 .star{font-size:.85rem;cursor:pointer;transition:transform .12s,opacity .12s;opacity:.3;line-height:1}
@@ -596,7 +598,7 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 #quotePopup.open{display:flex}
 #quotePopupBg{position:absolute;inset:0;background:rgba(3,2,10,.82);backdrop-filter:blur(6px)}
 #quotePopupCard{position:relative;z-index:1;background:linear-gradient(135deg,#07060f,#0c0a1a);border:1px solid var(--border2);border-radius:16px;padding:1.6rem 1.5rem 1.2rem;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
-.qp-quote{font-family:'Lato',sans-serif;font-size:.95rem;font-weight:400;color:var(--text);line-height:1.82;margin-bottom:.8rem}
+.qp-quote{font-family:'Lato',sans-serif;font-size:.95rem;font-weight:400;font-style:italic;color:var(--text);line-height:1.82;margin-bottom:.8rem}
 .qp-source{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.05em;margin-bottom:1.1rem}
 .qp-actions{display:flex;gap:.5rem;align-items:center}
 .qp-share{flex:1;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.52rem .9rem;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.4rem;box-shadow:0 2px 12px var(--glow);transition:all .15s}
@@ -1158,10 +1160,13 @@ canvas{-webkit-user-select:none;user-select:none}
 <!-- SETTINGS -->
 <div class="modal" id="mSettings" style="width:520px;max-width:95vw;display:flex;flex-direction:column;padding:0;overflow:hidden">
   <button onclick="closeModal('mSettings')" style="position:absolute;top:1rem;right:1rem;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .15s;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
-    <div style="overflow-y:auto;flex:1;padding:1.62rem 1.62rem .5rem;-webkit-overflow-scrolling:touch">
-<h2 data-i18n="settingsTitle" class="hero-title-settings">Configuración</h2>
+    <div style="overflow-y:auto;flex:1;padding:.5rem 1.62rem .5rem;-webkit-overflow-scrolling:touch">
+<div style="padding-top:1.8rem;padding-bottom:.2rem">
+  <h2 class="hero-title-settings"><span style="color:#fff;-webkit-text-fill-color:#fff">Configuración</span> <em data-i18n-em="settingsTitleEm">del sistema</em></h2>
+  <p class="hero-settings-sub" data-i18n="settingsSub">Ajusta, personaliza, guarda y controla tu universo.</p>
+</div>
   <!-- TABS -->
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.6rem">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;margin-bottom:1.4rem;border-bottom:1px solid var(--border);padding-bottom:.75rem">
     <button id="stab1" onclick="switchSettingsTab(1)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Apariencia</button>
     <button id="stab2" onclick="switchSettingsTab(2)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Datos</button>
     <button id="stab3" onclick="switchSettingsTab(3)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >IA</button>
@@ -1187,10 +1192,9 @@ canvas{-webkit-user-select:none;user-select:none}
         <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Naranja"></button>
         <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Amarillo"></button>
         <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px" title="Rojo"></button>
-        <button id="customColorBtn" onclick="document.getElementById('customColorIn').click()" style="width:36px;height:36px;border-radius:50%;background:conic-gradient(#f87171,#fb923c,#fbbf24,#4ade80,#60a5fa,#a78bfa,#f472b6,#f87171);border:2px solid rgba(255,255,255,.25);cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px;position:relative" title="Color personalizado">
-          <span style="position:absolute;inset:0;border-radius:50%;background:rgba(6,5,15,.35);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:rgba(255,255,255,.85);pointer-events:none">✦</span>
-        </button>
-        <input type="color" id="customColorIn" value="#8b5cf6" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none" oninput="applyCustomColor(this.value)" onchange="applyCustomColor(this.value)">
+        <label id="customColorBtn" style="width:36px;height:36px;border-radius:50%;background:conic-gradient(#f87171,#fb923c,#fbbf24,#4ade80,#60a5fa,#a78bfa,#f472b6,#f87171);border:2px solid rgba(255,255,255,.25);cursor:pointer;transition:transform .15s;outline:2px solid transparent;outline-offset:3px;position:relative;display:inline-block;flex-shrink:0" title="Color personalizado">
+          <input type="color" id="customColorIn" value="#8b5cf6" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:none;padding:0;border-radius:50%" oninput="applyCustomColor(this.value)" onchange="applyCustomColor(this.value)">
+        </label>
       </div>
     </div>
 
@@ -1461,6 +1465,7 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
 
     <!-- STEP 6: LAUNCH -->
+    <!-- STEP 6: LAUNCH -->
     
 <div id="onbStep3" class="onb-step" style="display:none">
       <div style="text-align:center;margin-bottom:1.2rem">
@@ -1493,10 +1498,7 @@ canvas{-webkit-user-select:none;user-select:none}
           <button class="accent-swatch" data-theme="orange" onclick="setAccentTheme('orange',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#c2410c,#f97316);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
           <button class="accent-swatch" data-theme="yellow" onclick="setAccentTheme('yellow',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#b45309,#fbbf24);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
           <button class="accent-swatch" data-theme="red" onclick="setAccentTheme('red',this)" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#991b1b,#ef4444);border:none;cursor:pointer;outline:2px solid transparent;outline-offset:2px"></button>
-          <button onclick="document.getElementById('customColorIn2').click()" style="width:34px;height:34px;border-radius:50%;background:conic-gradient(#f87171,#fb923c,#fbbf24,#4ade80,#60a5fa,#a78bfa,#f472b6,#f87171);border:2px solid rgba(255,255,255,.2);cursor:pointer;outline:2px solid transparent;outline-offset:2px;position:relative" title="Color personalizado">
-            <span style="position:absolute;inset:0;border-radius:50%;background:rgba(6,5,15,.35);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:rgba(255,255,255,.85);pointer-events:none">✦</span>
-          </button>
-          <input type="color" id="customColorIn2" value="#8b5cf6" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none" oninput="applyCustomColor(this.value)" onchange="applyCustomColor(this.value)">
+
         </div>
       </div>
     </div>
@@ -1535,54 +1537,6 @@ canvas{-webkit-user-select:none;user-select:none}
         <p id="onbLaunchSub" style="font-size:.66rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.7"></p>
 
         <!-- Install guide card -->
-        <div id="onbInstallCard" style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.25);border-radius:12px;padding:.9rem 1rem;margin-bottom:1rem;text-align:left">
-          <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:.65rem">✦ Instalar como App</div>
-          <!-- Manual platform selector -->
-          <div style="display:flex;gap:.3rem;margin-bottom:.65rem">
-            <button onclick="switchInstallPlatform('ios','onb')" id="onbPlatIOS" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .3rem;border-radius:6px;cursor:pointer;transition:all .15s">iOS</button>
-            <button onclick="switchInstallPlatform('android','onb')" id="onbPlatAndroid" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .3rem;border-radius:6px;cursor:pointer;transition:all .15s">Android</button>
-            <button onclick="switchInstallPlatform('desktop','onb')" id="onbPlatDesktop" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.28rem .3rem;border-radius:6px;cursor:pointer;transition:all .15s">Otra</button>
-          </div>
-          <!-- iOS instructions -->
-          <div id="onbInstallIOS" style="display:none">
-            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.45rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">1</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Abre ALINEA en <strong>Safari</strong> (no funciona en Chrome en iOS)</div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.45rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">2</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Toca el botón de compartir <span style="display:inline-block;padding:.1rem .35rem;background:rgba(139,92,246,.15);border-radius:4px;font-size:.7rem">⎙</span> en la barra inferior</div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:.6rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">3</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Selecciona <strong>"Agregar a pantalla de inicio"</strong> → <strong>Agregar</strong></div>
-            </div>
-          </div>
-          <!-- Android instructions -->
-          <div id="onbInstallAndroid" style="display:none">
-            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.45rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">1</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Abre ALINEA en <strong>Chrome</strong></div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.45rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">2</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Toca el menú <span style="display:inline-block;padding:.1rem .35rem;background:rgba(139,92,246,.15);border-radius:4px;font-size:.7rem">⋮</span> arriba a la derecha</div>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:.6rem">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:.05rem">3</div>
-              <div style="font-size:.65rem;color:var(--text);line-height:1.55">Selecciona <strong>"Instalar app"</strong> o <strong>"Agregar a pantalla de inicio"</strong></div>
-            </div>
-          </div>
-          <!-- Desktop fallback -->
-          <div id="onbInstallDesktop" style="display:none;font-size:.65rem;color:var(--muted);line-height:1.65">
-            En móvil, abre ALINEA en Safari (iOS) o Chrome (Android) y usa el menú para agregarla a tu pantalla de inicio.
-          </div>
-          <!-- Already installed checkbox -->
-          <label style="display:flex;align-items:center;gap:.5rem;margin-top:.75rem;cursor:pointer">
-            <input type="checkbox" id="onbInstallDone" onchange="markInstallDone(this.checked)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer">
-            <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);letter-spacing:.06em">Ya la instalé ✓</span>
-          </label>
-        </div>
 
         <button id="onbLaunchBtn" onclick="finishOnboarding()" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.82rem 2rem;border-radius:10px;cursor:pointer;box-shadow:0 4px 24px var(--glow);transition:all .2s;width:100%;max-width:300px"></button>
       </div>
@@ -1657,7 +1611,7 @@ es:{name:'Español',t:{
   wishlistTitle:'Próximas Misiones',wishlistSub:'Libros que viajan hacia tu galaxia.',
   quickAddWishlist:'Agregar a wishlist rápido',quickAddBtn:'Agregar',wishTitlePlaceholder:'Título del libro…',wishAuthorPlaceholder:'Autor…',
   iAlreadyHave:'Ya lo conseguí',markRead:'Ya lo leí',
-  settingsTitle:'Configuración',settingsSub:'Conecta tu IA para análisis automático y Visión IA.',
+  settingsTitle:'Configuración',settingsSub:'Ajusta, personaliza, guarda y controla tu universo.',
   langTitle:'Idioma',langDesc:'Cambia el idioma de toda la interfaz de ALINEA.',
   aiTitle:'Sobre la IA',aiDesc:'Al agregar notas extrae keywords y mood. En Explorar y Bitácora genera síntesis. Visión IA lee páginas con la cámara. Tu key solo vive en tu navegador.',
   backupTitle:'Datos & Respaldo',
@@ -2782,13 +2736,11 @@ function applyCustomColor(hex){
   localStorage.setItem('eter2_customColor',hex);
   applyAccentTheme('custom');
   // Update custom swatch outlines
-  document.querySelectorAll('#customColorBtn,#customColorIn2+button,[id^=customColorBtn]').forEach(b=>{b.style.outline='2px solid '+accent2;b.style.outlineOffset='2px';});
-  // Sync color inputs
+  const _cb=document.getElementById('customColorBtn');if(_cb){_cb.style.outline='2px solid '+accent2;_cb.style.outlineOffset='2px';}
   const ci1=document.getElementById('customColorIn');if(ci1)ci1.value=hex;
-  const ci2=document.getElementById('customColorIn2');if(ci2)ci2.value=hex;
 }
 // Restore custom color on load
-(()=>{const saved=localStorage.getItem('eter2_customColor');if(saved&&localStorage.getItem('eter2_theme')==='custom'){const ci1=document.getElementById('customColorIn');const ci2=document.getElementById('customColorIn2');if(ci1)ci1.value=saved;if(ci2)ci2.value=saved;applyCustomColor(saved);}})();
+(()=>{const saved=localStorage.getItem('eter2_customColor');if(saved&&localStorage.getItem('eter2_theme')==='custom'){const ci1=document.getElementById('customColorIn');if(ci1)ci1.value=saved;applyCustomColor(saved);}})();
 
 function applyFontSize(size){
   const isMobile=window.innerWidth<768;
@@ -3658,7 +3610,7 @@ function editNote(bookId,idx){
   if(!el)return;
   el.innerHTML=`
     <div class="note-edit-form" style="display:flex;flex-direction:column;gap:.4rem">
-      <textarea class="note-edit-txt" style="width:100%;background:var(--card2);border:1.5px solid var(--accent);color:var(--text);font-family:'Playfair Display',serif;font-size:.78rem;font-style:italic;line-height:1.7;resize:vertical;outline:none;border-radius:6px;padding:.5rem .65rem;min-height:72px">${n.text.replace(/"/g,'&quot;')}</textarea>
+      <textarea class="note-edit-txt" style="width:100%;background:var(--card2);border:1.5px solid var(--accent);color:var(--text);font-family:'Lato',sans-serif;font-size:.78rem;font-style:italic;line-height:1.7;resize:vertical;outline:none;border-radius:6px;padding:.5rem .65rem;min-height:72px">${n.text.replace(/"/g,'&quot;')}</textarea>
       <div style="display:flex;gap:.3rem;align-items:center;flex-wrap:wrap">
         <input type="text" value="${n.page||''}" placeholder="Pág." style="width:58px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.26rem .45rem;border-radius:5px;outline:none" class="note-edit-pg">
         <input type="text" value="${(n.comment||'').replace(/"/g,'&quot;')}" placeholder="Comentario…" style="flex:1;min-width:65px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.62rem;padding:.26rem .45rem;border-radius:5px;outline:none" class="note-edit-cmt">
@@ -3722,7 +3674,7 @@ function renderNotes(b, query='', newIdx=-1, page=0){
   // Paginate: if appending (page>0), keep existing items
   if(page===0) list.innerHTML='';
   if(!visible.length){
-    list.innerHTML=`<div style="font-family:'Playfair Display',serif;font-size:.72rem;font-style:italic;color:var(--dim);padding:.5rem 0">${q?'Sin notas que coincidan con "'+q+'"':'Sin notas aún — escribe la primera arriba.'}</div>`;
+    list.innerHTML=`<div style="font-family:'Lato',sans-serif;font-size:.72rem;font-style:italic;color:var(--dim);padding:.5rem 0">${q?'Sin notas que coincidan con "'+q+'"':'Sin notas aún — escribe la primera arriba.'}</div>`;
     return;
   }
   function hl(txt){
@@ -4364,7 +4316,7 @@ function renderBitacora(){
       <div class="bit-card-title" style="justify-content:center">✦ &nbsp;${t('densestSystem')||'Sistema más denso'}&nbsp; ✦</div>
       ${topCat?`<div class="bit-stat" style="font-size:1.4rem;font-family:'Playfair Display',serif">${topCat.c}</div><div class="bit-stat-label">${topCat.n} ${t('booksCount')||'libros'}</div>`:`<div style="color:var(--dim);font-size:.74rem">${t('addBooksWithCats')}</div>`}
     </div>
-    <div onclick="openBitModal('top5')" style="cursor:pointer;grid-column:1/-1;background:linear-gradient(135deg,rgba(12,10,24,.9),rgba(8,6,18,.95));border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:1.2rem;transition:all .2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 0 1px var(--accent),0 0 22px var(--glow)'" onmouseout="this.style.borderColor='rgba(139,92,246,.3)';this.style.boxShadow='none'">
+    <div style="grid-column:1/-1;background:linear-gradient(135deg,rgba(12,10,24,.9),rgba(8,6,18,.95));border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:1.2rem;position:relative;overflow:hidden">
       <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 70%);pointer-events:none"></div>
       <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.9rem">
         <span style="font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2)">✦ Tu Top 5 ✦</span>
@@ -5079,8 +5031,8 @@ function openConnModal(idx){
       ${sharedKw.map(k=>`<span style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;padding:.15rem .45rem;border-radius:12px">🔑 ${k}</span>`).join('')}
       ${sharedMoods.map(m=>`<span style="background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.2);color:#6ee7b7;font-family:'DM Mono',monospace;font-size:.52rem;padding:.15rem .45rem;border-radius:12px">💭 ${m}</span>`).join('')}
     </div>
-    ${notesA.length?`<div style="margin-bottom:.6rem"><div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem">${conn.a}</div>${notesA.map(n=>`<div style="font-family:'Playfair Display',serif;font-size:.72rem;font-style:italic;color:rgba(240,238,255,.85);line-height:1.7;padding:.4rem .6rem;background:var(--card2);border-left:2px solid var(--accent);border-radius:4px;margin-bottom:.3rem">"${n.text}"</div>`).join('')}</div>`:''}
-    ${notesB.length?`<div style="margin-bottom:.8rem"><div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem">${conn.b}</div>${notesB.map(n=>`<div style="font-family:'Playfair Display',serif;font-size:.72rem;font-style:italic;color:rgba(240,238,255,.85);line-height:1.7;padding:.4rem .6rem;background:var(--card2);border-left:2px solid var(--accent);border-radius:4px;margin-bottom:.3rem">"${n.text}"</div>`).join('')}</div>`:''}
+    ${notesA.length?`<div style="margin-bottom:.6rem"><div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem">${conn.a}</div>${notesA.map(n=>`<div style="font-family:'Lato',sans-serif;font-size:.72rem;font-style:italic;color:rgba(240,238,255,.85);line-height:1.7;padding:.4rem .6rem;background:var(--card2);border-left:2px solid var(--accent);border-radius:4px;margin-bottom:.3rem">"${n.text}"</div>`).join('')}</div>`:''}
+    ${notesB.length?`<div style="margin-bottom:.8rem"><div style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem">${conn.b}</div>${notesB.map(n=>`<div style="font-family:'Lato',sans-serif;font-size:.72rem;font-style:italic;color:rgba(240,238,255,.85);line-height:1.7;padding:.4rem .6rem;background:var(--card2);border-left:2px solid var(--accent);border-radius:4px;margin-bottom:.3rem">"${n.text}"</div>`).join('')}</div>`:''}
     <button onclick="closeBitModal();setTimeout(()=>openBook(${bookA?.id}),150)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:6px;cursor:pointer;margin-right:.4rem">${conn.a.substring(0,18)}…</button>
     <button onclick="closeBitModal();setTimeout(()=>openBook(${bookB?.id}),150)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:6px;cursor:pointer;margin-right:.4rem">${conn.b.substring(0,18)}…</button>
     <button onclick="_bitShareStat('${conn.a} ↔ ${conn.b}'.substring(0,30),['${sharedKw.slice(0,2).join(' · ')}','${conn.a.substring(0,22)}','↔ ${conn.b.substring(0,22)}'])" style="background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:6px;cursor:pointer">✦ ${currentLang==='en'?'Share':'Compartir'}</button>`;
@@ -6834,7 +6786,6 @@ function onbGo(dir){
     else{next.style.opacity='1';next.style.pointerEvents='auto';}
   }
   onbPopulateStep(_onbStep);
-  if(_onbStep===2)onbPopulatePwa();
   setTimeout(drawOnbStars,60);
 }
 
@@ -6880,7 +6831,7 @@ function onbPopulateStep(step){
     if(g6s)g6s.innerHTML=tx.g6s||'';
   }
   if(step===2){
-    detectPlatformInstall();
+    onbPopulatePwa();
   }
   if(step===6){
     activateOrbHalo();
