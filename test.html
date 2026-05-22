@@ -315,7 +315,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .ai-ld{display:flex;align-items:center;gap:.38rem;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--accent2);animation:pulse .85s infinite}
 @keyframes pulse{0%,100%{opacity:.2}50%{opacity:1}}
-.exp-res{display:flex;flex-direction:column;gap:.52rem}
+.exp-res{display:flex;flex-direction:column;gap:.52rem;padding:0 1.5rem}
 .ec{background:rgba(12,10,24,.93);border:1px solid var(--border);border-radius:8px;padding:.88rem 1rem;transition:border-color .18s,box-shadow .18s;cursor:pointer;animation:fadeUp .2s ease}
 .ec:hover{border-color:var(--accent);box-shadow:0 3px 16px rgba(139,92,246,.12)}
 .ec-q{font-family:'Lato',sans-serif;font-size:.83rem;font-style:italic;line-height:1.72;color:var(--text);margin-bottom:.42rem}
@@ -324,7 +324,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .ec-bk strong{color:var(--text);font-weight:500}
 .exp-empty{padding:2rem;color:var(--dim);font-size:.72rem;font-style:italic}
 
-#viewBitacora{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#viewBitacora{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;will-change:scroll-position;scroll-behavior:auto;transform:translateZ(0)}
 #viewBitacora>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%}
 #viewSistema>div{padding:1.8rem 2rem;max-width:820px;margin:0 auto;width:100%}
 /* ── GRADIENT HERO TITLES ── */
@@ -545,8 +545,9 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .btn-an{background:linear-gradient(135deg,#6d28d9,#8b5cf6)!important;color:#fff!important;border:none!important;font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .88rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 2px 12px rgba(139,92,246,.35);font-weight:500;-webkit-appearance:none;appearance:none}
 .btn-note{background:transparent;border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;padding:.35rem .75rem;border-radius:6px;cursor:pointer;transition:all .18s;white-space:nowrap;font-weight:500}
 .btn-note:hover{background:var(--glow);box-shadow:0 0 10px var(--glow)}
-.btn-note-primary{background:linear-gradient(135deg,var(--accent3),var(--accent))!important;color:#fff!important;border:none!important}
+.btn-note-primary{background:linear-gradient(135deg,var(--accent3),var(--accent))!important;color:#fff!important;border:none!important;transition:all .25s!important}
 .btn-note-primary:hover{opacity:.88;box-shadow:0 2px 12px var(--glow)!important}
+.btn-note-primary.note-active{transform:scale(1.08);box-shadow:0 0 0 3px var(--glow),0 4px 20px var(--glow)!important;font-size:.62rem!important;padding:.42rem .85rem!important;letter-spacing:.1em!important}
 .btn-note.recording{background:rgba(244,63,94,.15)!important;border-color:#f43f5e!important;color:#f43f5e!important}
 .btn-an:hover{opacity:.88;box-shadow:0 4px 18px rgba(139,92,246,.5);transform:translateY(-1px)}
 .btn-an.recording{background:linear-gradient(135deg,#9f1239,#f43f5e)!important;box-shadow:0 2px 12px rgba(244,63,94,.4)!important;animation:micPulse 1s ease-in-out infinite}
@@ -726,7 +727,7 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div id="dockActions">
     <button class="dta" id="wishBtn" onclick="openWishlist()" title="Wishlist" style="position:relative;font-size:.82rem">🚀<div class="rocket-badge" id="rocketBadge"></div></button>
-    <button class="dta dta-settings" onclick="openSettings()" title="Configuración">⚙</button>
+    <button class="dta dta-settings" onclick="_hap.light();openSettings()" title="Configuración">⚙</button>
   </div>
 </div>
 
@@ -855,10 +856,10 @@ canvas{-webkit-user-select:none;user-select:none}
         <div class="exp-search"><span class="exp-si">⌕</span><input type="text" id="expIn" placeholder="disciplina, dinero, propósito…" oninput="onExplore()"></div>
         <div class="ai-box" id="aiBox"></div>
       </div>
+      <div class="exp-res" id="expRes" style="padding:.2rem 1rem .4rem"><div class="exp-empty" data-i18n="exploreEmpty">Escribe para explorar tus notas.</div></div>
       <div class="exp-bg" id="expBg">
         <div class="mag-words-flow" id="magWordsFlow"></div>
       </div>
-      <div class="exp-res" id="expRes" style="text-align:center;padding:.6rem 1rem"><div class="exp-empty" data-i18n="exploreEmpty">Escribe para explorar tus notas.</div></div>
     </div>
     <div class="view" id="viewBitacora">
       <div>
@@ -2070,6 +2071,16 @@ const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringi
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
 const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat','mProximamente'];
+// ══════════════════════════
+// HAPTIC FEEDBACK
+// ══════════════════════════
+const _hap = {
+  nav:    ()=>navigator.vibrate&&navigator.vibrate(12),       // micro-pulso navegación
+  ok:     ()=>navigator.vibrate&&navigator.vibrate(18),       // éxito creación
+  del:    ()=>navigator.vibrate&&navigator.vibrate([14,40,14]),// doble pulso eliminación
+  light:  ()=>navigator.vibrate&&navigator.vibrate(8),        // toque ligero config
+};
+
 
 const persist=()=>localStorage.setItem('eter2',JSON.stringify(lib));
 const persistCfg=()=>localStorage.setItem('eter2_cfg',JSON.stringify(cfg));
@@ -2522,7 +2533,7 @@ function switchSettingsTab(n){
     tab.style.color=active?'var(--accent2)':'var(--muted)';
   });
 }
-function openSettings(tab){
+function openSettings(tab){_hap.light();
   showModal('mSettings');
   switchSettingsTab(tab||1);
   // Render lists safely
@@ -2786,12 +2797,12 @@ function applyAccentTheme(name){
   });
 }
 
-function setAccentTheme(name,btn){
+function setAccentTheme(name,btn){_hap.light();
   currentTheme=name;
   localStorage.setItem('eter2_theme',name);
   applyAccentTheme(name);
 }
-function applyCustomColor(hex){
+function applyCustomColor(hex){_hap.light();
   // Derive accent2 (lighter) and accent3 (darker) from the picked color
   const _hex2hsl=h=>{let r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H,S,L=(mx+mn)/2;if(mx===mn){H=S=0;}else{const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:H=((g-b)/d+(g<b?6:0))/6;break;case g:H=((b-r)/d+2)/6;break;default:H=((r-g)/d+4)/6;}}return[H*360,S*100,L*100];};
   const _hsl2hex=(h,s,l)=>{s/=100;l/=100;const a=s*Math.min(l,1-l);const f=n=>{const k=(n+h/30)%12;const c=l-a*Math.max(Math.min(k-3,9-k,1),-1);return Math.round(255*c).toString(16).padStart(2,'0');};return '#'+f(0)+f(8)+f(4);};
@@ -3035,7 +3046,7 @@ window.addEventListener('deviceorientation',e=>{
   gyroY=b<45?(45-b)/45*(-3.5):0;
 },{passive:true});
 
-function gotoV(v,btn){
+function gotoV(v,btn){_hap.nav();
   // Close any open modal when switching tabs
   closeAll();
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
@@ -3256,7 +3267,7 @@ function openAdd(){
   setTimeout(()=>document.getElementById('addTitle').focus(),110);
 }
 
-function saveBook(){
+function saveBook(){_hap.ok();
   const title=document.getElementById('addTitle').value.trim();if(!title)return;
   const kwRaw=document.getElementById('addKw').value;
   const statusVal=document.getElementById('addStatus').value||'owned';
@@ -3390,7 +3401,7 @@ function saveEdit(){
   const mb=document.getElementById('mBook');
   if(mb&&mb.classList.contains('open')&&mb._id===id)openBook(id);
 }
-function delBook(id){
+function delBook(id){_hap.del();
   const b=lib.find(x=>x.id===id);if(!b||!confirm(`¿Eliminar "${b.title}"?`))return;
   lib=lib.filter(x=>x.id!==id);persist();closeModal('mBook');renderSidebar();renderLib();
 }
@@ -3660,7 +3671,17 @@ async function genSummary(query,notes){
 // ══════════════════════════
 // NOTES
 // ══════════════════════════
-async function addNote(bookId){
+function _initNotetextarea(bookId){
+  const ta=document.getElementById('noteText');
+  const btn=document.querySelector('.btn-note-primary');
+  if(!ta||!btn)return;
+  const activate=()=>{if(ta.value.trim())btn.classList.add('note-active');};
+  const deactivate=()=>{btn.classList.remove('note-active');};
+  ta.addEventListener('input',activate);
+  ta.addEventListener('focus',()=>{if(ta.value.trim())btn.classList.add('note-active');});
+  ta.addEventListener('blur',()=>setTimeout(deactivate,200));
+}
+async function addNote(bookId){_hap.ok();
   const b=lib.find(x=>x.id===bookId);if(!b)return;
   const text=document.getElementById('noteText').value.trim();if(!text)return;
   const note={text,page:document.getElementById('notePg').value.trim(),comment:document.getElementById('noteCmt').value.trim(),keywords:[],mood:'',aiDone:false};
@@ -3680,7 +3701,7 @@ async function addNote(bookId){
   if(bmTagsEl)bmTagsEl.innerHTML=(b.keywords||[]).slice(0,6).map(k=>`<span class="pill">${k}</span>`).join('');
   renderLib();buildMagWords();
 }
-function delNote(bookId,idx){const b=lib.find(x=>x.id===bookId);if(!b)return;const isEN=currentLang==="en";if(!confirm(isEN?"Delete this note? This can't be undone.":"¿Borrar esta nota? Esta acción no se puede deshacer."))return;b.notes.splice(idx,1);persist();renderNotes(b);renderLib();}
+function delNote(bookId,idx){_hap.del();const b=lib.find(x=>x.id===bookId);if(!b)return;const isEN=currentLang==="en";if(!confirm(isEN?"Delete this note? This can't be undone.":"¿Borrar esta nota? Esta acción no se puede deshacer."))return;b.notes.splice(idx,1);persist();renderNotes(b);renderLib();}
 
 function editNote(bookId,idx){
   const b=lib.find(x=>x.id===bookId);if(!b)return;
@@ -4017,14 +4038,23 @@ function toggleDictation(bookId){
     btn.classList.add('recording','voice-active');
     btn.innerHTML='● Rec <span class="voice-wave-container"><span class="voice-bar"></span><span class="voice-bar"></span><span class="voice-bar"></span><span class="voice-bar"></span><span class="voice-bar"></span></span>';
   }
+  // Visual feedback: scale note-box, activate save button
+  const noteBox=ta.closest('.note-box');
+  const saveBtn=document.querySelector('.btn-note-primary');
+  if(noteBox){noteBox.style.transform='scale(1.02)';noteBox.style.boxShadow='0 0 0 3px var(--glow),inset 0 0 0 1px rgba(139,92,246,.3)';}
+  if(saveBtn){saveBtn.classList.add('note-active');saveBtn.textContent='✦ '+(currentLang==='en'?'Save':'Guardar');}
   r.onresult=e=>{
     const transcript=[...e.results].map(res=>res[0].transcript).join('');
     ta.value=origText+(origText?' ':'')+transcript;
-    ta.style.borderColor=e.results[e.results.length-1].isFinal?'var(--accent)':'rgba(244,63,94,.5)';
+    // Trigger the dynamic button oninput logic
+    if(saveBtn&&ta.value.trim()){saveBtn.classList.add('note-active');saveBtn.textContent='✦ '+(currentLang==='en'?'Save':'Guardar');}
   };
   r.onend=()=>{
     _recognition=null;_dictatingFor=null;
     if(btn){btn.classList.remove('recording','voice-active');btn.dataset.i18n='dictate';btn.textContent=t('dictate')||'Dictar';}
+    if(noteBox){noteBox.style.transform='';noteBox.style.boxShadow='';}
+    // Keep save button active if there's text
+    if(saveBtn&&!ta.value.trim()){saveBtn.classList.remove('note-active');saveBtn.textContent=t('addNote')||'+ Nota';}
     ta.style.borderColor='';
     ta.focus();
   };
@@ -4537,7 +4567,7 @@ async function genBitacora(){
 // GRAPH — ANIMATED SOLAR SYSTEM
 // ══════════════════════════
 function onLibName(v){appState.libName=v;const _lni=document.getElementById('libNameInput');if(_lni&&!v)_lni.placeholder=t('myLibrary')||'Mi Biblioteca…';}
-function saveLibName(){persistState();if(document.getElementById('viewGraph').classList.contains('active'))initGraph();}
+function saveLibName(){_hap.light();persistState();if(document.getElementById('viewGraph').classList.contains('active'))initGraph();}
 
 
 // ══════════════════════════
@@ -5222,18 +5252,44 @@ function _shareKnowledgeCanvas(){
 }
 
 function _exportBitStat(cv) {
-  cv.toBlob(async blob => {
-    if (!blob) return;
+  // Try toBlob first; fallback to toDataURL if canvas is CORS-tainted
+  const _doShare = async (blob) => {
+    if (!blob) { _showToast('❌ Error al generar imagen'); return; }
     const file = new File([blob], 'alinea-story.png', {type:'image/png'});
     const st = currentLang==='en' ? 'My reading universe · ALINEA 🌌 @alinea.io' : 'Mi universo de lectura · ALINEA 🌌 @alinea.io';
-    if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
-      try { await navigator.share({files:[file], title:'ALINEA', text:st}); }
-      catch(e) { if (e.name !== 'AbortError') _downloadGalaxyPng(blob); }
-    } else {
-      _downloadGalaxyPng(blob);
-      _showToast(currentLang==='en' ? '📸 Story downloaded!' : '📸 Story descargada · compártela en Instagram');
+    // iOS Safari: navigator.share with files
+    if (navigator.share && navigator.canShare) {
+      let canShareFiles = false;
+      try { canShareFiles = navigator.canShare({files:[file]}); } catch(e){}
+      if (canShareFiles) {
+        try {
+          await navigator.share({files:[file], title:'ALINEA', text:st});
+          return;
+        } catch(e) {
+          if (e.name === 'AbortError') return; // user cancelled — don't download
+        }
+      }
     }
-  }, 'image/png', 1.0);
+    // Fallback: download + toast
+    _downloadGalaxyPng(blob);
+    _showToast(currentLang==='en' ? '📸 Image saved! Share it on Instagram Stories' : '📸 Imagen guardada · compártela en Stories de Instagram', 5000);
+  };
+  try {
+    cv.toBlob(blob => _doShare(blob), 'image/png', 1.0);
+  } catch(e) {
+    // Canvas tainted by CORS — use toDataURL as fallback
+    try {
+      const dataUrl = cv.toDataURL('image/png');
+      fetch(dataUrl).then(r=>r.blob()).then(blob=>_doShare(blob)).catch(()=>{
+        // Last resort: direct dataURL download
+        const a = document.createElement('a');
+        a.download = 'alinea-story.png';
+        a.href = dataUrl;
+        a.click();
+        _showToast(currentLang==='en'?'📸 Image saved!':'📸 Imagen guardada', 4000);
+      });
+    } catch(e2) { _showToast('❌ No se pudo generar la imagen'); }
+  }
 }
 
 
@@ -6149,7 +6205,7 @@ function openBook(id){
     <div>
       <div class="sec">${t('secNotas')||'Notas & Subrayados'}</div>
       <div class="note-box" style="margin-bottom:.6rem">
-        <textarea id="noteText" placeholder="${t('notePlaceholder')||'Escribe un subrayado, idea o reflexión…'}" rows="4"></textarea>
+        <textarea id="noteText" placeholder="${t('notePlaceholder')||'Escribe un subrayado, idea o reflexión…'}" rows="4" oninput="(function(){const btn=document.querySelector('.btn-note-primary');if(btn){if(this.value.trim()){btn.classList.add('note-active');btn.textContent='✦ '+(currentLang==='en'?'Save':'Guardar');}else{btn.classList.remove('note-active');btn.textContent=t('addNote')||'+ Nota';}}}).call(this)" onblur="setTimeout(()=>{const btn=document.querySelector('.btn-note-primary');if(btn&&!document.getElementById('noteText')?.value.trim()){btn.classList.remove('note-active');btn.textContent=t('addNote')||'+ Nota';}},250)"></textarea>
         <div class="nrow">
           <input type="text" id="notePg" class="nri pg" placeholder="${t('pagePlaceholder')||'Pág.'}">
           <input type="text" id="noteCmt" class="nri cmt" placeholder="${t('commentPlaceholder')||'Comentario (opcional)'}">
