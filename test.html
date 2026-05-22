@@ -2242,31 +2242,27 @@ function _closeBookShare(){const m=document.getElementById('mBookShare');if(m)m.
 async function _generateBookShare(){
   const ctx=window._bookShareCtx;if(!ctx)return;
   const b=lib.find(x=>x.id===ctx.bookId);if(!b)return;
-  // Snapshot checks while modal is still visible
   const checks={f_cover:true,f_title:true,f_author:true};
   document.querySelectorAll('#mBookShare .bsf-chk').forEach(el=>{
     checks[el.dataset.field]=el.checked||el.disabled;
   });
-  // Close modal AFTER reading checks
   _closeBookShare();
-  // Show loading toast
-  _showToast(currentLang==='en'?'⏳ Generating image…':'⏳ Generando imagen…', 8000);
-  // Render after a tick so modal is gone and no CORS issues
+  _showToast(currentLang==='en'?'⏳ Generating image…':'⏳ Generando imagen…',8000);
   setTimeout(()=>{
-    try{ _renderBookCanvas(b,checks); }
-    catch(e){ console.error('renderBookCanvas error:',e); _showToast('❌ Error al generar imagen'); }
-  }, 120);
+    try{_renderBookCanvas(b,checks);}
+    catch(e){console.error('renderBookCanvas:',e);_showToast('❌ Error al generar imagen');}
+  },120);
 }
+
 function _renderBookCanvas(b,checks){
   const W=1080,H=1920;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const ctx=cv.getContext('2d');
   const theme=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
   const ac=theme.accent,ac2=theme.accent2,ac3=theme.accent3||theme.accent;
+  const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
 
-  // Wait for fonts then draw
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(()=>{
-    const rng=s=>{let x=Math.sin(s)*10000;return x-Math.floor(x);};
+  const _draw=(imgEl)=>{
     // Background
     const bg=ctx.createLinearGradient(0,0,W,H);
     bg.addColorStop(0,'#04030d');bg.addColorStop(.5,'#0a0818');bg.addColorStop(1,'#04030d');
@@ -2277,102 +2273,111 @@ function _renderBookCanvas(b,checks){
       ctx.fillStyle=`rgba(255,255,255,${rng(i*5.9)*.55+.08})`;ctx.fill();
     }
     // Orb
-    const orbX=W/2,orbY=160,orbR=72;
-    const og=ctx.createRadialGradient(orbX-orbR*.3,orbY-orbR*.3,0,orbX,orbY,orbR);
+    const oX=W/2,oY=170,oR=76;
+    const og=ctx.createRadialGradient(oX-oR*.3,oY-oR*.3,0,oX,oY,oR);
     og.addColorStop(0,'#fff');og.addColorStop(.25,ac2);og.addColorStop(.65,ac);og.addColorStop(1,ac3);
     ctx.shadowBlur=60;ctx.shadowColor=ac;
-    ctx.fillStyle=og;ctx.beginPath();ctx.arc(orbX,orbY,orbR,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=og;ctx.beginPath();ctx.arc(oX,oY,oR,0,Math.PI*2);ctx.fill();
+    // Specular
+    const sp=ctx.createRadialGradient(oX-oR*.3,oY-oR*.32,0,oX-oR*.3,oY-oR*.32,oR*.3);
+    sp.addColorStop(0,'rgba(255,255,255,.55)');sp.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=sp;ctx.beginPath();ctx.arc(oX-oR*.3,oY-oR*.32,oR*.3,0,Math.PI*2);ctx.fill();
     ctx.shadowBlur=0;
-    // ALINEA wordmark
-    ctx.fillStyle=ac2;ctx.font='700 64px "DM Mono",monospace';
+    // ALINEA
+    ctx.fillStyle=ac2;ctx.font='700 68px "DM Mono",monospace';
     ctx.textAlign='center';ctx.letterSpacing='14px';
-    ctx.fillText('ALINEA',W/2,orbY+orbR+72);
-    ctx.letterSpacing='0';
-    // Separator
+    ctx.fillText('ALINEA',W/2,oY+oR+74);ctx.letterSpacing='0';
+    // Separator line
     ctx.strokeStyle=ac+'55';ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(W*.2,orbY+orbR+96);ctx.lineTo(W*.8,orbY+orbR+96);ctx.stroke();
-
-    let y=orbY+orbR+200;
-
-    // Cover — try to load, fallback gracefully
-    const drawCoverAndText=(imgEl)=>{
-      if(imgEl&&imgEl.naturalWidth>0){
-        const cw=660,ch=Math.round(cw*1.5),cx=(W-cw)/2;
-        const coverY=y+20;
-        // Shadow behind cover
-        ctx.shadowBlur=40;ctx.shadowColor='rgba(0,0,0,.7)';
-        ctx.shadowOffsetY=12;
-        // Rounded cover
-        const r=24;
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(cx+r,coverY);ctx.lineTo(cx+cw-r,coverY);
-        ctx.arcTo(cx+cw,coverY,cx+cw,coverY+r,r);
-        ctx.lineTo(cx+cw,coverY+ch-r);
-        ctx.arcTo(cx+cw,coverY+ch,cx+cw-r,coverY+ch,r);
-        ctx.lineTo(cx+r,coverY+ch);
-        ctx.arcTo(cx,coverY+ch,cx,coverY+ch-r,r);
-        ctx.lineTo(cx,coverY+r);
-        ctx.arcTo(cx,coverY,cx+r,coverY,r);
-        ctx.closePath();ctx.clip();
-        ctx.drawImage(imgEl,cx,coverY,cw,ch);
-        ctx.restore();
-        ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-        y=coverY+ch+56;
+    ctx.beginPath();ctx.moveTo(W*.2,oY+oR+100);ctx.lineTo(W*.8,oY+oR+100);ctx.stroke();
+    let y=oY+oR+190;
+    // Section label
+    if(b.category){
+      const catObj=Object.values(CAT_COLORS).find((_,i)=>Object.keys(CAT_COLORS)[i]===b.category)||{sun:ac2};
+      ctx.fillStyle=catObj.sun||ac2;ctx.font='500 28px "DM Mono",monospace';ctx.letterSpacing='6px';ctx.textAlign='center';
+      ctx.fillText((translateCat(b.category)||b.category).toUpperCase(),W/2,y);ctx.letterSpacing='0';y+=52;
+    }
+    // Cover
+    if(imgEl&&imgEl.naturalWidth>0){
+      const cw=680,ch=Math.round(cw*1.45),cx=(W-cw)/2;
+      ctx.save();
+      ctx.shadowBlur=50;ctx.shadowColor='rgba(0,0,0,.8)';ctx.shadowOffsetY=16;
+      const r=28;
+      ctx.beginPath();
+      ctx.moveTo(cx+r,y);ctx.lineTo(cx+cw-r,y);ctx.arcTo(cx+cw,y,cx+cw,y+r,r);
+      ctx.lineTo(cx+cw,y+ch-r);ctx.arcTo(cx+cw,y+ch,cx+cw-r,y+ch,r);
+      ctx.lineTo(cx+r,y+ch);ctx.arcTo(cx,y+ch,cx,y+ch-r,r);
+      ctx.lineTo(cx,y+r);ctx.arcTo(cx,y,cx+r,y,r);ctx.closePath();ctx.clip();
+      ctx.drawImage(imgEl,cx,y,cw,ch);
+      ctx.restore();ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+      y+=ch+60;
+    }
+    // Title
+    if(checks.f_title!==false){
+      ctx.fillStyle='#fff';ctx.font='700 68px "Lato",sans-serif';ctx.textAlign='center';
+      const titleLines=_wrapText(ctx,b.title,W-160,68);
+      titleLines.forEach(l=>{ctx.fillText(l,W/2,y);y+=82;});
+      y+=8;
+    }
+    // Author
+    if(checks.f_author!==false&&b.author){
+      ctx.fillStyle='rgba(200,190,255,.7)';ctx.font='400 38px "Lato",sans-serif';ctx.textAlign='center';
+      ctx.fillText(b.author,W/2,y);y+=60;
+    }
+    // Status badge
+    if(b.readingStatus||b.status){
+      const sMap={done:'✅ Terminado',reading:'📖 Leyendo ahora',owned:'📦 Lo tengo',wishlist:'🚀 Wishlist'};
+      const sKey=b.readingStatus==='done'?'done':b.readingStatus==='reading'?'reading':b.isWishlist?'wishlist':'owned';
+      const sLabel=sMap[sKey]||'';
+      if(sLabel){
+        ctx.fillStyle=ac+'cc';ctx.font='400 30px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.textAlign='center';
+        ctx.fillText(sLabel.toUpperCase(),W/2,y);ctx.letterSpacing='0';y+=52;
       }
-      _renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2);
-    };
+    }
+    // Brand footer
+    const fH=180;
+    ctx.fillStyle='rgba(4,3,12,.85)';ctx.fillRect(0,H-fH,W,fH);
+    ctx.strokeStyle=ac+'40';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(W*.28,H-fH+1);ctx.lineTo(W*.72,H-fH+1);ctx.stroke();
+    ctx.fillStyle=ac2+'ee';ctx.font='600 40px "DM Mono",monospace';ctx.letterSpacing='12px';ctx.textAlign='center';
+    ctx.fillText('ALINEA',W/2,H-fH+60);ctx.letterSpacing='0';
+    ctx.fillStyle=ac+'cc';ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='3px';
+    ctx.fillText('@alinea.io',W/2,H-fH+102);ctx.letterSpacing='0';
+    ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 22px "DM Mono",monospace';
+    ctx.fillText('#MakingVisibleTheInvisible',W/2,H-fH+136);
+    // Export
+    _exportBitStat(cv);
+  };
 
+  // Load fonts first, then cover
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{
     if(checks.f_cover&&b.cover){
-      // Always load with crossOrigin to avoid canvas CORS taint
-      const img=new Image();img.crossOrigin='anonymous';
-      img.onload=()=>drawCoverAndText(img);
+      const img=new Image();
+      img.onload=()=>_draw(img);
       img.onerror=()=>{
-        // CORS blocked by CDN — try via a CORS proxy
         const img2=new Image();img2.crossOrigin='anonymous';
-        img2.onload=()=>drawCoverAndText(img2);
-        img2.onerror=()=>drawCoverAndText(null); // Give up gracefully, draw without cover
-        img2.src='https://corsproxy.io/?'+encodeURIComponent(b.cover);
+        img2.onload=()=>_draw(img2);
+        img2.onerror=()=>_draw(null);
+        img2.src=b.cover+'?t='+Date.now();
       };
-      img.src=b.cover+'?cb='+Date.now();
+      img.src=b.cover;
     } else {
-      drawCoverAndText(null);
+      _draw(null);
     }
   });
 }
-function _renderBookText(ctx,cv,W,H,b,checks,y,ac,ac2){
-  ctx.textAlign='center';ctx.letterSpacing='0';
-  if(checks.f_title){ctx.fillStyle='#f0eeff';ctx.font='700 42px "Lato",sans-serif';const words=b.title.split(' ');let line='',lY=y;words.forEach(w=>{const t2=line?line+' '+w:w;if(ctx.measureText(t2).width>W-120&&line){ctx.fillText(line,W/2,lY);lY+=64;line=w;}else line=t2;});ctx.fillText(line,W/2,lY);y=lY+56;}
-  if(checks.f_author&&b.author){ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='300 36px "Lato",sans-serif';ctx.fillText(b.author,W/2,y);y+=58;}
-  if(checks.f_cat&&b.category){ctx.fillStyle=ac2;ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='4px';ctx.fillText((translateCat(b.category)||b.category).toUpperCase(),W/2,y);y+=50;ctx.letterSpacing='0';}
-  if(checks.f_status&&b.readingStatus){const statMap={done:'Terminado',reading:'Leyendo',owned:'Lo tengo'};ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='400 26px "DM Mono",monospace';ctx.fillText((statMap[b.readingStatus]||b.readingStatus).toUpperCase(),W/2,y);y+=48;}
-  if(checks.f_rating&&b.rating){ctx.fillStyle='#fbbf24';ctx.font='400 42px serif';ctx.fillText('★'.repeat(b.rating)+'☆'.repeat(5-b.rating),W/2,y);y+=62;}
-  if(checks.f_kw&&b.keywords&&b.keywords.length){ctx.fillStyle=ac2;ctx.font='400 24px "DM Mono",monospace';ctx.letterSpacing='2px';const kwLine=b.keywords.slice(0,6).join('  ·  ');ctx.fillText(kwLine,W/2,y);}
-  // ── Brand Footer (4 elements) ──
-  const _bfH=200;
-  ctx.fillStyle='rgba(4,3,12,.82)';ctx.fillRect(0,H-_bfH,W,_bfH);
-  // Separator line
-  ctx.strokeStyle=ac+'55';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(W*.28,H-_bfH+1);ctx.lineTo(W*.72,H-_bfH+1);ctx.stroke();
-  // 1. Orb
-  const _fo={x:W/2,y:H-_bfH+38,r:22};
-  const _fog=ctx.createRadialGradient(_fo.x-_fo.r*.3,_fo.y-_fo.r*.3,0,_fo.x,_fo.y,_fo.r);
-  _fog.addColorStop(0,'#fff');_fog.addColorStop(.25,ac2);_fog.addColorStop(.65,ac);_fog.addColorStop(1,ac3||ac);
-  ctx.shadowBlur=22;ctx.shadowColor=ac;
-  ctx.fillStyle=_fog;ctx.beginPath();ctx.arc(_fo.x,_fo.y,_fo.r,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;
-  // 2. ALINEA
-  ctx.fillStyle=ac2+'ee';ctx.font='600 30px "DM Mono",monospace';ctx.letterSpacing='10px';ctx.textAlign='center';
-  ctx.fillText('ALINEA',W/2,H-_bfH+88);
-  // 3. @alinea.io
-  ctx.fillStyle=ac+'cc';ctx.font='400 20px "DM Mono",monospace';ctx.letterSpacing='3px';
-  ctx.fillText('@alinea.io',W/2,H-_bfH+122);
-  // 4. #MakingVisibleTheInvisible
-  ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 16px "DM Mono",monospace';ctx.letterSpacing='1px';
-  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-_bfH+152);
-  ctx.letterSpacing='0';
-  _exportBitStat(cv);
+
+function _wrapText(ctx,text,maxW,fontSize){
+  const words=text.split(' ');const lines=[];let line='';
+  words.forEach(w=>{
+    const t=line?line+' '+w:w;
+    if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w;}
+    else line=t;
+  });
+  if(line)lines.push(line);
+  return lines;
 }
+
 
 
 // ── PWA Install guide ──────────────────────────────────────
@@ -5507,7 +5512,13 @@ function openBitModal(type){
     :`<div style="color:var(--dim);font-size:.7rem">${isEN?'No categories yet.':'Sin categorías aún.'}</div>`;
   } else if(type==='done'){
     titleText='✦ '+(t('terminados')||'Terminados')+' ✦';
-    const doneBooks=realBooks.filter(b=>b.readingStatus==='done'||b.status==='done'||b.status==='read');
+    const doneBooks=realBooks.filter(b=>
+      b.readingStatus==='done'||b.status==='done'||b.status==='read'||
+      b.status==='✅ Terminado'||b.status==='Terminado'||
+      (b.status&&b.status.toLowerCase().includes('terminado'))||
+      (b.status&&b.status.toLowerCase().includes('done'))||
+      (b.status&&b.status.toLowerCase().includes('read'))
+    );
     html=_bitCoverGrid(doneBooks,isEN?'No finished books yet.':'Sin libros terminados aún.')+shareBtn(isEN?'Finished':'Terminados',[],doneBooks);
   } else if(type==='reading'){
     titleText='✦ '+(t('leyendo')||'Leyendo')+' ✦';
@@ -6180,15 +6191,18 @@ function openBook(id){
   document.getElementById('mBook')._id=id;
   // Pick category color for the header orb
   const catCol=cc(b.category||'');
-  const statusBadge=b.isWishlist||b.status==='wishlist'
-    ?`<span style="font-size:.58rem;color:var(--gold);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">🚀 WISHLIST</span>`
-    :b.readingStatus==='reading'||b.status==='reading'
-      ?`<span style="font-size:.58rem;color:#6ee7b7;background:rgba(110,231,183,.1);border:1px solid rgba(110,231,183,.2);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">📖 ${(t('reading')||'LEYENDO').toUpperCase()}</span>`
-      :b.readingStatus==='done'||b.status==='done'
-        ?`<span style="font-size:.58rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.22);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">✅ ${(t('done')||'TERMINADO').toUpperCase()}</span>`
-        :b.status==='owned'
-          ?`<span style="font-size:.58rem;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:4px;padding:.1rem .4rem;font-family:'DM Mono',monospace;letter-spacing:.06em">📦 ${(t('owned')||'NO LEÍDO').toUpperCase()}</span>`
-          :'';
+  // Status quick-edit dropdown (like star rating)
+  const _curStatus=b.isWishlist?'wishlist':b.readingStatus==='reading'?'reading':b.readingStatus==='done'?'done':b.status==='owned'?'owned':'owned';
+  const _statusOpts=[
+    {v:'reading', emoji:'📖', label:t('reading')||'Leyendo', color:'#6ee7b7'},
+    {v:'done',    emoji:'✅', label:t('done')||'Terminado', color:'var(--accent2)'},
+    {v:'owned',   emoji:'📦', label:t('owned')||'Lo tengo', color:'var(--muted)'},
+    {v:'wishlist',emoji:'🚀', label:'Wishlist',              color:'var(--gold)'},
+  ];
+  const _curOpt=_statusOpts.find(o=>o.v===_curStatus)||_statusOpts[2];
+  const statusBadge=`<div style="display:flex;gap:.28rem;flex-wrap:wrap;margin-top:.2rem" id="bmStatusRow">
+    ${_statusOpts.map(o=>`<button onclick="quickSetStatus(${b.id},'${o.v}')" style="font-size:.56rem;font-family:'DM Mono',monospace;letter-spacing:.05em;padding:.18rem .5rem;border-radius:6px;cursor:pointer;transition:all .18s;border:1px solid ${o.v===_curStatus?o.color:'var(--border)'};background:${o.v===_curStatus?'rgba(255,255,255,.08)':'transparent'};color:${o.v===_curStatus?o.color:'var(--dim)'};font-weight:${o.v===_curStatus?'700':'400'}">${o.emoji} ${o.label.toUpperCase()}</button>`).join('')}
+  </div>`;
 
   document.getElementById('bmTop').innerHTML=`
     <div class="bm-header" style="--bm-cat-color:${catCol.sun}33;--bm-cat-glow:${catCol.glow}0.08);position:relative;overflow:hidden">
@@ -6276,6 +6290,23 @@ function openBook(id){
   showModal('mBook');
 }
 
+function quickSetStatus(bookId, newStatus){
+  const b=lib.find(x=>x.id===bookId);if(!b)return;
+  b.status=newStatus;
+  b.isWishlist=newStatus==='wishlist';
+  b.readingStatus=newStatus==='done'?'done':newStatus==='reading'?'reading':'owned';
+  persist();renderLib();_hap.ok();
+  const row=document.getElementById('bmStatusRow');
+  if(row){
+    const _so=[
+      {v:'reading',emoji:'📖',label:t('reading')||'Leyendo',color:'#6ee7b7'},
+      {v:'done',emoji:'✅',label:t('done')||'Terminado',color:'var(--accent2)'},
+      {v:'owned',emoji:'📦',label:t('owned')||'Lo tengo',color:'var(--muted)'},
+      {v:'wishlist',emoji:'🚀',label:'Wishlist',color:'var(--gold)'},
+    ];
+    row.innerHTML=_so.map(o=>`<button onclick="quickSetStatus(${bookId},'${o.v}')" style="font-size:.56rem;font-family:'DM Mono',monospace;letter-spacing:.05em;padding:.18rem .5rem;border-radius:6px;cursor:pointer;transition:all .18s;border:1px solid ${o.v===newStatus?o.color:'var(--border)'};background:${o.v===newStatus?'rgba(255,255,255,.08)':'transparent'};color:${o.v===newStatus?o.color:'var(--dim)'};font-weight:${o.v===newStatus?'700':'400'}">${o.emoji} ${o.label.toUpperCase()}</button>`).join('');
+  }
+}
 function saveRating(bookId, stars){
   const b=lib.find(x=>x.id===bookId); if(!b) return;
   b.rating = (b.rating===stars) ? 0 : stars; // toggle off if same
