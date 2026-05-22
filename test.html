@@ -376,8 +376,9 @@ body.modal-open{overflow:hidden!important;touch-action:none}
   display:flex;flex-direction:column;
   border:2px solid var(--accent)!important;
   box-shadow:0 30px 90px rgba(0,0,0,.85),0 0 40px var(--glow),inset 0 0 0 1px rgba(255,255,255,.04)!important;
+  border-radius:16px;
 }
-#mEdit,#mVision{z-index:503}
+#mEdit,#mVision{z-index:600}
 .modal.open{opacity:1;pointer-events:all;transform:translate(-50%,-50%)}
 .modal h2{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:.18rem;color:var(--accent2);line-height:1.3}
 .modal .sub{font-size:.68rem;color:rgba(196,181,253,.65);margin-bottom:1.2rem;line-height:1.55}
@@ -418,18 +419,24 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 
 /* ── BOOK MODAL HEADER ── */
 .bm-header{
-  width:100%;padding:1.5rem 1.8rem 1.3rem;
+  width:100%;padding:1.5rem 1.8rem 1.8rem;
   display:flex;gap:1.2rem;align-items:flex-start;
   position:relative;overflow:hidden;
   background:linear-gradient(160deg,var(--card2) 0%,var(--surface) 100%);
   flex-shrink:0;
   border-radius:14px 14px 0 0;
 }
+.bm-header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:32px;
+  background:linear-gradient(to bottom,transparent,var(--surface));
+  pointer-events:none;z-index:2;
+}
 .bm-header::before{
   content:'';position:absolute;inset:0;
   background:var(--bm-cat-glow,rgba(139,92,246,.1));
   pointer-events:none;
 }
+.bm-header{border-bottom:1px solid var(--border)!important}
 .bm-header-orb{
   position:absolute;top:-40px;right:-40px;
   width:220px;height:220px;border-radius:50%;
@@ -489,7 +496,8 @@ body.modal-open{overflow:hidden!important;touch-action:none}
 .bm-actions-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .bm-edit{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.28);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;padding:.26rem .65rem;border-radius:5px;cursor:pointer;transition:all .15s;width:100%;text-align:center}
 .bm-edit:hover{background:rgba(139,92,246,.22);border-color:var(--accent)}
-.bm-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.2rem 1.6rem;display:flex;flex-direction:column;gap:1.2rem}
+.bm-top{position:sticky;top:0;z-index:5;flex-shrink:0}
+.bm-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:.6rem 1.6rem 1.2rem;display:flex;flex-direction:column;gap:1.2rem;background:var(--surface)}
 .bm-body::-webkit-scrollbar{width:3px}
 .bm-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .sec{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;opacity:.9}
@@ -958,6 +966,7 @@ canvas{-webkit-user-select:none;user-select:none}
 
   </div>
 
+<div id="editOverlay" onclick="_closeEditModal()" style="display:none;position:fixed;inset:0;z-index:599;background:rgba(4,3,12,.88);backdrop-filter:blur(16px)"></div>
 <div class="overlay" id="overlay" onclick="if(!document.getElementById('mOnboarding')?.classList.contains('open'))closeAll()"></div>
 
 <!-- ADD BOOK -->
@@ -992,7 +1001,7 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
     <div><label class="flbl" data-i18n="keywordsInitial">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…" data-i18n-ph="kwPlaceholder"></div>
     <div>
-      <label class="flbl">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega la dirección directa de la imagen)</span></label>
+      <label class="flbl" data-i18n="coverUrlLabel">Cover URL <span id="coverUrlSub" style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(paste the direct image address)</span></label>
       <input class="fin" type="text" id="addUrl" placeholder="https://… termina en .jpg  .jpeg  .png" oninput="prevAddUrl()">
       <div id="addUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
         ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
@@ -1001,30 +1010,30 @@ canvas{-webkit-user-select:none;user-select:none}
       <img class="url-prev" id="addUrlPrev" src="" alt="" style="margin-top:.32rem">
       <div id="addUrlGuide" style="margin-top:.55rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.13);border-radius:8px;overflow:hidden">
         <button onclick="(function(){const b=document.getElementById('addUrlGuideBody');const a=document.getElementById('addUrlGuideArrow');const open=b.style.display!=='none'&&b.style.display!=='';b.style.display=open?'none':'flex';a.textContent=open?'▸':'▾';})()" style="width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:.45rem .7rem;color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.09em;text-transform:uppercase">
-          <span>💡 ¿Cómo copiar la URL correcta?</span>
+          <span data-i18n="urlGuideTitle">💡 How to copy the correct URL?</span>
           <span id="addUrlGuideArrow" style="font-size:.7rem;opacity:.7">▸</span>
         </button>
         <div id="addUrlGuideBody" style="display:none;padding:.1rem .7rem .65rem;flex-direction:column;gap:.45rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem">Busca el libro en Google Imágenes, luego:</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem" data-i18n="urlGuideIntro">Search the book on Google Images, then:</div>
           <div style="display:flex;align-items:flex-start;gap:.55rem">
             <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">💻</span>
             <div>
-              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Computadora (PC / Mac)</div>
-              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Clic derecho sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span><br><span style="color:rgba(139,92,246,.45);font-size:.55rem">NO el link de la barra de navegación de arriba</span></div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="urlGuidePC">Computadora (PC / Mac)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="urlGuidePCDesc">Right-click on the cover → <span style="color:var(--accent2)">"Copy image address"</span><br><span style="color:rgba(139,92,246,.45);font-size:.55rem">NOT the link in the navigation bar above</span></div>
             </div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:.55rem">
             <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">📱</span>
             <div>
-              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">iPhone (iOS / Safari)</div>
-              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Mantener presionado 1 segundo la portada → menú de Apple → <span style="color:var(--accent2)">"Copiar"</span> o <span style="color:var(--accent2)">"Copiar enlace de la imagen"</span></div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="urlGuideiOS">iPhone (iOS / Safari)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="urlGuideiOSDesc">Hold the cover for 1 second → Apple menu → <span style="color:var(--accent2)">"Copy"</span> or <span style="color:var(--accent2)">"Copy image link"</span></div>
             </div>
           </div>
           <div style="display:flex;align-items:flex-start;gap:.55rem">
             <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">🤖</span>
             <div>
-              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Android (Chrome)</div>
-              <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Dejar presionado el dedo sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span></div>
+              <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="urlGuideAndroid">Android (Chrome)</div>
+              <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="urlGuideAndroidDesc">Hold your finger on the cover → <span style="color:var(--accent2)">"Copy image address"</span></div>
             </div>
           </div>
         </div>
@@ -1042,7 +1051,7 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
 
 <!-- EDIT BOOK -->
-<div class="modal" id="mEdit">
+<div class="modal" id="mEdit" onclick="event.stopPropagation()">
   <h2>Editar libro</h2><p class="sub">Modifica los datos del libro.</p>
   <div class="cvrow">
     <div class="cpick" onclick="document.getElementById('fEdit').click()">
@@ -1056,7 +1065,7 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
   </div>
   <div style="margin-top:.65rem">
-    <label class="flbl" data-i18n="coverUrlLabel">URL de portada <span style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(pega la dirección directa de la imagen)</span></label>
+    <label class="flbl" data-i18n="coverUrlLabel">Cover URL <span id="editUrlSub" style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(paste the direct image address)</span></label>
     <input class="fin" type="text" id="editUrl" placeholder="https://…termina en .jpg  .jpeg  .png" oninput="prevUrl()">
     <div id="editUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
       ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
@@ -1066,11 +1075,11 @@ canvas{-webkit-user-select:none;user-select:none}
     <!-- URL GUIDE -->
     <div id="editUrlGuide" style="margin-top:.55rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.13);border-radius:8px;overflow:hidden">
       <button onclick="(function(){const b=document.getElementById('editUrlGuideBody');const a=document.getElementById('editUrlGuideArrow');const open=b.style.display!=='none';b.style.display=open?'none':'block';a.textContent=open?'▸':'▾';})()" style="width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:.45rem .7rem;color:var(--accent2);font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.09em;text-transform:uppercase">
-        <span>💡 ¿Cómo copiar la URL correcta?</span>
+        <span data-i18n="urlGuideTitle">💡 How to copy the correct URL?</span>
         <span id="editUrlGuideArrow" style="font-size:.7rem;opacity:.7">▸</span>
       </button>
-      <div id="editUrlGuideBody" style="display:none;padding:.1rem .7rem .65rem;display:flex;flex-direction:column;gap:.45rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem">Busca el libro en Google Imágenes, luego:</div>
+      <div id="editUrlGuideBody" style="display:none;padding:.1rem .7rem .65rem;flex-direction:column;gap:.45rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.05rem" data-i18n="urlGuideIntro">Search the book on Google Images, then:</div>
         <div style="display:flex;align-items:flex-start;gap:.55rem">
           <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">💻</span>
           <div>
@@ -1096,18 +1105,18 @@ canvas{-webkit-user-select:none;user-select:none}
     </div>
   </div>
   <div style="margin-top:.65rem">
-    <label class="flbl">Categoría</label>
+    <label class="flbl" data-i18n="categoryLabel">Category</label>
     <div class="cat-row"><select class="fin" id="editCat"></select><button class="btn-new-cat" onclick="promptNewCatEdit()" id="btnNewCatEdit">+ Nueva</button></div>
   </div>
   <div style="margin-top:.65rem">
-    <label class="flbl">Estado del libro</label>
+    <label class="flbl" data-i18n="statusLabel">Book status</label>
     <select class="fin" id="editStatus"><!-- populated by populateStatusSelect --><option value="wishlist">🚀 Wishlist (aún no lo tengo)</option>
     </select>
   </div>
   <div class="macts" style="justify-content:space-between">
-    <button class="btn-del" style="padding:.42rem .9rem" onclick="const _rid=document.getElementById('mEdit')._id;const _rm2=document.getElementById('mBook');if(_rm2){_rm2.style.filter='';_rm2.style.opacity='';}closeModal('mEdit');delBook(_rid)" data-i18n="deleteBook">Eliminar libro</button>
+    <button class="btn-del" style="padding:.42rem .9rem" onclick="_closeEditModal();delBook(document.getElementById('mEdit')._id)" data-i18n="deleteBook">Eliminar libro</button>
     <div style="display:flex;gap:.45rem">
-      <button class="btn-ghost" onclick="const _rm=document.getElementById('mBook');if(_rm){_rm.style.filter='';_rm.style.opacity='';}closeModal('mEdit');if(_rm&&_rm._id)_rm.classList.add('open')" data-i18n="cancel">Cancelar</button>
+      <button class="btn-ghost" onclick="_closeEditModal()" data-i18n="cancel">Cancelar</button>
       <button class="btn-ok" onclick="saveEdit()" data-i18n="saveChanges">Guardar cambios</button>
     </div>
   </div>
@@ -1471,10 +1480,10 @@ canvas{-webkit-user-select:none;user-select:none}
       <div style="text-align:center;margin-bottom:1.2rem">
         <div style="font-size:2rem;margin-bottom:.5rem">🔑</div>
         <p id="onbLicTitle" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:.3rem">Activar licencia</p>
-        <p id="onbLicSub" style="font-size:.68rem;color:var(--muted);line-height:1.6">Ingresa tu clave de acceso de Gumroad para desbloquear ALINEA Premium.</p>
+        <p id="onbLicSub" style="font-size:.68rem;color:var(--muted);line-height:1.6">Recibirás tu clave por email tras completar tu compra en Lemon Squeezy.</p>
       </div>
       <input class="fin" type="text" id="onbLicInput" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" style="font-size:.72rem;padding:.65rem .9rem;letter-spacing:.05em;margin-bottom:.6rem;width:100%;box-sizing:border-box">
-      <p id="onbLicNote" style="font-size:.58rem;color:var(--dim);text-align:center;line-height:1.6">Recibirás tu clave por email tras completar tu compra en Gumroad. <br>Esta versión es Beta — el paso de licencia estará activo en producción.</p>
+      <p id="onbLicNote" style="font-size:.58rem;color:var(--dim);text-align:center;line-height:1.6">Recibirás tu clave por email tras completar tu compra en Lemon Squeezy.<br>Esta versión es Beta — el paso de licencia aquí no es obligatorio.</p>
     </div>
 
     <!-- STEP 4: QUICK GUIDE -->
@@ -1772,7 +1781,7 @@ en:{name:'English',t:{
   ownedUnread:'I own it, unread',noPendingBooks:'No pending books.',
   noCategory:'No category',
   filterAll:'All',filterNone:'None',category:'Categories',explore2:'Explore ideas',
-  titleLabel:'Title',authorLabel:'Author',categoryLabel:'Category',statusLabel:'Book status',coverUrlLabel:'Cover URL',
+  titleLabel:'Title',authorLabel:'Author',categoryLabel:'Category',statusLabel:'Book status',coverUrlLabel:'Cover URL',urlGuideTitle:'💡 How to copy the correct URL?',urlGuideIntro:'Search the book on Google Images, then:',urlGuidePC:'Computer (PC / Mac)',urlGuidePCDesc:'Right-click on the cover → "Copy image address"',urlGuideiOS:'iPhone (iOS / Safari)',urlGuideiOSDesc:'Hold the cover 1 sec → Apple menu → "Copy" or "Copy image link"',urlGuideAndroid:'Android (Chrome)',urlGuideAndroidDesc:'Hold finger on cover → "Copy image address"',
   secNotas:'Notes & Highlights',secKeywords:'Keywords',secRelated:'Related books',
   terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
 }},
@@ -3288,7 +3297,6 @@ function showMilestonePopup(count,msg){
 
 function openEdit(id){
   const b=lib.find(x=>x.id===id);if(!b)return;
-  const _mb=document.getElementById('mBook');if(_mb&&_mb.classList.contains('open')){_mb.style.filter='blur(4px)';_mb.style.opacity='.35';}
   editCover=b.cover;
   document.getElementById('editTitle').value=b.title;
   document.getElementById('editAuthor').value=b.author==='Autor desconocido'?'':b.author;
@@ -3301,7 +3309,15 @@ function openEdit(id){
   populateCatSelect('editCat',b.category||'');
   populateStatusSelect('editStatus',bStatus);
   document.getElementById('mEdit')._id=id;
-  showModal('mEdit');
+  // Show dedicated blocking overlay
+  const eo=document.getElementById('editOverlay');
+  if(eo)eo.style.display='block';
+  // Show mEdit using standard modal class (keeps centered position)
+  const me=document.getElementById('mEdit');
+  me.style.display='';
+  me.style.zIndex='';
+  me.classList.add('open');
+  document.body.classList.add('modal-open');
 }
 function onEditFile(e){
   const f=e.target.files[0];if(!f)return;
@@ -3347,6 +3363,18 @@ function prevAddUrl(){
   };
   p.onerror=()=>{p.style.display='none';};
 }
+
+function _closeEditModal(){
+  const me=document.getElementById('mEdit');
+  me.classList.remove('open');
+  me.style.display='';
+  me.style.zIndex='';
+  const eo=document.getElementById('editOverlay');
+  if(eo)eo.style.display='none';
+  // Only remove modal-open if no other modals are open
+  const anyOpen=MODALS.filter(m=>m!=='mEdit').some(m=>document.getElementById(m)?.classList.contains('open'));
+  if(!anyOpen)document.body.classList.remove('modal-open');
+}
 function saveEdit(){
   const id=document.getElementById('mEdit')._id;
   const b=lib.find(x=>x.id===id);if(!b)return;
@@ -3357,10 +3385,10 @@ function saveEdit(){
   b.status=newStatus;b.isWishlist=newStatus==='wishlist';
   b.readingStatus=newStatus==='done'?'done':newStatus==='reading'?'reading':'pending';
   if(editCover)b.cover=editCover;
-  persist();closeModal('mEdit');renderSidebar();renderLib();
-  const _mb2=document.getElementById('mBook');if(_mb2){_mb2.style.filter='';_mb2.style.opacity='';}
-  const curBookId=document.getElementById('mBook')._id;
-  if(curBookId===id)openBook(id);
+  persist();_closeEditModal();renderSidebar();renderLib();
+  // Refresh mBook if it was open for this book
+  const mb=document.getElementById('mBook');
+  if(mb&&mb.classList.contains('open')&&mb._id===id)openBook(id);
 }
 function delBook(id){
   const b=lib.find(x=>x.id===id);if(!b||!confirm(`¿Eliminar "${b.title}"?`))return;
@@ -6473,15 +6501,25 @@ function renderLib(){
 // ══════════════════════════
 // MODALS
 // ══════════════════════════
-function showModal(id){document.getElementById('overlay').classList.add('open');document.getElementById(id).classList.add('open');document.body.classList.add('modal-open');}
+function showModal(id){
+  const ov=document.getElementById('overlay');
+  ov.classList.add('open');
+  document.getElementById(id).classList.add('open');
+  document.body.classList.add('modal-open');
+}
 function closeModal(id){
+  // mEdit has its own dedicated close function — always route through it
+  if(id==='mEdit'){_closeEditModal();return;}
   document.getElementById(id).classList.remove('open');
   setTimeout(()=>{
     const anyOpen=MODALS.some(m=>document.getElementById(m)?.classList.contains('open'));
-    if(!anyOpen){document.body.classList.remove('modal-open');document.getElementById('overlay').classList.remove('open');}
+    if(!anyOpen){
+      document.body.classList.remove('modal-open');
+      document.getElementById('overlay').classList.remove('open');
+    }
   },250);
 }
-function closeAll(){MODALS.forEach(m=>document.getElementById(m).classList.remove('open'));document.getElementById('overlay').classList.remove('open');document.body.classList.remove('modal-open');stopCam();}
+function closeAll(){MODALS.forEach(m=>document.getElementById(m).classList.remove('open'));document.getElementById('overlay').classList.remove('open');document.body.classList.remove('modal-open');stopCam();_closeEditModal();}
 
 // ══════════════════════════
 // EXPORT / IMPORT
@@ -7217,8 +7255,8 @@ function onbPopulateStep(step){
     const isES=currentLang==='es';
     const lt=document.getElementById('onbLicTitle');const ls=document.getElementById('onbLicSub');const ln=document.getElementById('onbLicNote');
     if(lt)lt.textContent=isES?'Activar licencia':'Activate license';
-    if(ls)ls.textContent=isES?'Ingresa tu clave de acceso de Gumroad para desbloquear ALINEA Premium.':'Enter your Gumroad access key to unlock ALINEA Premium.';
-    if(ln)ln.innerHTML=isES?'Recibirás tu clave por email tras completar tu compra en Gumroad.<br>Esta versión es Beta — el paso de licencia estará activo en producción.':'You\'ll receive your key by email after completing your purchase on Gumroad.<br>This is a Beta version — the license step will be active in production.';
+    if(ls)ls.textContent=isES?'Recibirás tu clave por email tras completar tu compra en Lemon Squeezy.':"You'll receive your key by email after completing your purchase on Lemon Squeezy.";
+    if(ln)ln.innerHTML=isES?'Recibirás tu clave por email tras completar tu compra en Lemon Squeezy.<br>Esta versión es Beta — el paso de licencia aquí no es obligatorio.':'You\'ll receive your key by email after completing your purchase on Lemon Squeezy.<br>This is a Beta — the license step is not required.';
   }
   if(step===5){
     document.getElementById('onbGuideTitle').textContent=tx.guide_title;
