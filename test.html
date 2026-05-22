@@ -1596,15 +1596,15 @@ es:{name:'Español',t:{
   iaDesc:'Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.',
   comingSoon:'Próximamente',comingSoonDesc:'Más herramientas de análisis IA en desarrollo.',
   welcomeQ:'¿Y si pudieras ver tu conocimiento?',
-  welcomeP1:'Leemos, subrayamos, anotamos — y con el tiempo, esa sabiduría va perdiendo brillo. No porque no podamos retenerla física o mentalmente, aunque nos encantaría.',
-  welcomeP2:'ALINEA es para todos aquellos que siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas quieren empezar a crear, y aún más, a visualizar su conocimiento.',
-  welcomeP3:'Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que ya existen entre todo lo que has leído — solo que nunca las habías podido ver. Cada keyword, cada nota, cada subrayado está hablando con otros',
-  welcomeP3em:'sin que te hayas dado cuenta',
+  welcomeP1:'Leemos, subrayamos y anotamos. Pero con el tiempo, muchas conexiones se vuelven invisibles.',
+  welcomeP2:'ALINEA es para quienes siempre llevan un libro en el bolsillo — o más. Para los devoradores de libros. Y también para quienes apenas comienzan a construir, descubrir y visualizar su conocimiento.',
+  welcomeP3:'Tu biblioteca no es una lista de libros. Es una galaxia viva de conexiones que siempre estuvieron ahí. Cada keyword, cada nota y cada subrayado conversa con otros',
+  welcomeP3em:'sin que lo notes',
   welcomeP3b:'. ALINEA los hace visibles.',
-  welcomeP4:'Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni sabías que tenías. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en el mundo y en tu galaxia.',
+  welcomeP4:'Explora cualquier palabra y encuentra al instante todo lo que has pensado sobre ella. Observa tu galaxia y descubre patrones que ni siquiera sabías que existían. Lee tu bitácora y encuentra, en resumidas cuentas, tu propia huella — la marca que dejas en el mundo y en tu galaxia.',
   welcomePrivacy:'Y recuerda — esta página también se creó con el propósito de que tú sepas que tus datos únicamente son tuyos. ALINEA jamás tendrá tu información, ni nadie más, ni siquiera yo. Todo tu universo vive en tu dispositivo, y solo tú puedes verlo. Cuando quieras, puedes descargar tu respaldo desde',
   welcomePrivacyLink:'Configuración → Datos',
-  welcomeClosing:'Ver las miles de conexiones que existen entre tus libros. Volver visible lo invisible. Eso es ALINEA.',
+  welcomeClosing:'Volver visible lo invisible. Eso es ALINEA.',
   welcomeSign:'— Miguel Valdez, creador de ALINEA',
   welcomeBtn1:'✦ Agregar mi primer libro',welcomeBtn2:'Explorar primero',
   noLibYet:'Tu galaxia está vacía',noLibSub:'Usa el botón + para agregar tu primer libro.',
@@ -1658,7 +1658,7 @@ es:{name:'Español',t:{
   newCatPrompt:'Nueva categoría:',
   downloadBackupNow:'⬇ Descargar respaldo ahora',
   importantNote:'Una cosa importante —',
-  privacyNote:'Tus datos nunca salen de tu dispositivo. Ni yo puedo verlos. ALINEA jamás tendrá tu información. Lo único que te pido es que descargues tu respaldo — ese archivo JSON es tu biblioteca entera, vive donde tú quieras, y con él puedes volver a tu galaxia en cualquier momento y en cualquier dispositivo.',
+  privacyNote:'Tus datos nunca salen de tu dispositivo. Ni siquiera yo puedo verlos. ALINEA jamás tendrá acceso a tu información. Lo único que te pido es que descargues tu respaldo. Ese archivo JSON es tu biblioteca entera: vive donde tú quieras, y con él siempre podrás volver a tu galaxia, desde cualquier momento y cualquier dispositivo.',
   storageTitle:'💾 Almacenamiento',locationTitle:'📍 Ubicación',privacyTitle:'🔒 Privacidad',
   locationDesc:'localStorage del navegador',privacyDesc:'Datos 100% locales',
   backupTitle:'Respaldo de datos',
@@ -2324,17 +2324,17 @@ function _renderBookCanvas(b,checks){
     };
 
     if(checks.f_cover&&b.cover){
-      const img=new Image();
-      // Try without CORS first (works for most CDN images)
+      // Always load with crossOrigin to avoid canvas CORS taint
+      const img=new Image();img.crossOrigin='anonymous';
       img.onload=()=>drawCoverAndText(img);
       img.onerror=()=>{
-        // Retry with crossOrigin
+        // CORS blocked by CDN — try via a CORS proxy
         const img2=new Image();img2.crossOrigin='anonymous';
         img2.onload=()=>drawCoverAndText(img2);
-        img2.onerror=()=>drawCoverAndText(null);
-        img2.src=b.cover+'?cb='+Date.now();
+        img2.onerror=()=>drawCoverAndText(null); // Give up gracefully, draw without cover
+        img2.src='https://corsproxy.io/?'+encodeURIComponent(b.cover);
       };
-      img.src=b.cover;
+      img.src=b.cover+'?cb='+Date.now();
     } else {
       drawCoverAndText(null);
     }
@@ -5064,7 +5064,7 @@ function _drawCover(ctx, b, bx, by, cw, ch, ac, radius, onDone) {
       ctx.textAlign = 'center'; ctx.fillText('📖', bx + cw/2, by + ch/2 + 10);
       onDone();
     };
-    img.src = b.cover;
+    img.src = b.cover + (b.cover.includes('?') ? '&' : '?') + 'cb=' + Date.now();
   } else {
     ctx.fillStyle = 'rgba(255,255,255,.25)';
     ctx.font = Math.max(24, cw * 0.14) + 'px serif';
@@ -5254,10 +5254,8 @@ function _shareKnowledgeCanvas(){
   ctx.beginPath();ctx.moveTo(W*.3,H-fH+1);ctx.lineTo(W*.7,H-fH+1);ctx.stroke();
   ctx.fillStyle=ac2+'ee';ctx.font='600 36px "DM Mono",monospace';ctx.letterSpacing='10px';
   ctx.fillText('ALINEA',W/2,H-fH+56);
-  ctx.fillStyle=ac+'cc';ctx.font='400 26px "DM Mono",monospace';ctx.letterSpacing='3px';
-  ctx.fillText('@alinea.io',W/2,H-fH+96);
   ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 20px "DM Mono",monospace';ctx.letterSpacing='1px';
-  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-fH+128);
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-fH+100);
   ctx.letterSpacing='0';
 
   // Export
@@ -5288,7 +5286,19 @@ function _exportBitStat(cv) {
     _showToast(currentLang==='en' ? '📸 Image saved! Share it on Instagram Stories' : '📸 Imagen guardada · compártela en Stories de Instagram', 5000);
   };
   try {
-    cv.toBlob(blob => _doShare(blob), 'image/png', 1.0);
+    cv.toBlob(blob => {
+      if (blob) { _doShare(blob); }
+      else {
+        // toBlob returned null — canvas likely tainted, fall back to dataURL
+        try {
+          const dataUrl = cv.toDataURL('image/png');
+          fetch(dataUrl).then(r=>r.blob()).then(blob=>_doShare(blob)).catch(()=>{
+            const a=document.createElement('a');a.download='alinea-story.png';a.href=dataUrl;a.click();
+            _showToast(currentLang==='en'?'📸 Image saved!':'📸 Imagen guardada', 4000);
+          });
+        } catch(e3) { _showToast('❌ No se pudo generar la imagen'); }
+      }
+    }, 'image/png', 1.0);
   } catch(e) {
     // Canvas tainted by CORS — use toDataURL as fallback
     try {
@@ -6126,7 +6136,7 @@ function shareGalaxySnapshot(){
   // @alinea.io
   ctx.fillStyle=ac+'99';ctx.font='300 '+Math.round(fs*.78)+'px "DM Mono",monospace';
   ctx.letterSpacing='1px';
-  ctx.fillText('@alinea.io  ·  #MakingVisibleTheInvisible',W/2,H-fH+fH*.82);
+  ctx.fillText('#MakingVisibleTheInvisible',W/2,H-fH+fH*.82);
   ctx.letterSpacing='0px';
   if(btn){btn.textContent='📸';btn.style.pointerEvents='';}
   out.toBlob(async blob=>{
