@@ -6614,113 +6614,201 @@ function exportJSON(){
 
 
 function generateWelcomeKit(){
-  const jsPDFLib=window.jspdf&&window.jspdf.jsPDF?window.jspdf.jsPDF:(window.jsPDF||null);
-  if(!jsPDFLib){alert('jsPDF no disponible. Recarga la página.');return;}
   const th=ACCENT_THEMES[currentTheme]||ACCENT_THEMES.purple;
-  const _ac=th.accent,_ac2=th.accent2,_ac3=th.accent3||th.accent;
-  const hr=parseInt(_ac.slice(1,3),16),hg=parseInt(_ac.slice(3,5),16),hb=parseInt(_ac.slice(5,7),16);
-  const h2r=parseInt(_ac2.slice(1,3),16),h2g=parseInt(_ac2.slice(3,5),16),h2b=parseInt(_ac2.slice(5,7),16);
+  const ac=th.accent, ac2=th.accent2, ac3=th.accent3||th.accent;
+  const rng=s=>{let x=Math.sin(s*127.1)*43758.5453;return x-Math.floor(x);};
 
-  // Build orb on canvas
+  // ── Dimensions ──
+  // 3 bookmarks side by side: each 300x900px + 60px instructions panel = 960+300=total
+  // Bookmarks: 300w x 900h px each. Instructions: 340w x 900h. Total: 1240x900
+  const BW=300, BH=900;
+  const IW=340; // instructions panel width
+  const GAP=20;
+  const PAD=40;
+  const CW=BW*2+IW+GAP*2+PAD*2;
+  const CH=BH+PAD*2;
+  const cv=document.createElement('canvas');
+  cv.width=CW; cv.height=CH;
+  const ctx=cv.getContext('2d');
+
+  // ── Background ──
+  ctx.fillStyle='#f0edf8';
+  ctx.fillRect(0,0,CW,CH);
+
+  // ── Header ──
+  ctx.fillStyle=ac;
+  ctx.fillRect(0,0,CW,36);
+  ctx.fillStyle='#fff';
+  ctx.font='bold 13px "DM Mono",monospace';
+  ctx.textAlign='center';
+  ctx.letterSpacing='6px';
+  ctx.fillText('ALINEA  ·  WELCOME KIT  ·  Imprime · Recorta · Disfruta', CW/2, 23);
+  ctx.letterSpacing='0';
+
+  // ── Orb builder ──
   const makeOrb=(r)=>{
-    const cv=document.createElement('canvas');cv.width=r*2;cv.height=r*2;
-    const cx=cv.getContext('2d');
-    const og=cx.createRadialGradient(r*.58,r*.48,0,r,r,r);
-    og.addColorStop(0,'#ffffff');og.addColorStop(.2,_ac2);og.addColorStop(.65,_ac);og.addColorStop(1,_ac3);
-    cx.shadowBlur=r*.55;cx.shadowColor=_ac;
-    cx.fillStyle=og;cx.beginPath();cx.arc(r,r,r*.9,0,Math.PI*2);cx.fill();
-    const sp=cx.createRadialGradient(r*.6,r*.5,0,r*.6,r*.5,r*.3);
-    sp.addColorStop(0,'rgba(255,255,255,.55)');sp.addColorStop(1,'rgba(255,255,255,0)');
-    cx.fillStyle=sp;cx.beginPath();cx.arc(r*.6,r*.5,r*.3,0,Math.PI*2);cx.fill();
-    return cv.toDataURL('image/png');
+    const oc=document.createElement('canvas');oc.width=r*2;oc.height=r*2;
+    const ox=oc.getContext('2d');
+    const og=ox.createRadialGradient(r*.55,r*.45,0,r,r,r);
+    og.addColorStop(0,'#ffffff');og.addColorStop(.2,ac2);og.addColorStop(.6,ac);og.addColorStop(1,ac3);
+    ox.shadowBlur=r*.6;ox.shadowColor=ac;
+    ox.fillStyle=og;ox.beginPath();ox.arc(r,r,r*.88,0,Math.PI*2);ox.fill();
+    // specular
+    const sp=ox.createRadialGradient(r*.58,r*.48,0,r*.58,r*.48,r*.28);
+    sp.addColorStop(0,'rgba(255,255,255,.6)');sp.addColorStop(1,'rgba(255,255,255,0)');
+    ox.fillStyle=sp;ox.beginPath();ox.arc(r*.58,r*.48,r*.28,0,Math.PI*2);ox.fill();
+    return oc;
   };
+  const orb=makeOrb(70);
 
-  // Bookmark dimensions: 62 x 185 mm (portrait, tall bookmark)
-  const BW=62, BH=185;
-  const doc=new jsPDFLib({orientation:'portrait',unit:'mm',format:[BW,BH]});
-
-  const bookmarks=[
-    {quote:'"Volviendo lo invisible visible."', sub:'Colección personal'},
-    {quote:'"Un libro a la vez,\nun universo entero."', sub:'Mi Biblioteca'},
-    {quote:'"Hazlo visible.\nHazlo tuyo."', sub:'ALINEA'}
-  ];
-
-  const addBg=()=>{
-    doc.setFillColor(6,5,15);doc.rect(0,0,BW,BH,'F');
-    const rng=s=>{let x=Math.sin(s*127.1)*43758.5;return x-Math.floor(x);};
-    for(let i=0;i<60;i++){
-      const sx=rng(i)*BW,sy=rng(i+40)*BH,sr=rng(i+80)*.5+.1;
-      const op=rng(i+120)*.3+.04;
-      doc.setFillColor(200,190,255);
-      try{doc.setGState(new doc.GState({opacity:op}));}catch(e){}
-      doc.circle(sx,sy,sr,'F');
+  // ── Draw bookmark (x offset) ──
+  const drawBookmark=(bx,quoteLines,isEN)=>{
+    const by=PAD;
+    // Background dark
+    ctx.fillStyle='#04030d';
+    _roundRect(ctx,bx,by,BW,BH,16);ctx.fill();
+    // Stars
+    for(let i=0;i<80;i++){
+      ctx.beginPath();ctx.arc(bx+rng(i*7)*BW,by+rng(i*13)*BH,rng(i*31)*.8+.2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${rng(i*53)*.3+.05})`;ctx.fill();
     }
-    try{doc.setGState(new doc.GState({opacity:1}));}catch(e){}
+    // Left accent strip
+    ctx.fillStyle=ac;
+    _roundRect(ctx,bx,by,8,BH,16,true);ctx.fill();
+    ctx.fillStyle=ac2+'33';
+    ctx.fillRect(bx+8,by,14,BH);
+    // Dashed cut line right
+    ctx.setLineDash([6,6]);ctx.strokeStyle='rgba(139,92,246,.25)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(bx+BW-6,by+20);ctx.lineTo(bx+BW-6,by+BH-20);ctx.stroke();
+    ctx.setLineDash([]);
+    // Orb
+    const orbSize=90;
+    ctx.drawImage(orb,bx+BW/2-orbSize/2,by+38,orbSize,orbSize);
+    // ALINEA wordmark
+    ctx.fillStyle=ac2;
+    ctx.font='bold 18px "DM Mono",monospace';
+    ctx.textAlign='center';ctx.letterSpacing='8px';
+    ctx.fillText('ALINEA',bx+BW/2,by+38+orbSize+28);
+    ctx.letterSpacing='0';
+    // Separator line
+    ctx.strokeStyle=ac+'66';ctx.lineWidth=1;ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(bx+BW/2-55,by+38+orbSize+38);ctx.lineTo(bx+BW/2+55,by+38+orbSize+38);ctx.stroke();
+    // Quote text — rotated 90deg, centered vertically
+    ctx.save();
+    ctx.translate(bx+BW/2,by+BH/2+40);
+    ctx.rotate(-Math.PI/2);
+    ctx.font='italic 17px Georgia,serif';
+    ctx.fillStyle='rgba(220,210,255,.9)';
+    ctx.textAlign='center';ctx.letterSpacing='0';
+    const lh=26;
+    const totalH=(quoteLines.length-1)*lh;
+    quoteLines.forEach((ql,i)=>ctx.fillText(ql,0,-totalH/2+i*lh));
+    ctx.restore();
+    // @alinea.io bottom
+    ctx.fillStyle='rgba(4,3,12,.85)';
+    _roundRect(ctx,bx,by+BH-54,BW,54,16,false,true);ctx.fill();
+    ctx.strokeStyle=ac+'33';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(bx+BW*.2,by+BH-54);ctx.lineTo(bx+BW*.8,by+BH-54);ctx.stroke();
+    ctx.fillStyle=ac2+'cc';ctx.font='500 13px "DM Mono",monospace';ctx.letterSpacing='2px';ctx.textAlign='center';
+    ctx.fillText('@alinea.io',bx+BW/2,by+BH-34);
+    ctx.fillStyle='rgba(255,255,255,.28)';ctx.font='300 10px "DM Mono",monospace';ctx.letterSpacing='0.5px';
+    ctx.fillText('#MakingVisibleTheInvisible',bx+BW/2,by+BH-18);
+    ctx.letterSpacing='0';
   };
 
-  const orbPng=makeOrb(100);
-
-  for(let p=0;p<3;p++){
-    if(p>0)doc.addPage();
-    addBg();
-
-    // Left accent strip
-    doc.setFillColor(hr,hg,hb);doc.rect(0,0,2.5,BH,'F');
-    doc.setFillColor(h2r,h2g,h2b);
-    try{doc.setGState(new doc.GState({opacity:.3}));}catch(e){}
-    doc.rect(2.5,0,5,BH,'F');
-    try{doc.setGState(new doc.GState({opacity:1}));}catch(e){}
-
-    // Dashed cut line (right edge)
-    doc.setDrawColor(60,50,90);doc.setLineWidth(.2);
-    for(let y=0;y<BH;y+=4){doc.line(BW-1,y,BW-1,y+2);}
-
-    // Orb — top center
-    const oMM=16;
-    doc.addImage(orbPng,'PNG',BW/2-oMM/2,10,oMM,oMM);
-
-    // ALINEA wordmark
-    doc.setFontSize(7);doc.setFont('helvetica','bold');
-    doc.setTextColor(h2r,h2g,h2b);
-    doc.text('A L I N E A',BW/2,10+oMM+5,{align:'center'});
-
-    // Short horizontal rule
-    doc.setDrawColor(hr,hg,hb);doc.setLineWidth(.3);
-    doc.line(BW/2-12,10+oMM+8,BW/2+12,10+oMM+8);
-
-    // Quote — rotated vertical text (center of bookmark)
-    // Draw on offscreen canvas, embed as image rotated
-    const qCV=document.createElement('canvas');
-    const qH=800,qW=160;
-    qCV.width=qW;qCV.height=qH;
-    const qCtx=qCV.getContext('2d');
-    qCtx.fillStyle='rgba(0,0,0,0)';qCtx.fillRect(0,0,qW,qH);
-    qCtx.font='italic 26px Georgia,serif';
-    qCtx.fillStyle='rgba(240,238,255,.88)';
-    qCtx.textAlign='center';
-    const qlines=bookmarks[p].quote.split('\n');
-    const lineH=34;
-    const startQ=qH/2-(qlines.length*lineH)/2;
-    qlines.forEach((ql,i)=>qCtx.fillText(ql,qW/2,startQ+i*lineH));
-    const qImg=qCV.toDataURL('image/png');
-    // Place rotated: convert to mm — qH=800px→~141mm, qW=160px→~28mm at 144dpi
-    // We embed it rotated using transform
-    doc.addImage(qImg,'PNG',11,42,BW-22,70);
-
-    // @alinea.io bottom
-    doc.setFillColor(4,3,12);doc.rect(0,BH-16,BW,16,'F');
-    doc.setDrawColor(hr,hg,hb);doc.setLineWidth(.2);
-    doc.line(BW*.2,BH-15.5,BW*.8,BH-15.5);
-    doc.setFontSize(5.5);doc.setFont('helvetica','normal');
-    doc.setTextColor(h2r,h2g,h2b);
-    doc.text('@alinea.io',BW/2,BH-10,{align:'center'});
-    doc.setFontSize(4.5);doc.setTextColor(hr,hg,hb);
-    doc.text('#MakingVisibleTheInvisible',BW/2,BH-5.5,{align:'center'});
-    doc.setFontSize(4);doc.setTextColor(60,55,90);
-    doc.text('Imprime · Recorta · Disfruta',BW/2,BH-1.5,{align:'center'});
+  // ── Helper: rounded rect ──
+  function _roundRect(ctx,x,y,w,h,r,leftOnly=false,bottomOnly=false){
+    ctx.beginPath();
+    if(bottomOnly){
+      ctx.moveTo(x,y);ctx.lineTo(x+w,y);
+      ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+      ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y);
+    } else if(leftOnly){
+      ctx.moveTo(x+r,y);ctx.lineTo(x+w,y);ctx.lineTo(x+w,y+h);ctx.lineTo(x+r,y+h);
+      ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+    } else {
+      ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+      ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+      ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+      ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+    }
+    ctx.closePath();
   }
 
-  doc.save('alinea-welcome-kit-'+new Date().toISOString().slice(0,10)+'.pdf');
+  // ── Draw 2 bookmarks ──
+  drawBookmark(PAD,      ['"Volviendo lo invisible','visible."']);
+  drawBookmark(PAD+BW+GAP, ['"Un libro a la vez,','un universo entero."']);
+
+  // ── Instructions panel ──
+  const ix=PAD+BW*2+GAP*2, iy=PAD;
+  ctx.fillStyle='#f7f5ff';
+  _roundRect(ctx,ix,iy,IW,BH,16);ctx.fill();
+  ctx.strokeStyle=ac+'44';ctx.lineWidth=2;
+  _roundRect(ctx,ix,iy,IW,BH,16);ctx.stroke();
+
+  // Instructions header
+  ctx.fillStyle=ac;
+  ctx.font='bold 11px "DM Mono",monospace';ctx.letterSpacing='6px';ctx.textAlign='center';
+  ctx.fillText('INSTRUCCIONES',ix+IW/2,iy+32);
+  ctx.letterSpacing='0';
+  ctx.strokeStyle=ac+'33';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(ix+20,iy+42);ctx.lineTo(ix+IW-20,iy+42);ctx.stroke();
+
+  // Steps
+  const steps=[
+    {n:'01',title:'IMPRIME',desc:'En papel grueso o cartulina 200–300 gr. Recomendamos impresión láser o Inkjet.'},
+    {n:'02',title:'RECORTA',desc:'Sigue el borde punteado con tijeras o cúter sobre una superficie plana.'},
+    {n:'03',title:'ÚSALO',desc:'Colócalo en tu libro favorito y lleva ALINEA contigo a donde vayas.'},
+    {n:'04',title:'EXPLORA',desc:'Visita alinea.io y agrega tus libros para construir tu galaxia de conocimiento.'},
+  ];
+
+  let sy=iy+62;
+  steps.forEach(step=>{
+    // Circle number
+    ctx.fillStyle=ac;
+    ctx.beginPath();ctx.arc(ix+36,sy+14,18,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='bold 11px "DM Mono",monospace';ctx.textAlign='center';ctx.letterSpacing='0';
+    ctx.fillText(step.n,ix+36,sy+19);
+    // Title
+    ctx.fillStyle=ac;
+    ctx.font='bold 12px "DM Mono",monospace';ctx.textAlign='left';ctx.letterSpacing='3px';
+    ctx.fillText(step.title,ix+62,sy+12);
+    ctx.letterSpacing='0';
+    // Description — wrap text
+    ctx.fillStyle='#555';ctx.font='13px Arial,sans-serif';
+    const words=step.desc.split(' ');
+    let line='',lineY=sy+28;
+    const maxW=IW-76;
+    words.forEach(word=>{
+      const test=line?line+' '+word:word;
+      if(ctx.measureText(test).width>maxW&&line){
+        ctx.fillText(line,ix+62,lineY);line=word;lineY+=18;
+      } else line=test;
+    });
+    if(line)ctx.fillText(line,ix+62,lineY);
+    sy=lineY+32;
+  });
+
+  // Bottom quote
+  ctx.fillStyle=ac;
+  ctx.font='italic bold 13px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('"Volviendo lo invisible visible."',ix+IW/2,iy+BH-38);
+  ctx.fillStyle=ac+'aa';ctx.font='11px "DM Mono",monospace';ctx.letterSpacing='1px';
+  ctx.fillText('@alinea.io',ix+IW/2,iy+BH-20);ctx.letterSpacing='0';
+
+  // ── Export as PNG ──
+  (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{
+    cv.toBlob(blob=>{
+      if(!blob){_showToast('❌ Error al generar imagen');return;}
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.download='alinea-welcome-kit-'+new Date().toISOString().slice(0,10)+'.png';
+      a.href=url;a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),3000);
+      _showToast(currentLang==='en'?'🔖 Welcome Kit downloaded!':'🔖 Welcome Kit descargado — ¡imprímelo!',5000);
+    },'image/png',1.0);
+  });
 }
 
 async function exportPDF(){
