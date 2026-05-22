@@ -209,7 +209,8 @@ body::before{content:'';position:fixed;inset:0;background:
 /* ── LAYOUT ── */
 .app{position:relative;z-index:1;min-height:calc(100vh - var(--content-top))}
 .view{display:none;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
-.view.active{display:flex;flex-direction:column}
+.view.active{display:flex;flex-direction:column;animation:_viewIn .18s ease-out}
+@keyframes _viewIn{from{opacity:.7;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
 .filter-bar-top{display:flex;align-items:center;gap:.5rem;padding:.45rem 1.4rem;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid rgba(30,27,46,.3);background:rgba(6,5,15,.6);backdrop-filter:blur(10px);flex-shrink:0}
 .filter-bar-top::-webkit-scrollbar{display:none}
@@ -3046,7 +3047,14 @@ window.addEventListener('deviceorientation',e=>{
   gyroY=b<45?(45-b)/45*(-3.5):0;
 },{passive:true});
 
+// Scroll memory per view
+const _viewScroll={};
+let _currentView='library';
+
 function gotoV(v,btn){_hap.nav();
+  // Save current scroll position
+  _viewScroll[_currentView]=window.scrollY;
+
   // Close any open modal when switching tabs
   closeAll();
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
@@ -3060,6 +3068,11 @@ function gotoV(v,btn){_hap.nav();
     const fn=db.getAttribute('onclick')||'';
     if(fn.includes("'"+v+"'"))db.classList.add('active');
   });
+  _currentView=v;
+  // Restore saved scroll or reset to top
+  const savedScroll=_viewScroll[v]??0;
+  requestAnimationFrame(()=>window.scrollTo({top:savedScroll,behavior:'instant'}));
+
   if(v==='graph'){setTimeout(initGraph,40);}
   if(v==='explore'){appState.magPositions={};wordUserPositions={};renderExplore();setTimeout(buildMagWords,150);}
   if(v==='bitacora'){renderBitacora();}
@@ -7749,6 +7762,56 @@ document.addEventListener('click',e=>{
   if(fabOpen&&!document.getElementById('fabWrap').contains(e.target))toggleFab();
 },{passive:true});
 
+
+// ══════════════════════════
+// SWIPE NAVIGATION (Mobile)
+// ══════════════════════════
+(function(){
+  const VIEWS=['library','graph','explore','bitacora'];
+  let _sx=0,_sy=0,_st=0,_sActive=false;
+  const _blocked=()=>{
+    // Block swipe if a modal is open or user is interacting with draggable elements
+    if(document.body.classList.contains('modal-open'))return true;
+    if(document.getElementById('editOverlay')?.style.display==='block')return true;
+    return false;
+  };
+  document.addEventListener('touchstart',e=>{
+    if(_blocked())return;
+    const t=e.touches[0];
+    // Only activate in vertical middle zone (avoid top nav & bottom dock)
+    const yRatio=t.clientY/window.innerHeight;
+    if(yRatio<0.12||yRatio>0.88)return;
+    _sx=t.clientX;_sy=t.clientY;_st=Date.now();_sActive=true;
+  },{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(!_sActive)return;
+    const t=e.touches[0];
+    const dx=t.clientX-_sx,dy=t.clientY-_sy;
+    // If clearly vertical scroll, cancel swipe detection
+    if(Math.abs(dy)>Math.abs(dx)+15){_sActive=false;}
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(!_sActive){_sActive=false;return;}
+    _sActive=false;
+    const t=e.changedTouches[0];
+    const dx=t.clientX-_sx,dy=t.clientY-_sy;
+    const dt=Date.now()-_st;
+    // Threshold: horizontal > 55px, vertical < 45px, fast enough (<400ms)
+    if(Math.abs(dx)<55||Math.abs(dy)>45||dt>400)return;
+    const cur=VIEWS.indexOf(_currentView);
+    if(cur===-1)return;
+    let next=-1;
+    if(dx<0&&cur<VIEWS.length-1)next=cur+1; // swipe left → next
+    if(dx>0&&cur>0)next=cur-1;              // swipe right → prev
+    if(next===-1)return;
+    // Find and click the corresponding ntab
+    const ntabs=document.querySelectorAll('.ntab');
+    ntabs.forEach(tab=>{
+      const fn=tab.getAttribute('onclick')||'';
+      if(fn.includes("'"+VIEWS[next]+"'"))tab.click();
+    });
+  },{passive:true});
+})();
 </script>
 
 <!-- MILESTONE POPUP -->
