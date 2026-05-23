@@ -1379,7 +1379,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="width:44px;height:44px;border-radius:11px;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem">✦</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.35rem" data-i18n="comingSoon">Próximamente</div>
-          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)">IA integrada en <span style="font-family:'DM Mono',monospace;color:var(--accent2);letter-spacing:.08em">ALINEA</span></div>
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)">Conexiones que nunca habías visto</div>
         </div>
       </div>
     </div>
@@ -6033,9 +6033,13 @@ function drawGraph(){
   // Main sun
   if(main){
     const r=main.r||30;
-    const tk=cfg.accentTheme||localStorage.getItem('eter2_theme')||'purple';
-    const tm={purple:{sun:'#8b5cf6',dark:'#3b0764',g:'rgba(139,92,246,'},blue:{sun:'#3b82f6',dark:'#1e3a5f',g:'rgba(59,130,246,'},green:{sun:'#10b981',dark:'#064e3b',g:'rgba(16,185,129,'},pink:{sun:'#ec4899',dark:'#831843',g:'rgba(236,72,153,'},orange:{sun:'#f97316',dark:'#7c2d12',g:'rgba(249,115,22,'},yellow:{sun:'#fbbf24',dark:'#78350f',g:'rgba(251,191,36,'},red:{sun:'#ef4444',dark:'#7f1d1d',g:'rgba(239,68,68,'}};
-    const ct=tm[tk]||tm.purple;
+    const tk=currentTheme||cfg.accentTheme||localStorage.getItem('eter2_theme')||'purple';
+    // Build ct directly from ACCENT_THEMES so custom color is always reflected
+    const _th=ACCENT_THEMES[tk]||ACCENT_THEMES.purple;
+    const _rgb=_th.glow.replace(',.15)','').replace('rgba(','').split(',').map(Number);
+    const tm={}; // unused now — kept so ct line below still works
+    const _tmCustom={sun:_th.accent,dark:_th.accent3,g:'rgba('+_rgb[0]+','+_rgb[1]+','+_rgb[2]+','};
+    const ct=_tmCustom;
     const corona=ctx.createRadialGradient(main.x,main.y,0,main.x,main.y,r+28);
     corona.addColorStop(0,ct.g+'0.22)');corona.addColorStop(1,'transparent');
     ctx.beginPath();ctx.arc(main.x,main.y,r+28,0,Math.PI*2);ctx.fillStyle=corona;ctx.fill();
