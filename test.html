@@ -226,7 +226,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .lib-bar{padding:.4rem 1.4rem;display:flex;align-items:center;justify-content:flex-end;gap:.3rem}
 .vbtn{background:none;border:1px solid var(--border);color:var(--dim);width:24px;height:24px;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.64rem;transition:all .13s}
 .vbtn.active,.vbtn:hover{color:var(--accent2);border-color:var(--accent);background:var(--glow)}
-.books-area{padding:1.4rem;overflow-y:auto;min-height:50vh;-webkit-overflow-scrolling:touch}
+.books-area{padding:1.4rem;overflow-y:visible;min-height:50vh;-webkit-overflow-scrolling:touch}
 .bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.4rem}
 .bgrid.lv{grid-template-columns:1fr;gap:.38rem}
 .bcard{cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s;position:relative;z-index:1;-webkit-user-drag:none;user-drag:none;-webkit-user-select:none;user-select:none}
@@ -276,7 +276,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .g-hint{position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:.53rem;color:var(--dim);pointer-events:none;text-align:center;letter-spacing:.05em}
 
 /* ── EXPLORE — MAGNETIC WORDS ── */
-#viewExplore{min-height:calc(100vh - var(--content-top) - var(--content-bottom));overflow-y:auto;overflow-x:hidden;position:relative}
+#viewExplore{min-height:calc(100vh - var(--content-top) - var(--content-bottom));overflow-y:visible;overflow-x:hidden;position:relative}
 .exp-bg{position:relative;width:100%;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
 .mag-words-flow{position:relative;padding:1.2rem 1.5rem 4rem;min-height:calc(100vh - 300px)}
 @keyframes magFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-5px) rotate(var(--r,0deg))}}
@@ -325,7 +325,7 @@ body::before{content:'';position:fixed;inset:0;background:
 .ec-bk strong{color:var(--text);font-weight:500}
 .exp-empty{padding:2rem;color:var(--dim);font-size:.72rem;font-style:italic}
 
-#viewBitacora{padding:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;will-change:transform;scroll-behavior:auto;transform:translateZ(0);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#viewBitacora{padding:0;overflow-y:visible;-webkit-overflow-scrolling:touch}
 #viewBitacora>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%;contain:layout style}
 #viewSistema>div{padding:1.8rem 2rem;max-width:820px;margin:0 auto;width:100%}
 /* ── GRADIENT HERO TITLES ── */
@@ -815,7 +815,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <div id="sbCats" style="display:none"></div>
     <span id="filterBarTop" style="display:none"></span>
     <div class="view" id="viewGraph" style="height:calc(100vh - var(--content-top) - var(--content-bottom));position:relative;overflow:hidden">
-      <canvas id="gCanvas"></canvas>
+      <canvas id="gCanvas" style="will-change:transform;transform:translateZ(0)"></canvas>
       <div class="g-lib-name">
         <input type="text" id="libNameInput" placeholder="Mi Biblioteca…" oninput="onLibName(this.value)" onblur="saveLibName()">
       </div>
@@ -869,7 +869,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <!-- READING PACE & INSIGHTS -->
         <div id="bitInsights" style="margin-bottom:1.2rem"></div>
         <div class="bit-summary" id="bitSummary" style="display:none"></div>
-        <button class="btn-gen" onclick="genBitacora()" id="btnBit" data-i18n="generateSynthesis">✦ Generar síntesis IA</button>
+        <button class="btn-gen" onclick="genBitacora()" id="btnBit" data-i18n="generateSynthesis" style="display:none">✦ Generar síntesis IA</button>
         <div style="margin-top:1.5rem">
           <div class="sec" data-i18n="wishlistMissions">Wishlist — próximas misiones</div>
           <div id="bitWishList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;margin-bottom:1.5rem"></div>
@@ -1405,9 +1405,6 @@ canvas{-webkit-user-select:none;user-select:none}
       </div>
     </a>
 
-    <p style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem">Regalo Premium</p>
-    <p style="font-size:.62rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem">Separadores de libros imprimibles diseñados para tu galaxia.</p>
-    <button onclick="generateWelcomeKit()" style="width:100%;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border:none;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.09em;text-transform:uppercase;padding:.58rem;border-radius:8px;cursor:pointer;margin-bottom:1.2rem">🔖 Descargar Welcome Kit</button>
 
     <p style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);letter-spacing:.04em">© 2026 ALINEA · Miguel Valdez · All rights reserved</p>
   </div>
@@ -3021,6 +3018,8 @@ function initAppearance(){
   const fsize=localStorage.getItem('eter2_fontsize')||'normal';
   applyAccentTheme(theme);
   applyFontSize(fsize);
+  // Re-apply once DOM is guaranteed to have the FAB rendered
+  setTimeout(()=>applyAccentTheme(theme),0);
 }
 function catParent(cat){return CAT_PARENT[cat]||null;}
 
@@ -5889,26 +5888,33 @@ function initGraph(){
     });
   });
 
-  // Wishlist comets
+  // Wishlist comets — stable invisible orbit just outside the main sun
+  const wishOrbitR = mainR * 2.2 + 40; // tight orbit just beyond the sun corona, adaptive to sun size
   wishBooks.forEach((b,wi)=>{
-    const ang=-Math.PI/5+wi*0.28;
-    const dist=maxR*.6;
+    const ang = (wi / Math.max(wishBooks.length, 1)) * Math.PI * 2 - Math.PI / 2;
     const nid='comet_'+b.id;
     gNodes.push({id:nid,bookId:b.id,title:b.title,
-      x:cx+Math.cos(ang)*dist,y:cy+Math.sin(ang)*dist,type:'comet',r:9});
+      x:cx+Math.cos(ang)*wishOrbitR,y:cy+Math.sin(ang)*wishOrbitR,
+      type:'comet',r:9,
+      orbitR:wishOrbitR,orbitCenter:{x:cx,y:cy}});
     if(!gAngles[nid])gAngles[nid]=ang;
   });
 
   // Main orbit ring
   if(cats.length)gEdges.push({from:'__main',to:'sun_'+cats[0],type:'orbit-main',cat:cats[0]});
 
-  // Keyword cross-edges
+  // Keyword cross-edges — one edge per shared keyword (no bottleneck)
   for(let i=0;i<realBooks.length;i++){
     for(let j=i+1;j<realBooks.length;j++){
       const a=realBooks[i],b=realBooks[j];
       const sk=(a.keywords||[]).filter(k=>(b.keywords||[]).some(bk=>bk.toLowerCase()===k.toLowerCase()));
-      if(sk.length)gEdges.push({from:'p_'+a.id,to:'p_'+b.id,label:sk[0],s:sk.length,type:'cross',
-        sameCat:(a.category||'')===(b.category||'')});
+      if(!sk.length)continue;
+      // Cap at 250 connections between the same pair to keep the renderer stable
+      const limit=Math.min(sk.length,250);
+      for(let ki=0;ki<limit;ki++){
+        gEdges.push({from:'p_'+a.id,to:'p_'+b.id,label:ki===0?sk[0]:null,s:sk.length,kwIndex:ki,type:'cross',
+          sameCat:(a.category||'')===(b.category||'')});
+      }
     }
   }
 
@@ -5918,14 +5924,19 @@ function initGraph(){
 }
 
 let gT=0;
+let _mainNode=null; // cached main node reference
 function animateGraph(){
-  gT+=(window.innerWidth<768)?0.00045:0.0008;
+  // Only animate when galaxy view is visible — prevents jank in other views
+  const gv=document.getElementById('viewGraph');
+  if(!gv||!gv.classList.contains('active')){gAnimT=requestAnimationFrame(animateGraph);return;}
+  gT+=(window.innerWidth<768)?0.00018:0.00028;
   // Rotate category suns around main
+  _mainNode=gNodes.find(n=>n.id==='__main')||_mainNode;
+  const main=_mainNode;
   gSystems.forEach(sys=>{
-    const main=gNodes.find(n=>n.id==='__main');
     const sun=gNodes.find(n=>n.id===sys.sysId);
     if(!sun||!main)return;
-    const ang=sys.baseAngle+gT*0.3;
+    const ang=sys.baseAngle+gT*0.12;
     sun.x=main.x+Math.cos(ang)*sys.orbitR;
     sun.y=main.y+Math.sin(ang)*sys.orbitR;
     gNodes.filter(n=>n.type==='planet'&&n.orbitSun===sys.sysId).forEach(p=>{
@@ -5943,21 +5954,21 @@ function animateGraph(){
       const tx=p.orbitCenter.x+Math.cos(gAngles[p.id])*p.orbitR;
       const ty=p.orbitCenter.y+Math.sin(gAngles[p.id])*p.orbitR;
       if(Math.hypot(tx-p.x,ty-p.y)<2){p._returning=false;}
-      else{p.x+=( tx-p.x)*0.06;p.y+=(ty-p.y)*0.06;return;}
+      else{p.x+=(tx-p.x)*0.06;p.y+=(ty-p.y)*0.06;return;}
     }
-    gAngles[p.id]+=0.0010+(p.orbitR>100?0.0005:0.0014);
+    gAngles[p.id]+=0.00035+(p.orbitR>100?0.00018:0.00048);
     p.x=p.orbitCenter.x+Math.cos(gAngles[p.id])*p.orbitR;
     p.y=p.orbitCenter.y+Math.sin(gAngles[p.id])*p.orbitR;
   });
-  // Comets
+  // Comets (wishlist) — stable invisible orbit
   gNodes.filter(n=>n.type==='comet').forEach(c=>{
     if(!gAngles[c.id])gAngles[c.id]=0;
-    gAngles[c.id]+=0.0008;
-    const main=gNodes.find(n=>n.id==='__main');
-    if(main){
-      const dist=Math.min(gAngles[c.id]*20+140,220);
-      c.x=main.x+Math.cos(gAngles[c.id])*dist;
-      c.y=main.y+Math.sin(gAngles[c.id])*dist;
+    gAngles[c.id]+=0.00025;
+    const orbitR=c.orbitR||(200);
+    const oc=c.orbitCenter||main;
+    if(oc){
+      c.x=oc.x+Math.cos(gAngles[c.id])*orbitR;
+      c.y=oc.y+Math.sin(gAngles[c.id])*orbitR;
     }
   });
   drawGraph();
@@ -5971,8 +5982,12 @@ function drawGraph(){
   const ctx=cv.getContext('2d');
   const W=cv.width/dpr, H=cv.height/dpr;
   ctx.clearRect(0,0,cv.width,cv.height);
-  ctx.shadowBlur=0;ctx.shadowColor='transparent'; // ensure no shadow bleed
-  ctx.save();ctx.translate(gOff.x,gOff.y);ctx.scale(gSc,gSc);
+  ctx.shadowBlur=0;ctx.shadowColor='transparent';
+  // Round pan offset to nearest pixel to eliminate subpixel jitter
+  const snapX=Math.round(gOff.x), snapY=Math.round(gOff.y);
+  ctx.save();ctx.translate(snapX,snapY);ctx.scale(gSc,gSc);
+  // Helper: snap world coord to nearest half-pixel for crisp text
+  const px=v=>Math.round(v*2)/2;
 
   // Orbit rings
   gSystems.forEach(sys=>{
@@ -6052,8 +6067,8 @@ function drawGraph(){
       ctx.font='bold '+Math.max(8,10*gSc)+"px 'Playfair Display'";
       const words=(main.title||'Biblioteca').split(' ');
       const l1=words.slice(0,2).join(' '),l2=words.slice(2).join(' ');
-      ctx.fillText(l1,main.x,main.y+(l2?-3:3));
-      if(l2){ctx.font=Math.max(7,8*gSc)+"px Lato";ctx.fillStyle='rgba(196,181,253,.7)';ctx.fillText(l2,main.x,main.y+10);}
+      ctx.fillText(l1,px(main.x),px(main.y)+(l2?-3:3));
+      if(l2){ctx.font=Math.max(7,8*gSc)+"px Lato";ctx.fillStyle='rgba(196,181,253,.7)';ctx.fillText(l2,px(main.x),px(main.y)+10);}
     }
   }
 
@@ -6075,8 +6090,8 @@ function drawGraph(){
       const sWords=n.title.split(' ');let sLine='',sLines=[];
       sWords.forEach(w=>{const tt=sLine?sLine+' '+w:w;if(ctx.measureText(tt).width>maxSW&&sLine){sLines.push(sLine);sLine=w;}else sLine=tt;});
       if(sLine)sLines.push(sLine);
-      const sStart=n.y-(sLines.length-1)*(sfs+1)/2+2;
-      sLines.slice(0,3).forEach((l,i)=>ctx.fillText(l,n.x,sStart+i*(sfs+2)));
+      const sStart=px(n.y)-(sLines.length-1)*(sfs+1)/2+2;
+      sLines.slice(0,3).forEach((l,i)=>ctx.fillText(l,px(n.x),sStart+i*(sfs+2)));
     }
   });
 
@@ -6111,7 +6126,7 @@ function drawGraph(){
       let pLine='',pLines=[];
       words.forEach(w=>{const t=pLine?pLine+' '+w:w;if(ctx.measureText(t).width>maxPW&&pLine){pLines.push(pLine);pLine=w;}else pLine=t;});
       if(pLine)pLines.push(pLine);
-      pLines.slice(0,2).forEach((l,i)=>ctx.fillText(l,n.x,n.y+r+10+i*(pfs+2)));
+      pLines.slice(0,2).forEach((l,i)=>ctx.fillText(l,px(n.x),px(n.y)+r+10+i*(pfs+2)));
     }
   });
 
@@ -6119,8 +6134,8 @@ function drawGraph(){
   gNodes.filter(n=>n.type==='comet').forEach(n=>{
     const emojiSize=Math.max(18,Math.round((n.r||9)*2.6*gSc));
     ctx.save();
-    ctx.translate(n.x,n.y);
-    ctx.scale(1/gSc,1/gSc); // undo scale so emoji renders at fixed screen size
+    ctx.translate(px(n.x),px(n.y));
+    ctx.scale(1/gSc,1/gSc);
     ctx.font=emojiSize+'px serif';
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.shadowBlur=0;ctx.shadowColor='transparent';
@@ -6131,7 +6146,7 @@ function drawGraph(){
       ctx.textAlign='center';ctx.fillStyle='rgba(251,191,36,.85)';
       ctx.shadowBlur=0;
       ctx.font=Math.max(7,8*gSc)+'px Lato';
-      ctx.fillText(n.title.split(' ').slice(0,2).join(' '),n.x,n.y+(n.r||9)/gSc+14/gSc);
+      ctx.fillText(n.title.split(' ').slice(0,2).join(' '),px(n.x),px(n.y)+(n.r||9)/gSc+14/gSc);
       ctx.restore();
     }
   });
@@ -7468,7 +7483,7 @@ const ONB_TEXTS = {
     g2t:'Captura citas', g2s:'Escribe notas, dicta con voz, o usa IA para analizar imágenes (próximamente).',
     g3t:'Explorador de ideas', g3s:'Busca cualquier palabra y encuentra todo lo que has pensado sobre ella.',
     g4t:'Tu galaxia', g4s:'Crece sola con cada libro que agregas. Arrastra, haz zoom, explora.',
-    g5t:'Bitácora de vuelo', g5s:'Estadísticas, conexiones y síntesis IA de toda tu biblioteca.',
+    g5t:'Bitácora de vuelo', g5s:'Estadísticas y datos de tu galaxia. <span style="display:inline-block;font-family:\'DM Mono\',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle">✦ Próximamente</span> Conexiones y síntesis IA.',
     g6t: 'Comparte tu galaxia',
     g6s: 'Exporta tus lecturas como imágenes premium con portadas y estadísticas de tu galaxia, listas para Instagram o Stories.',
     launch_title: 'Todo listo.',
@@ -7487,7 +7502,7 @@ const ONB_TEXTS = {
     g2t:'Capture quotes', g2s:'Write notes, dictate by voice, or use AI to analyze images (coming soon).',
     g3t:'Idea explorer', g3s:'Search any word and find everything you\'ve thought about it.',
     g4t:'Your galaxy', g4s:'Grows with every book you add. Drag, zoom, explore.',
-    g5t:'Flight log', g5s:'Stats, connections and AI synthesis of your entire library.',
+    g5t:'Flight log', g5s:'Stats and data from your galaxy. <span style="display:inline-block;font-family:\'DM Mono\',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle">✦ Coming Soon</span> Connections & AI synthesis.',
     g6t: 'Share your galaxy',
     g6s: 'Export your reads as premium images with covers and galaxy stats, ready for Instagram or Stories.',
     launch_title: 'All set.',
@@ -7506,7 +7521,7 @@ const ONB_TEXTS = {
     g2t:'Capturar citações', g2s:'Escreva notas, dite por voz ou use IA para analisar imagens (em breve).',
     g3t:'Explorador de ideias', g3s:'Pesquise qualquer palavra e encontre tudo que pensou sobre ela.',
     g4t:'Sua galáxia', g4s:'Cresce com cada livro adicionado. Arraste, amplie, explore.',
-    g5t:'Diário de voo', g5s:'Estatísticas, conexões e síntese IA de toda a sua biblioteca.',
+    g5t:'Diário de voo', g5s:'Estatísticas da sua galáxia. <span style="display:inline-block;font-family:\'DM Mono\',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle">✦ Em Breve</span> Conexões e síntese IA.',
     launch_title: 'Tudo pronto.',
     launch_sub: 'Seu universo de conhecimento espera.\nTornemos visível o invisível.',
     launch_btn: '✦ Ligar ALINEA',
@@ -7523,7 +7538,7 @@ const ONB_TEXTS = {
     g2t:"Capturer des citations",g2s:"\u00c9crivez des notes ou dictez avec la voix.",
     g3t:"Explorateur d\u2019id\u00e9es",g3s:"Recherchez un mot et trouvez tout ce que vous en avez pens\u00e9.",
     g4t:"Votre galaxie",g4s:"Grandit avec chaque livre ajout\u00e9.",
-    g5t:"Journal de bord",g5s:"Statistiques et synth\u00e8se IA de votre biblioth\u00e8que.",
+    g5t:"Journal de bord",g5s:"Statistiques de votre bibliothèque. <span style=\"display:inline-block;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle\">✦ Bientôt</span> Connexions et synthèse IA.",
     launch_title:"Tout est pr\u00eat.",
     launch_sub:"Votre univers vous attend.\nRendons visible l\u2019invisible.",
     launch_btn:"\u2726 Lancer ALINEA",
@@ -7540,7 +7555,7 @@ const ONB_TEXTS = {
     g2t:'Zitate erfassen', g2s:'Schreiben Sie Notizen, diktieren Sie oder nutzen Sie KI für Bilder (bald).',
     g3t:'Ideenexplorer', g3s:'Suchen Sie nach jedem Wort und finden Sie alles, was Sie darüber gedacht haben.',
     g4t:'Ihre Galaxie', g4s:'Wächst mit jedem hinzugefügten Buch. Ziehen, zoomen, erkunden.',
-    g5t:'Flugtagebuch', g5s:'Statistiken, Verbindungen und KI-Synthese Ihrer gesamten Bibliothek.',
+    g5t:'Flugtagebuch', g5s:'Statistiken Ihrer Bibliothek. <span style="display:inline-block;font-family:\'DM Mono\',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle">✦ Demnächst</span> Verbindungen & KI-Synthese.',
     launch_title: 'Alles bereit.',
     launch_sub: 'Ihr Wissensuniversum wartet.\nMachen Sie das Unsichtbare sichtbar.',
     launch_btn: '✦ ALINEA starten',
@@ -7557,7 +7572,7 @@ const ONB_TEXTS = {
     g2t:'引用をキャプチャ', g2s:'メモを書く、音声で口述する、またはAIで画像を分析（近日公開）。',
     g3t:'アイデアエクスプローラー', g3s:'任意の言葉を検索して、それについて考えたすべてを見つけます。',
     g4t:'あなたの銀河', g4s:'追加する本ごとに成長します。ドラッグ、ズーム、探索。',
-    g5t:'フライトログ', g5s:'統計、接続、ライブラリ全体のAI合成。',
+    g5t:'フライトログ', g5s:'ライブラリの統計。 <span style="display:inline-block;font-family:\'DM Mono\',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.4);color:#c4b5fd;padding:.1rem .4rem;border-radius:4px;margin-left:.2rem;vertical-align:middle">✦ 近日公開</span> 接続とAI合成。',
     launch_title: '準備完了。',
     launch_sub: 'あなたの知識の宇宙が待っています。\n見えないものを見えるようにしましょう。',
     launch_btn: '✦ ALINEAを起動',
@@ -7634,7 +7649,9 @@ function onbPopulateStep(step){
     document.getElementById('onbGuideSub').textContent=tx.guide_sub;
     for(let i=1;i<=5;i++){
       document.getElementById('onbG'+i+'t').textContent=tx['g'+i+'t']||'';
-      document.getElementById('onbG'+i+'s').textContent=tx['g'+i+'s']||'';
+      // g5s may contain HTML (badge), use innerHTML for it
+      const gsEl=document.getElementById('onbG'+i+'s');
+      if(gsEl){if(i===5)gsEl.innerHTML=tx['g'+i+'s']||'';else gsEl.textContent=tx['g'+i+'s']||'';}
     }
     const g6t=document.getElementById('onbG6t');
     const g6s=document.getElementById('onbG6s');
@@ -7698,6 +7715,8 @@ function finishOnboarding(){
     const li=document.getElementById('libNameInput');if(li)li.value=appState.libName;
     const ls=document.getElementById('libNameSettings');if(ls)ls.value=appState.libName;
   }
+  // Ensure FAB and UI adopt the selected accent color before closing
+  applyAccentTheme(currentTheme);
   const onbOvl=document.getElementById('onbOverlay');
   if(onbOvl)onbOvl.style.display='none';
   closeModal('mOnboarding');
