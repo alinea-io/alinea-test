@@ -2276,19 +2276,27 @@ function _shareBookDirect(bookId){
     ctx.strokeStyle=ac+'55';ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(W*.22,oY+oR+94);ctx.lineTo(W*.78,oY+oR+94);ctx.stroke();
     let y=oY+oR+170;
-    // Cover — centered, fills most of the canvas
+    // Cover — perfectly centered with margin for orb+ALINEA above and footer below
     if(imgEl&&imgEl.naturalWidth>0){
-      const cw=860,ch=Math.round(cw*1.42),cx=(W-cw)/2;
-      const coverY=(H-ch)/2-60;
+      const fH=140; // footer height
+      const topReserve=320; // space for orb + ALINEA
+      const availH=H-topReserve-fH-80;
+      const cw=Math.min(700, W-120);
+      const ch=Math.min(Math.round(cw*1.42), availH);
+      const cw2=Math.round(ch/1.42);
+      const finalW=Math.min(cw,cw2);
+      const finalH=Math.round(finalW*1.42);
+      const cx=(W-finalW)/2;
+      const coverY=topReserve+(availH-finalH)/2;
       ctx.save();
-      ctx.shadowBlur=60;ctx.shadowColor='rgba(0,0,0,.85)';ctx.shadowOffsetY=20;
-      const r=32;
+      ctx.shadowBlur=48;ctx.shadowColor='rgba(0,0,0,.75)';ctx.shadowOffsetY=12;
+      const r=24;
       ctx.beginPath();
-      ctx.moveTo(cx+r,coverY);ctx.lineTo(cx+cw-r,coverY);ctx.arcTo(cx+cw,coverY,cx+cw,coverY+r,r);
-      ctx.lineTo(cx+cw,coverY+ch-r);ctx.arcTo(cx+cw,coverY+ch,cx+cw-r,coverY+ch,r);
-      ctx.lineTo(cx+r,coverY+ch);ctx.arcTo(cx,coverY+ch,cx,coverY+ch-r,r);
+      ctx.moveTo(cx+r,coverY);ctx.lineTo(cx+finalW-r,coverY);ctx.arcTo(cx+finalW,coverY,cx+finalW,coverY+r,r);
+      ctx.lineTo(cx+finalW,coverY+finalH-r);ctx.arcTo(cx+finalW,coverY+finalH,cx+finalW-r,coverY+finalH,r);
+      ctx.lineTo(cx+r,coverY+finalH);ctx.arcTo(cx,coverY+finalH,cx,coverY+finalH-r,r);
       ctx.lineTo(cx,coverY+r);ctx.arcTo(cx,coverY,cx+r,coverY,r);ctx.closePath();ctx.clip();
-      ctx.drawImage(imgEl,cx,coverY,cw,ch);
+      ctx.drawImage(imgEl,cx,coverY,finalW,finalH);
       ctx.restore();ctx.shadowBlur=0;ctx.shadowOffsetY=0;
     }
     // Brand footer — solo hashtag
@@ -4178,7 +4186,14 @@ function buildMagWords(){
     (b.keywords||[]).forEach(k=>wordSet.add(k));
     (b.notes||[]).forEach(n=>{(n.keywords||[]).forEach(k=>wordSet.add(k));if(n.mood)wordSet.add(n.mood);});
   });
-  const words=[...wordSet].slice(0,55);
+  let words=[...wordSet];
+  // Mobile: shuffle and show max 12
+  if(window.innerWidth<768&&words.length>12){
+    for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]];}
+    words=words.slice(0,25);
+  } else {
+    words=words.slice(0,50);
+  }
   if(!words.length){
     container.style.minHeight='60px';
     container.innerHTML='<div style="color:var(--dim);font-size:.72rem;font-style:italic;padding:.5rem">Agrega libros y notas para ver tus ideas aquí.</div>';
