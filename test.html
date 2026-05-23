@@ -2298,6 +2298,27 @@ function _shareBookDirect(bookId){
       ctx.lineTo(cx,coverY+r);ctx.arcTo(cx,coverY,cx+r,coverY,r);ctx.closePath();ctx.clip();
       ctx.drawImage(imgEl,cx,coverY,finalW,finalH);
       ctx.restore();ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+    } else {
+      // Placeholder when cover fails to load
+      const fH2=140, topR=320;
+      const availH2=H-topR-fH2-80;
+      const phW=500,phH=Math.round(phW*1.42);
+      const phX=(W-phW)/2, phY=topR+(availH2-phH)/2;
+      // Card background
+      ctx.fillStyle='rgba(20,15,40,.8)';
+      ctx.beginPath();
+      const pr=24;
+      ctx.moveTo(phX+pr,phY);ctx.lineTo(phX+phW-pr,phY);ctx.arcTo(phX+phW,phY,phX+phW,phY+pr,pr);
+      ctx.lineTo(phX+phW,phY+phH-pr);ctx.arcTo(phX+phW,phY+phH,phX+phW-pr,phY+phH,pr);
+      ctx.lineTo(phX+pr,phY+phH);ctx.arcTo(phX,phY+phH,phX,phY+phH-pr,pr);
+      ctx.lineTo(phX,phY+pr);ctx.arcTo(phX,phY,phX+pr,phY,pr);ctx.closePath();ctx.fill();
+      ctx.strokeStyle=ac+'44';ctx.lineWidth=2;ctx.stroke();
+      // Book emoji
+      ctx.font='180px serif';ctx.textAlign='center';
+      ctx.fillText('📖',W/2,phY+phH/2-30);
+      // Message
+      ctx.fillStyle='rgba(200,190,255,.5)';ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='1px';
+      ctx.fillText('Verifica que tu URL sea visible',W/2,phY+phH/2+100);ctx.letterSpacing='0';
     }
     // Brand footer — solo hashtag
     const fH=140;
@@ -2320,9 +2341,7 @@ function _shareBookDirect(bookId){
     img.crossOrigin='anonymous';
     img.onload=()=>_drawCanvas(img);
     img.onerror=()=>{
-      // Si falla con proxy, intentar sin crossOrigin en un canvas separado
-      // y dibujar sin la portada
-      _drawCanvas(null);
+      _drawCanvas(null); // draw with fallback placeholder
     };
     // Add cache-busting to force CORS headers
     img.src=b.cover+(b.cover.includes('?')?'&':'?')+'cb='+Date.now();
