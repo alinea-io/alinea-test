@@ -2316,9 +2316,18 @@ function _shareBookDirect(bookId){
       // Book emoji
       ctx.font='180px serif';ctx.textAlign='center';
       ctx.fillText('📖',W/2,phY+phH/2-30);
-      // Message
-      ctx.fillStyle='rgba(200,190,255,.5)';ctx.font='400 28px "DM Mono",monospace';ctx.letterSpacing='1px';
-      ctx.fillText('Verifica que tu URL sea visible',W/2,phY+phH/2+100);ctx.letterSpacing='0';
+      // Message — multilang + clamp inside card
+      const _msg=currentLang==='en'?'Check that your URL is accessible':'Verifica que tu URL sea visible';
+      ctx.fillStyle='rgba(200,190,255,.5)';ctx.font='400 26px "DM Mono",monospace';ctx.letterSpacing='0.5px';
+      ctx.textAlign='center';
+      // Wrap text to fit inside card
+      const _mw=phW-80;
+      const _words=_msg.split(' ');let _line='';const _mlines=[];
+      _words.forEach(w=>{const t=_line?_line+' '+w:w;if(ctx.measureText(t).width>_mw&&_line){_mlines.push(_line);_line=w;}else _line=t;});
+      if(_line)_mlines.push(_line);
+      const _mstartY=phY+phH/2+80;
+      _mlines.forEach((l,i)=>ctx.fillText(l,W/2,_mstartY+i*36));
+      ctx.letterSpacing='0';
     }
     // Brand footer — solo hashtag
     const fH=140;
