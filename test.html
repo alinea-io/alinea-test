@@ -758,7 +758,7 @@ canvas{-webkit-user-select:none;user-select:none}
 <!-- SEARCH BAR (hidden by default) -->
 <div id="searchBar">
   <span style="color:var(--dim);font-size:.82rem;flex-shrink:0">⌕</span>
-  <input id="searchIn" type="text" placeholder="Buscar libros, autores, keywords…" oninput="onSearch(this.value)">
+  <input id="searchIn" type="text" placeholder="Buscar libros, autores, keywords…" data-i18n-ph="searchLibPlaceholder" oninput="onSearch(this.value)">
   <button onclick="toggleSearch()" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:.8rem;flex-shrink:0">✕</button>
 </div>
 
@@ -810,7 +810,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <!-- Cosmic search input -->
         <div id="libSearchWrap" style="position:relative;width:100%">
           <span style="position:absolute;left:.65rem;top:50%;transform:translateY(-50%);color:var(--dim);font-size:.78rem;pointer-events:none;z-index:2">⌕</span>
-          <input id="searchIn" type="text" placeholder="Buscar libros, autores, keywords…" oninput="onSearch(this.value)"
+          <input id="searchIn" type="text" placeholder="Buscar libros, autores, keywords…" data-i18n-ph="searchLibPlaceholder" oninput="onSearch(this.value)"
             style="width:100%;box-sizing:border-box;background:rgba(8,6,20,.85);border:1.5px solid rgba(139,92,246,.18);color:var(--text);font-family:'DM Mono',monospace;font-size:.6rem;padding:.38rem .7rem .38rem 1.9rem;border-radius:10px;outline:none;transition:border-color .2s,box-shadow .2s;position:relative;z-index:1"
             onfocus="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 0 2px var(--glow),0 0 16px rgba(139,92,246,.25)';document.getElementById('libSearchWrap').classList.add('active');onSearchFocus()"
             onblur="this.style.borderColor='rgba(139,92,246,.18)';this.style.boxShadow='none';document.getElementById('libSearchWrap').classList.remove('active');onSearchBlur()">
@@ -871,10 +871,10 @@ canvas{-webkit-user-select:none;user-select:none}
       <!-- Category filter panel -->
       <div id="catFilterPanel" style="display:none;position:fixed;top:120px;left:16px;background:rgba(8,6,18,.96);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:.75rem;z-index:9000;width:min(280px,90vw);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.7)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
-          <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">Categorías</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)" data-i18n="category">Categorías</span>
           <div style="display:flex;gap:.3rem">
-            <button onclick="event.stopPropagation();setCatFilterAll(true)" style="background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .45rem;border-radius:4px;cursor:pointer">Todas</button>
-            <button onclick="event.stopPropagation();setCatFilterAll(false)" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:rgba(248,113,113,.7);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .45rem;border-radius:4px;cursor:pointer">Ninguna</button>
+            <button onclick="event.stopPropagation();setCatFilterAll(true)" style="background:var(--glow);border:1px solid rgba(139,92,246,.3);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .45rem;border-radius:4px;cursor:pointer" data-i18n="filterAll">Todas</button>
+            <button onclick="event.stopPropagation();setCatFilterAll(false)" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:rgba(248,113,113,.7);font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .45rem;border-radius:4px;cursor:pointer" data-i18n="filterNone">Ninguna</button>
           </div>
         </div>
         <div id="catFilterList" style="display:flex;flex-direction:column;gap:.28rem;max-height:280px;overflow-y:auto"></div>
@@ -1060,7 +1060,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <div><label class="flbl" data-i18n="keywordsInitial">Keywords iniciales (coma)</label><input class="fin" type="text" id="addKw" placeholder="inversión, mentalidad…" data-i18n-ph="kwPlaceholder"></div>
     <div>
       <label class="flbl" data-i18n="coverUrlLabel">Cover URL <span id="coverUrlSub" style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(paste the direct image address)</span></label>
-      <input class="fin" type="text" id="addUrl" placeholder="https://… termina en .jpg  .jpeg  .png" oninput="prevAddUrl()">
+      <input class="fin" type="text" id="addUrl" placeholder="https://… termina en .jpg  .jpeg  .png" data-i18n-ph="urlPlaceholder" oninput="prevAddUrl()">
       <div id="addUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
         ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
         <span style="color:var(--muted)">Asegúrate de copiar la dirección de la <em>imagen</em>, no la página.</span>
@@ -1114,24 +1114,24 @@ canvas{-webkit-user-select:none;user-select:none}
 ═══════════════════════════════════════════════════════ -->
 <!-- EDIT BOOK -->
 <div class="modal" id="mEdit" onclick="event.stopPropagation()">
-  <h2>Editar libro</h2><p class="sub">Modifica los datos del libro.</p>
+  <h2 data-i18n="editBook">Editar libro</h2><p class="sub" data-i18n="editBookSub">Modifica los datos del libro.</p>
   <div class="cvrow">
     <div class="cpick" onclick="document.getElementById('fEdit').click()">
-      <div class="cpick-ph" id="cpickEPh"><span>📷</span><small>Cambiar</small></div>
+      <div class="cpick-ph" id="cpickEPh"><span>📷</span><small data-i18n="changePhoto">Cambiar</small></div>
       <img class="cpick-img" id="cpickEImg" style="display:none" src="" alt="">
     </div>
     <input type="file" id="fEdit" accept="image/*" style="display:none" onchange="onEditFile(event)">
     <div class="cvfields">
-      <div><label class="flbl">Título *</label><input class="fin" type="text" id="editTitle"></div>
-      <div><label class="flbl">Autor</label><input class="fin" type="text" id="editAuthor"></div>
+      <div><label class="flbl" data-i18n="titleLabel">Título *</label><input class="fin" type="text" id="editTitle"></div>
+      <div><label class="flbl" data-i18n="authorLabel">Autor</label><input class="fin" type="text" id="editAuthor"></div>
     </div>
   </div>
   <div style="margin-top:.65rem">
     <label class="flbl" data-i18n="coverUrlLabel">Cover URL <span id="editUrlSub" style="color:var(--dim);font-weight:300;text-transform:none;letter-spacing:0">(paste the direct image address)</span></label>
-    <input class="fin" type="text" id="editUrl" placeholder="https://…termina en .jpg  .jpeg  .png" oninput="prevUrl()">
+    <input class="fin" type="text" id="editUrl" placeholder="https://…termina en .jpg  .jpeg  .png" data-i18n-ph="urlPlaceholder" oninput="prevUrl()">
     <div id="editUrlWarn" style="display:none;font-family:'DM Mono',monospace;font-size:.56rem;color:var(--err);margin-top:.28rem;line-height:1.5;padding:.32rem .6rem;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);border-radius:6px">
-      ⚠ Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).<br>
-      <span style="color:var(--muted)">Asegúrate de copiar la dirección de la <em>imagen</em>, no la página.</span>
+      ⚠ <span data-i18n="urlWarnText">Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).</span><br>
+      <span style="color:var(--muted)" data-i18n="urlWarnSub">Asegúrate de copiar la dirección de la imagen, no la página.</span>
     </div>
     <img class="url-prev" id="urlPrev" src="" alt="">
     <!-- URL GUIDE -->
@@ -1145,22 +1145,22 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="display:flex;align-items:flex-start;gap:.55rem">
           <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">💻</span>
           <div>
-            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Computadora (PC / Mac)</div>
-            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Clic derecho sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span><br><span style="color:rgba(139,92,246,.45);font-size:.55rem">NO el link de la barra de navegación de arriba</span></div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="pcLabel">Computadora (PC / Mac)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="pcDesc">Clic derecho sobre la portada → "Copiar dirección de la imagen"</div>
           </div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:.55rem">
           <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">📱</span>
           <div>
-            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">iPhone (iOS / Safari)</div>
-            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Mantener presionado 1 segundo la portada → menú de Apple → <span style="color:var(--accent2)">"Copiar"</span> o <span style="color:var(--accent2)">"Copiar enlace de la imagen"</span></div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="iosLabel">iPhone (iOS / Safari)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="iosDesc">Mantener presionado 1 segundo la portada → menú de Apple → "Copiar enlace de la imagen"</div>
           </div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:.55rem">
           <span style="font-size:.95rem;flex-shrink:0;margin-top:.05rem">🤖</span>
           <div>
-            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem">Android (Chrome)</div>
-            <div style="font-size:.6rem;color:var(--muted);line-height:1.55">Dejar presionado el dedo sobre la portada → <span style="color:var(--accent2)">"Copiar dirección de la imagen"</span></div>
+            <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-bottom:.1rem" data-i18n="androidLabel">Android (Chrome)</div>
+            <div style="font-size:.6rem;color:var(--muted);line-height:1.55" data-i18n="androidDesc">Dejar presionado el dedo sobre la portada → "Copiar dirección de la imagen"</div>
           </div>
         </div>
       </div>
@@ -1190,14 +1190,14 @@ canvas{-webkit-user-select:none;user-select:none}
 ═══════════════════════════════════════════════════════ -->
 <!-- WISHLIST -->
 <div class="modal" id="mWish">
-  <h2>🚀 Próximas Misiones</h2>
-  <p class="sub">Libros que viajan hacia tu galaxia — combustible de tu curiosidad.</p>
+  <h2>🚀 <span data-i18n="wishlistTitle">Próximas Misiones</span></h2>
+  <p class="sub" data-i18n="wishlistSub">Libros que viajan hacia tu galaxia — combustible de tu curiosidad.</p>
   <div id="wishList" style="display:flex;flex-direction:column;gap:.45rem;max-height:300px;overflow-y:auto"></div>
   <div style="margin-top:.85rem;border-top:1px solid var(--border);padding-top:.85rem">
-    <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.5rem">➕ Agregar a wishlist rápido</div>
+    <div style="font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.5rem">➕ <span data-i18n="quickAddWishlist">Agregar a wishlist rápido</span></div>
     <div style="display:flex;gap:.4rem;margin-bottom:.35rem">
-      <input class="fin" type="text" id="wishTitleIn" placeholder="Título del libro…" style="flex:2">
-      <input class="fin" type="text" id="wishAuthorIn" placeholder="Autor…" style="flex:1">
+      <input class="fin" type="text" id="wishTitleIn" placeholder="Título del libro…" data-i18n-ph="wishTitlePlaceholder" style="flex:2">
+      <input class="fin" type="text" id="wishAuthorIn" placeholder="Autor…" data-i18n-ph="wishAuthorPlaceholder" style="flex:1">
     </div>
     <div style="display:flex;gap:.4rem;align-items:center">
       <select id="wishCatIn" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:.6rem;padding:.32rem .5rem;border-radius:5px;outline:none;flex:1"></select>
@@ -1258,10 +1258,10 @@ canvas{-webkit-user-select:none;user-select:none}
 </div>
   <!-- TABS -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;margin-bottom:1.4rem;border-bottom:1px solid var(--border);padding-bottom:.75rem">
-    <button id="stab1" onclick="switchSettingsTab(1)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Apariencia</button>
-    <button id="stab2" onclick="switchSettingsTab(2)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Datos</button>
-    <button id="stab3" onclick="switchSettingsTab(3)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >IA</button>
-    <button id="stab4" onclick="switchSettingsTab(4)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s" >Ayuda</button>
+    <button id="stab1" onclick="switchSettingsTab(1)" style="background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s"  data-i18n="appearanceTitle">Apariencia</button>
+    <button id="stab2" onclick="switchSettingsTab(2)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s"  data-i18n="dataTitle">Datos</button>
+    <button id="stab3" onclick="switchSettingsTab(3)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s"  data-i18n="iaTitle">IA</button>
+    <button id="stab4" onclick="switchSettingsTab(4)" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .5rem;border-radius:8px;cursor:pointer;transition:all .15s"  data-i18n="helpTitle2">Ayuda</button>
   </div>
 
   <!-- TAB 1: APARIENCIA -->
@@ -1308,8 +1308,8 @@ canvas{-webkit-user-select:none;user-select:none}
 
     <!-- Galaxy category colors -->
     <div class="set-s">
-      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.18rem">Galaxia</div>
-      <div style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);margin-bottom:.65rem">Personaliza el color de tus categorías</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.18rem" data-i18n="galaxyTitle">Galaxia</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim);margin-bottom:.65rem" data-i18n="catColorDesc">Personaliza el color de tus categorías</div>
       <div id="catColorGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem"></div>
     </div>
 
@@ -1319,18 +1319,18 @@ canvas{-webkit-user-select:none;user-select:none}
       <div style="display:none;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.4rem" data-i18n="onboardingTitle">Tutorial de inicio</div>
       <button onclick="closeModal('mSettings');setTimeout(()=>forceShowOnboarding(),200)" style="display:none;width:100%;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.52rem;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:.65rem" data-i18n="onboardingBtn">✦ Ver guía de inicio</button>
       <div id="settInstallCard" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:.8rem .9rem;transition:opacity .3s">
-        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem">📲 Instalar como App</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.45rem" data-i18n="installAsApp">📲 Instalar como App</div>
         <div style="display:flex;gap:.25rem;margin-bottom:.5rem">
           <button onclick="switchInstallPlatform('ios','sett')" id="settPlatIOS" style="flex:1;background:var(--glow);border:1px solid var(--accent);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.05em;text-transform:uppercase;padding:.22rem .2rem;border-radius:5px;cursor:pointer;transition:all .15s">iOS</button>
           <button onclick="switchInstallPlatform('android','sett')" id="settPlatAndroid" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.05em;text-transform:uppercase;padding:.22rem .2rem;border-radius:5px;cursor:pointer;transition:all .15s">Android</button>
-          <button onclick="switchInstallPlatform('desktop','sett')" id="settPlatDesktop" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.05em;text-transform:uppercase;padding:.22rem .2rem;border-radius:5px;cursor:pointer;transition:all .15s">Otra</button>
+          <button onclick="switchInstallPlatform('desktop','sett')" id="settPlatDesktop" style="flex:1;background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:.44rem;letter-spacing:.05em;text-transform:uppercase;padding:.22rem .2rem;border-radius:5px;cursor:pointer;transition:all .15s" data-i18n="installOther">Otra</button>
         </div>
-        <div id="settInstallIOS" style="display:none;font-size:.63rem;color:var(--text);line-height:1.65;margin-bottom:.35rem"><strong>Safari</strong> → botón <span style="padding:.05rem .28rem;background:rgba(139,92,246,.15);border-radius:3px">⎙</span> compartir → <strong>"Agregar a pantalla de inicio"</strong></div>
-        <div id="settInstallAndroid" style="display:none;font-size:.63rem;color:var(--text);line-height:1.65;margin-bottom:.35rem"><strong>Chrome</strong> → menú <span style="padding:.05rem .28rem;background:rgba(139,92,246,.15);border-radius:3px">⋮</span> → <strong>"Instalar app"</strong></div>
-        <div id="settInstallDesktop" style="display:none;font-size:.62rem;color:var(--muted);line-height:1.6;margin-bottom:.35rem">Abre ALINEA en Safari (iOS) o Chrome (Android) para instalarla.</div>
+        <div id="settInstallIOS" style="display:none;font-size:.63rem;color:var(--text);line-height:1.65;margin-bottom:.35rem" data-i18n="installIOSDesc"><strong>Safari</strong> → botón <span style="padding:.05rem .28rem;background:rgba(139,92,246,.15);border-radius:3px">⎙</span> compartir → <strong>"Agregar a pantalla de inicio"</strong></div>
+        <div id="settInstallAndroid" style="display:none;font-size:.63rem;color:var(--text);line-height:1.65;margin-bottom:.35rem" data-i18n="installAndroidDesc"><strong>Chrome</strong> → menú <span style="padding:.05rem .28rem;background:rgba(139,92,246,.15);border-radius:3px">⋮</span> → <strong>"Instalar app"</strong></div>
+        <div id="settInstallDesktop" style="display:none;font-size:.62rem;color:var(--muted);line-height:1.6;margin-bottom:.35rem" data-i18n="installOtherDesc">Abre ALINEA en Safari (iOS) o Chrome (Android) para instalarla.</div>
         <label style="display:flex;align-items:center;gap:.45rem;cursor:pointer;margin-top:.4rem">
           <input type="checkbox" id="settInstallDone" onchange="markInstallDone(this.checked)" style="width:15px;height:15px;accent-color:var(--accent);cursor:pointer">
-          <span style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--accent2);letter-spacing:.05em">Ya la instalé ✓</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.48rem;color:var(--accent2);letter-spacing:.05em" data-i18n="installedLabel">Ya la instalé ✓</span>
         </label>
       </div>
     </div>
@@ -1349,14 +1349,15 @@ canvas{-webkit-user-select:none;user-select:none}
 
     <!-- Combustible para la Misión -->
     <div class="set-s">
-      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem">⚡ Combustible para la Misión</div>
+      <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.55rem" data-i18n="fuelSectionTitle">⚡ Combustible para la Misión</div>
       <div style="background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1.1rem 1.1rem 1rem;background-image:radial-gradient(ellipse at 80% 30%,rgba(251,191,36,.08) 0%,transparent 55%),radial-gradient(1px 1px at 10% 20%,rgba(251,191,36,.4) 0%,transparent 100%),radial-gradient(1px 1px at 85% 18%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 90% 60%,rgba(251,191,36,.3) 0%,transparent 100%),radial-gradient(1px 1px at 22% 80%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 65% 30%,rgba(255,255,255,.25) 0%,transparent 100%)">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem">
           <div style="font-size:1.3rem">🚀</div>
-          <div style="font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--text)">Proveer Combustible a la Estación</div>
+          <div class="fuel-title" style="font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--text)">Proveer Combustible a la Estación</div>
         </div>
-        <p style="font-size:.65rem;color:rgba(240,238,255,.75);line-height:1.85;margin-bottom:.85rem">ALINEA es un proyecto independiente, creado código a código para proteger tu privacidad y hacer visible tu conocimiento de forma local y eterna. Si esta app está expandiendo tu universo y quieres apoyar al Operador de ALINEA a seguir mejorando los sistemas de navegación, puedes invitarle un café o aportar combustible para la misión. <em style="color:var(--gold)">Cada destello cuenta.</em></p>
-        <a id="fuelLink" href="#" target="_blank" onclick="if(this.getAttribute('href')==='#'){alert('El link de donación llegará pronto. ¡Gracias por tu apoyo!');return false;}" style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05));border:1px solid rgba(251,191,36,.4);color:var(--gold);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;padding:.45rem .9rem;border-radius:7px;text-decoration:none;transition:all .18s" onmouseover="this.style.background='rgba(251,191,36,.22)';this.style.borderColor='rgba(251,191,36,.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05))';this.style.borderColor='rgba(251,191,36,.4)'">⚡ Aportar Combustible →</a>
+        <p class="fuel-text" style="font-size:.65rem;color:rgba(240,238,255,.75);line-height:1.85;margin-bottom:.85rem">ALINEA nació de una obsesión: hacer visible lo invisible.<br><br>De lector a lector — este es un santuario para los que siempre cargan un libro, los que subrayan todo, los que necesitan ver su conocimiento tomar forma.<br><br>Si este operador de nave solitario está ayudando a que expandas y vivas tu galaxia, puedes aportar combustible para que la misión continúe. <em style="color:var(--gold)">Cada destello cuenta.</em></p>
+        <!-- ⚠️ PENDIENTE: reemplazar el href="#LEMON_SQUEEZY_LINK" con el link real de donación en Lemon Squeezy -->
+        <a id="fuelLink" href="#LEMON_SQUEEZY_LINK" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05));border:1px solid rgba(251,191,36,.4);color:var(--gold);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;padding:.45rem .9rem;border-radius:7px;text-decoration:none;transition:all .18s" onmouseover="this.style.background='rgba(251,191,36,.22)';this.style.borderColor='rgba(251,191,36,.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05))';this.style.borderColor='rgba(251,191,36,.4)'" class="fuel-btn">⚡ Aportar Combustible →</a>
       </div>
     </div>
 
@@ -1402,32 +1403,33 @@ canvas{-webkit-user-select:none;user-select:none}
       <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.9rem" data-i18n="backupTitle">Respaldo de datos</div>
 
       <!-- Backup button -->
-      <button onclick="exportJSON()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--accent);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;background-image:radial-gradient(ellipse at 30% 50%,rgba(139,92,246,.18) 0%,transparent 60%),radial-gradient(1px 1px at 10% 25%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 80% 15%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 90% 55%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 25% 80%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 70% 40%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 40% 10%,rgba(255,255,255,.35) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent2)'" onmouseout="this.style.borderColor='var(--accent)'">
+      <button onclick="exportJSON()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--accent);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;background-image:radial-gradient(ellipse at 30% 50%,rgba(139,92,246,.18) 0%,transparent 60%),radial-gradient(1px 1px at 10% 25%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 80% 15%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 90% 55%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 25% 80%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 70% 40%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 40% 10%,rgba(255,255,255,.35) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent2)';this.style.boxShadow='0 0 20px rgba(139,92,246,.35)'" onmouseout="this.style.borderColor='var(--accent)';this.style.boxShadow='none'">
         <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">💾</div>
         <div style="flex:1;min-width:0">
-          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Descargar Respaldo <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem" data-i18n="downloadJson">Descargar Respaldo</div>
+          <div style="display:none"><span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
           <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em" data-i18n="jsonDesc">Libros, notas y keywords — guárdalo bien</div>
         </div>
-        </button>
+      </button>
 
-      <!-- Restore — same starfield style as backup -->
-      <label style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;box-sizing:border-box;background-image:radial-gradient(ellipse at 70% 50%,rgba(139,92,246,.1) 0%,transparent 55%),radial-gradient(1px 1px at 15% 20%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 85% 25%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 75%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 92% 65%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 20% 85%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 65% 10%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 38% 45%,rgba(255,255,255,.25) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <!-- Restore -->
+      <label style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.55rem;text-align:left;box-sizing:border-box;background-image:radial-gradient(ellipse at 70% 50%,rgba(139,92,246,.1) 0%,transparent 55%),radial-gradient(1px 1px at 15% 20%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 85% 25%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 75%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 92% 65%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 20% 85%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 65% 10%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 38% 45%,rgba(255,255,255,.25) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 20px rgba(139,92,246,.25)'" onmouseout="this.style.borderColor='var(--border2)';this.style.boxShadow='none'">
         <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📂</div>
         <div style="flex:1;min-width:0">
-          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Restaurar Respaldo <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem" data-i18n="importTitle">Restaurar Respaldo <span style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span></div>
           <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">Importa un archivo de respaldo anterior</div>
         </div>
         <input type="file" accept=".json" style="display:none" onchange="importJSON(event)">
       </label>
 
       <!-- PDF button -->
-      <button onclick="exportPDF()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.7rem;text-align:left;background-image:radial-gradient(ellipse at 70% 40%,rgba(196,181,253,.1) 0%,transparent 55%),radial-gradient(1px 1px at 20% 30%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 75% 20%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 50% 65%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 85% 60%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 15% 75%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 60% 85%,rgba(220,210,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 35% 15%,rgba(255,255,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <button onclick="exportPDF()" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all .2s;margin-bottom:.7rem;text-align:left;background-image:radial-gradient(ellipse at 70% 40%,rgba(196,181,253,.1) 0%,transparent 55%),radial-gradient(1px 1px at 20% 30%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 75% 20%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 50% 65%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 85% 60%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 15% 75%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 60% 85%,rgba(220,210,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 35% 15%,rgba(255,255,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 20px rgba(139,92,246,.25)'" onmouseout="this.style.borderColor='var(--border2)';this.style.boxShadow='none'">
         <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📄</div>
         <div style="flex:1;min-width:0">
           <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem" data-i18n="downloadPdf">Descargar PDF</div>
           <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em" data-i18n="pdfDesc">Versión visual para archivar o imprimir</div>
         </div>
-        </button>
+      </button>
 
       <div id="storageInfo" style="font-size:.58rem;color:var(--dim);line-height:1.6">Calculando…</div>
     </div>
@@ -1485,7 +1487,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <div style="width:44px;height:44px;border-radius:11px;background:rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem">✦</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.35rem" data-i18n="comingSoon">Próximamente</div>
-          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)">Conexiones que nunca habías visto</div>
+          <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)" data-i18n="neverSeenConn">Conexiones que nunca habías visto</div>
         </div>
       </div>
     </div>
@@ -1493,24 +1495,68 @@ canvas{-webkit-user-select:none;user-select:none}
 
   <!-- TAB 4: HELP & LEGAL -->
   <div id="spage4" style="display:none;padding:.2rem 0">
-    <p style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem">Contacto</p>
+    <p style="font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem" data-i18n="contactTitle">Contacto</p>
 
-    <a href="mailto:hello.alinea.io@gmail.com" style="display:flex;align-items:center;gap:.9rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;text-decoration:none;margin-bottom:.45rem;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">✉️</div>
-      <div>
-        <div style="font-family:'Lato',sans-serif;font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:.08rem">Email de soporte</div>
-        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted)">hello.alinea.io@gmail.com</div>
+    <a href="https://alinea-io.github.io/alinea-landing/landing.html" target="_blank" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;transition:all .2s;margin-bottom:.55rem;background-image:radial-gradient(ellipse at 30% 50%,rgba(139,92,246,.18) 0%,transparent 60%),radial-gradient(1px 1px at 10% 25%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 80% 15%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 90% 55%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 25% 80%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 70% 40%,rgba(220,210,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="#c4b5fd" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="4" ry="9" stroke="#c4b5fd" stroke-width="1.8"/><line x1="3" y1="9" x2="21" y2="9" stroke="#c4b5fd" stroke-width="1.8"/><line x1="3" y1="15" x2="21" y2="15" stroke="#c4b5fd" stroke-width="1.8"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="sitio-oficial" style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Sitio oficial</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">alinea.io</div>
       </div>
     </a>
 
-    <a href="https://instagram.com/alinea.io" target="_blank" style="display:flex;align-items:center;gap:.9rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;text-decoration:none;margin-bottom:1.2rem;transition:border-color .15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-      <div style="width:38px;height:38px;border-radius:9px;background:rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📸</div>
-      <div>
-        <div style="font-family:'Lato',sans-serif;font-size:.86rem;font-weight:700;color:var(--text);margin-bottom:.08rem">Instagram oficial</div>
-        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted)">@alinea.io</div>
+    <a href="https://instagram.com/alinea.io" target="_blank" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;transition:all .2s;margin-bottom:.55rem;background-image:radial-gradient(ellipse at 70% 50%,rgba(139,92,246,.1) 0%,transparent 55%),radial-gradient(1px 1px at 15% 20%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 85% 25%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 75%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 92% 65%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 20% 85%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 65% 10%,rgba(220,210,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#c4b5fd" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="#c4b5fd" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="#c4b5fd"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">Instagram</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">@alinea.io</div>
       </div>
     </a>
 
+    <a href="https://tiktok.com/@alinea.io" target="_blank" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;transition:all .2s;margin-bottom:.55rem;background-image:radial-gradient(ellipse at 20% 60%,rgba(139,92,246,.14) 0%,transparent 55%),radial-gradient(1px 1px at 12% 22%,rgba(220,210,255,.55) 0%,transparent 100%),radial-gradient(1px 1px at 82% 18%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 58% 72%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 91% 58%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 28% 82%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 68% 35%,rgba(220,210,255,.3) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#c4b5fd" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">TikTok</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">@alinea.io</div>
+      </div>
+    </a>
+
+    <a href="https://x.com/alinea_io" target="_blank" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;transition:all .2s;margin-bottom:.55rem;background-image:radial-gradient(ellipse at 80% 30%,rgba(139,92,246,.12) 0%,transparent 55%),radial-gradient(1px 1px at 8% 35%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 88% 65%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 42% 20%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 75% 80%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 30% 70%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 60% 50%,rgba(220,210,255,.25) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#c4b5fd" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.738l7.746-8.868L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem">X</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">@alinea_io</div>
+      </div>
+    </a>
+
+    <a href="mailto:hello.alinea.io@gmail.com" style="width:100%;display:flex;align-items:center;gap:.9rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;transition:all .2s;margin-bottom:.55rem;background-image:radial-gradient(ellipse at 50% 80%,rgba(139,92,246,.1) 0%,transparent 55%),radial-gradient(1px 1px at 18% 15%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 78% 30%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 35% 65%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 88% 75%,rgba(220,210,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 55% 20%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 22% 88%,rgba(255,255,255,.25) 0%,transparent 100%)" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+      <div style="width:38px;height:38px;border-radius:9px;background:rgba(196,181,253,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="16" rx="2" stroke="#c4b5fd" stroke-width="1.8"/><polyline points="2,4 12,13 22,4" stroke="#c4b5fd" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Lato',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.1rem" data-i18n="helpEmailLabel">Email de soporte</div>
+        <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);letter-spacing:.04em">hello.alinea.io@gmail.com</div>
+      </div>
+    </a>
+
+    <!-- Combustible duplicado desde Apariencia -->
+    <div style="margin-top:.8rem;background:#06050f;border:1.5px solid var(--border2);border-radius:12px;padding:1.1rem 1.1rem 1rem;background-image:radial-gradient(ellipse at 80% 30%,rgba(251,191,36,.08) 0%,transparent 55%),radial-gradient(1px 1px at 10% 20%,rgba(251,191,36,.4) 0%,transparent 100%),radial-gradient(1px 1px at 85% 18%,rgba(255,255,255,.35) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 70%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 90% 60%,rgba(251,191,36,.3) 0%,transparent 100%),radial-gradient(1px 1px at 22% 80%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 65% 30%,rgba(255,255,255,.25) 0%,transparent 100%)">
+      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem">
+        <div style="font-size:1.3rem">🚀</div>
+        <div class="fuel-title" style="font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--text)">Proveer Combustible a la Estación</div>
+      </div>
+      <p class="fuel-text" style="font-size:.65rem;color:rgba(240,238,255,.75);line-height:1.85;margin-bottom:.85rem">ALINEA nació de una obsesión: hacer visible lo invisible.<br><br>De lector a lector — este es un santuario para los que siempre cargan un libro, los que subrayan todo, los que necesitan ver su conocimiento tomar forma.<br><br>Si este operador de nave solitario está ayudando a que expandas y vivas tu galaxia, puedes aportar combustible para que la misión continúe. <em style="color:var(--gold)">Cada destello cuenta.</em></p>
+      <!-- ⚠️ PENDIENTE: reemplazar el href="#LEMON_SQUEEZY_LINK" con el link real de donación en Lemon Squeezy -->
+      <a href="#LEMON_SQUEEZY_LINK" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05));border:1px solid rgba(251,191,36,.4);color:var(--gold);font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;padding:.45rem .9rem;border-radius:7px;text-decoration:none;transition:all .18s" onmouseover="this.style.background='rgba(251,191,36,.22)';this.style.borderColor='rgba(251,191,36,.7)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(251,191,36,.15),rgba(251,191,36,.05))';this.style.borderColor='rgba(251,191,36,.4)'" class="fuel-btn">⚡ Aportar Combustible →</a>
+    </div>
 
       <div style="text-align:center;padding:1.5rem 0 .5rem;border-top:1px solid rgba(139,92,246,.08);margin-top:1.2rem">
         <div style="font-family:'DM Mono',monospace;font-size:.48rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(196,181,253,.35);margin-bottom:.25rem">ALINEA <span style="opacity:.5">·</span> PRO</div>
@@ -1725,10 +1771,25 @@ es:{name:'Español',t:{
   notas:'Notas & Subrayados',keywords:'Keywords',relatedBooks:'Libros relacionados',
   notePlaceholder:'Escribe un subrayado, idea o reflexión…',pagePlaceholder:'Pág.',commentPlaceholder:'Comentario (opcional)',
   addNote:'+ Nota',camera:'Cámara',dictate:'Dictar',
-  progress:'Progreso',rating:'Rating',editBook:'Editar libro',deleteBook:'Eliminar libro',
+  progress:'Progreso',rating:'Rating',editBook:'Editar libro',editBookSub:'Modifica los datos del libro.',changePhoto:'Cambiar',deleteBook:'Eliminar libro',
+  urlWarnText:'Esta URL no parece ser una imagen directa (.jpg / .jpeg / .png).',urlWarnSub:'Asegúrate de copiar la dirección de la imagen, no la página.',
+  urlPlaceholder:'https://… termina en .jpg  .jpeg  .png',
+  pcLabel:'Computadora (PC / Mac)',pcDesc:'Clic derecho sobre la portada → "Copiar dirección de la imagen"',
+  iosLabel:'iPhone (iOS / Safari)',iosDesc:'Mantener presionado 1 segundo → menú de Apple → "Copiar enlace de la imagen"',
+  androidLabel:'Android (Chrome)',androidDesc:'Dejar presionado el dedo → "Copiar dirección de la imagen"',
   accentColor:'Color de acento',textSize:'Tamaño de texto',libNameLabel:'Nombre de tu biblioteca',
   small:'Pequeño',normal:'Normal',large:'Grande',xl:'XL',
-  appearanceTitle:'Apariencia',dataTitle:'Datos',iaTitle:'IA',
+  appearanceTitle:'Apariencia',dataTitle:'Datos',iaTitle:'IA',helpTitle2:'Ayuda',
+  catColorDesc:'Personaliza el color de tus categorías',
+  installedLabel:'Ya la instalé ✓',
+  neverSeenConn:'Conexiones que nunca habías visto',
+  contactTitle:'Contacto',
+  fuelSectionTitle:'⚡ Combustible para la Misión',
+  galaxyTitle:'Galaxia',
+  installAsApp:'📲 Instalar como App',installOther:'Otra',
+  installIOSDesc:'<strong>Safari</strong> → botón ⎙ compartir → <strong>"Agregar a pantalla de inicio"</strong>',
+  installAndroidDesc:'<strong>Chrome</strong> → menú ⋮ → <strong>"Instalar app"</strong>',
+  installOtherDesc:'Abre ALINEA en Safari (iOS) o Chrome (Android) para instalarla.',
   dataDesc:'Tu biblioteca vive solo en este navegador. Respalda para no perderla.',
   jsonTitle:'JSON — Respaldo real',jsonDesc:'Todos tus libros, notas y keywords.',
   pdfTitle:'PDF — Para leer',pdfDesc:'Versión visual para archivar o imprimir.',
@@ -1821,6 +1882,9 @@ es:{name:'Español',t:{
   titleLabel:'Título',authorLabel:'Autor',categoryLabel:'Categoría',statusLabel:'Estado del libro',coverUrlLabel:'URL de portada',
   secNotas:'Notas & Subrayados',secKeywords:'Keywords',secRelated:'Libros relacionados',
   terminados:'Terminados',leyendo:'Leyendo',wishlistStat:'Wishlist',notasStat:'Notas',keywordsStat:'Keywords',ratingProm:'Rating prom.',masAnotados:'📝 Más anotados',keywordsFrecuentes:'🔑 Keywords frecuentes',borrarReiniciar:'☢ Borrar todo y reiniciar',colisionBtn:'Colisión de ideas',horizonteBtn:'Horizonte de sucesos',colisionTitle:'Colisión de ideas ✦',horizonteTitle:'Horizonte de sucesos',footerText:'ALINEA · Biblioteca Mental · Todos los derechos reservados',exploreSub:'Las palabras flotan arriba. Arrástralas, agrúpalas, o escribe para buscar.',exportarImportar:'💾 Exportar, importar y herramientas avanzadas',densestSystem:'Sistema más denso',gravOff:'Gravedad: OFF',gravOn:'Gravedad: ON',
+  galaxiaLocal:'💾 Galaxia Local',espacioCasi:'⚠️ Espacio casi lleno — exporta tu respaldo',datosLocales:'🔒 Datos 100% locales · Blindado contra borrado automático',capacidadRestante:'🔭 Capacidad restante de tu galaxia',librosCaben:'Libros que aún caben',notasCaben:'Notas que aún caben',
+  fuelTitle:'Proveer Combustible a la Estación',fuelText:'ALINEA nació de una obsesión: hacer visible lo invisible.<br><br>De lector a lector — este es un santuario para los que siempre cargan un libro, los que subrayan todo, los que necesitan ver su conocimiento tomar forma.<br><br>Si este operador de nave solitario está ayudando a que expandas y vivas tu galaxia, puedes aportar combustible para que la misión continúe. <em style="color:var(--gold)">Cada destello cuenta.</em>',fuelBtn:'⚡ Aportar Combustible →',
+  sitioOficial:'Sitio oficial',
 }},
 en:{name:'English',t:{
   library:'Library',galaxy:'Galaxy',explore:'Explore',log:'Log',myLibrary:'My Library…',splashSub:'Make the invisible visible.',
@@ -1834,10 +1898,25 @@ en:{name:'English',t:{
   notas:'Notes & Highlights',keywords:'Keywords',relatedBooks:'Related books',
   notePlaceholder:'Write a highlight, idea or reflection…',pagePlaceholder:'Page',commentPlaceholder:'Comment (optional)',
   addNote:'+ Note',camera:'Camera',dictate:'Dictate',
-  progress:'Progress',rating:'Rating',editBook:'Edit book',deleteBook:'Delete book',
+  progress:'Progress',rating:'Rating',editBook:'Edit book',editBookSub:'Modify the book details.',changePhoto:'Change',deleteBook:'Delete book',
+  urlWarnText:'This URL does not appear to be a direct image (.jpg / .jpeg / .png).',urlWarnSub:'Make sure to copy the image address, not the page URL.',
+  urlPlaceholder:'https://… ends in .jpg  .jpeg  .png',
+  pcLabel:'Computer (PC / Mac)',pcDesc:'Right-click on the cover → "Copy image address"',
+  iosLabel:'iPhone (iOS / Safari)',iosDesc:'Hold the cover 1 sec → Apple menu → "Copy image link"',
+  androidLabel:'Android (Chrome)',androidDesc:'Hold finger on cover → "Copy image address"',
   accentColor:'Accent color',textSize:'Text size',libNameLabel:'Your library name',
   small:'Small',normal:'Normal',large:'Large',xl:'XL',
-  appearanceTitle:'Appearance',dataTitle:'Datos',iaTitle:'AI',
+  appearanceTitle:'Appearance',dataTitle:'Data',iaTitle:'AI',helpTitle2:'Help',
+  catColorDesc:'Customize the color of your categories',
+  installedLabel:'I installed it ✓',
+  neverSeenConn:'Connections you never knew existed',
+  contactTitle:'Contact',
+  fuelSectionTitle:'⚡ Fuel the Mission',
+  galaxyTitle:'Galaxy',
+  installAsApp:'📲 Install as App',installOther:'Other',
+  installIOSDesc:'<strong>Safari</strong> → share button ⎙ → <strong>"Add to Home Screen"</strong>',
+  installAndroidDesc:'<strong>Chrome</strong> → menu ⋮ → <strong>"Install app"</strong>',
+  installOtherDesc:'Open ALINEA in Safari (iOS) or Chrome (Android) to install it.',
   dataDesc:'Your library lives only in this browser. Back it up to keep it safe.',
   jsonTitle:'JSON — Real backup',jsonDesc:'All your books, notes and keywords.',
   pdfTitle:'PDF — For reading',pdfDesc:'Visual version for archiving or printing.',
@@ -1929,6 +2008,9 @@ en:{name:'English',t:{
   titleLabel:'Title',authorLabel:'Author',categoryLabel:'Category',statusLabel:'Book status',coverUrlLabel:'Cover URL',urlGuideTitle:'💡 How to copy the correct URL?',urlGuideIntro:'Search the book on Google Images, then:',urlGuidePC:'Computer (PC / Mac)',urlGuidePCDesc:'Right-click on the cover → "Copy image address"',urlGuideiOS:'iPhone (iOS / Safari)',urlGuideiOSDesc:'Hold the cover 1 sec → Apple menu → "Copy" or "Copy image link"',urlGuideAndroid:'Android (Chrome)',urlGuideAndroidDesc:'Hold finger on cover → "Copy image address"',
   secNotas:'Notes & Highlights',secKeywords:'Keywords',secRelated:'Related books',
   terminados:'Finished',leyendo:'Reading',wishlistStat:'Wishlist',notasStat:'Notes',keywordsStat:'Keywords',ratingProm:'Avg. rating',masAnotados:'📝 Most annotated',keywordsFrecuentes:'🔑 Frequent keywords',borrarReiniciar:'☢ Delete everything and restart',colisionBtn:'Idea collision',horizonteBtn:'Event horizon',colisionTitle:'Idea collision ✦',horizonteTitle:'Event horizon',footerText:'ALINEA · Mental Library · All rights reserved',exploreSub:'Words float above. Drag them, group them, or type to search.',exportarImportar:'💾 Export, import and advanced tools',densestSystem:'Densest system',gravOff:'Gravity: OFF',gravOn:'Gravity: ON',
+  galaxiaLocal:'💾 Local Galaxy',espacioCasi:'⚠️ Almost full — export your backup',datosLocales:'🔒 100% local data · Protected against automatic deletion',capacidadRestante:'🔭 Remaining capacity of your galaxy',librosCaben:'Books that still fit',notasCaben:'Notes that still fit',
+  fuelTitle:'Fuel the Station',fuelText:'ALINEA was born from an obsession: making the invisible visible.<br><br>From reader to reader — this is a sanctuary for those who always carry a book, who underline everything, who need to see their knowledge take shape.<br><br>If this solitary ship operator is helping you expand and live your galaxy, you can contribute fuel so the mission continues. <em style="color:var(--gold)">Every spark counts.</em>',fuelBtn:'⚡ Contribute Fuel →',
+  sitioOficial:'Official Site',
 }},
 _pt_disabled:{name:'Português',t:{
   library:'Biblioteca',galaxy:'Galáxia',explore:'Explorar',log:'Diário',myLibrary:'Minha Biblioteca…',splashSub:'Tornemos visível o invisível.',
@@ -2195,7 +2277,7 @@ var currentLang=(()=>{const l=localStorage.getItem('eter_lang')||'es';return(l==
 function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
 
 let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"anthropic","apiKey":""}');
-let appState = JSON.parse(localStorage.getItem('eter2_state')||'{"libName":"Mi Biblioteca","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
+let appState = JSON.parse(localStorage.getItem('eter2_state')||'{"libName":"","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
 let wordFloatPositions = {};
 let wordUserPositions = {};
 let gv='grid', curFilter='all', curSearch='', _noteSearchQuery='';
@@ -3588,7 +3670,7 @@ function saveBook(){_hap.ok();
   const statusVal=document.getElementById('addStatus').value||'owned';
   const isWish=statusVal==='wishlist';
   const readingStatus=statusVal==='done'?'done':statusVal==='reading'?'reading':'pending';
-  lib.push({id:Date.now(),title,author:document.getElementById('addAuthor').value.trim()||'Autor desconocido',description:'',cover:pendCover||null,category:document.getElementById('addCat').value,keywords:kwRaw?kwRaw.split(',').map(k=>k.trim()).filter(Boolean):[],notes:[],status:statusVal,readingStatus,isWishlist:isWish,added:new Date().toISOString()});
+  lib.push({id:Date.now(),title,author:document.getElementById('addAuthor').value.trim()||(currentLang==='en'?'Unknown author':'Autor desconocido'),description:'',cover:pendCover||null,category:document.getElementById('addCat').value,keywords:kwRaw?kwRaw.split(',').map(k=>k.trim()).filter(Boolean):[],notes:[],status:statusVal,readingStatus,isWishlist:isWish,added:new Date().toISOString()});
   persist();closeAll();renderSidebar();renderLib();
   pendCover=null;manCover=false;
   const realCount=lib.filter(b=>!b.isWishlist&&b.status!=='wishlist').length;
@@ -3625,7 +3707,7 @@ function openEdit(id){
   const b=lib.find(x=>x.id===id);if(!b)return;
   editCover=b.cover;
   document.getElementById('editTitle').value=b.title;
-  document.getElementById('editAuthor').value=b.author==='Autor desconocido'?'':b.author;
+  document.getElementById('editAuthor').value=(b.author==='Autor desconocido'||b.author==='Unknown author')?'':b.author;
   document.getElementById('editUrl').value='';
   document.getElementById('urlPrev').style.display='none';
   const bStatus=b.isWishlist?'wishlist':b.readingStatus==='reading'?'reading':b.readingStatus==='done'?'done':'owned';
@@ -3705,7 +3787,7 @@ function saveEdit(){
   const id=document.getElementById('mEdit')._id;
   const b=lib.find(x=>x.id===id);if(!b)return;
   const t=document.getElementById('editTitle').value.trim();if(!t)return;
-  b.title=t;b.author=document.getElementById('editAuthor').value.trim()||'Autor desconocido';
+  b.title=t;b.author=document.getElementById('editAuthor').value.trim()||(currentLang==='en'?'Unknown author':'Autor desconocido');
   b.category=document.getElementById('editCat').value;
   const newStatus=document.getElementById('editStatus').value||'owned';
   b.status=newStatus;b.isWishlist=newStatus==='wishlist';
@@ -3744,7 +3826,7 @@ function openWishlist(){
           <div style="font-size:.66rem;color:var(--muted)">${b.author}</div>
           ${b.category?`<span style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.2);padding:.06rem .24rem;border-radius:3px">${translateCat(b.category)}</span>`:''}
         </div>
-        <button onclick="event.stopPropagation();markOwned(${b.id})" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .5rem;border-radius:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">✅ Ya lo conseguí</button>
+        <button onclick="event.stopPropagation();markOwned(${b.id})" style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:.48rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .5rem;border-radius:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">✅ ${t('iAlreadyHave')||'Ya lo conseguí'}</button>
       </div>`).join('');
   }
   // Populate category select
@@ -3759,7 +3841,7 @@ function quickAddWish(){
     m.style.display='block';m.style.color='var(--err)';m.textContent='Escribe el título primero.';
     setTimeout(()=>{m.style.display='none';},2000);return;
   }
-  const author=document.getElementById('wishAuthorIn').value.trim()||'Por descubrir';
+  const author=document.getElementById('wishAuthorIn').value.trim()||(currentLang==='en'?'To discover':'Por descubrir');
   const category=document.getElementById('wishCatIn').value||'Otro';
   lib.push({id:Date.now(),title,author,description:'',cover:null,category,keywords:[],notes:[],isWishlist:true,added:new Date().toISOString()});
   persist();
@@ -3803,8 +3885,10 @@ function setLang(code){
 function applyLang(){
   // Nav tabs via data-i18n (already tagged in HTML)
   // 2. Placeholders
-  const phs={searchIn:'searchLibPlaceholder',expIn:'explorePlaceholder',libNameInput:'myLibrary'};
+  const phs={expIn:'explorePlaceholder',libNameInput:'myLibrary'};
   Object.entries(phs).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.placeholder=t(key)||el.placeholder;});
+  // Update all searchIn elements (there are two in the DOM)
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const val=t(el.dataset.i18nPh);if(val)el.placeholder=val;});
   // Inputs with translated placeholders
   // 3. Gravity button
   const gb=document.getElementById('gravityBtn');
@@ -3869,6 +3953,22 @@ function applyLang(){
   // 17. Local-first security note
   const _lfn=document.getElementById('localFirstNote');
   if(_lfn)_lfn.textContent=t('localFirstNote')||'';
+  // 18. Storage info — re-render with correct language
+  updateStorageInfo();
+  // 19. Fuel section — title, text, button
+  document.querySelectorAll('.fuel-title').forEach(el=>el.textContent=t('fuelTitle')||el.textContent);
+  document.querySelectorAll('.fuel-text').forEach(el=>el.innerHTML=t('fuelText')||el.innerHTML);
+  document.querySelectorAll('.fuel-btn').forEach(el=>el.innerHTML=t('fuelBtn')||el.innerHTML);
+  // 20. Contact — sitio oficial
+  document.querySelectorAll('.sitio-oficial').forEach(el=>el.textContent=t('sitioOficial')||el.textContent);
+  // 21. Backup button titles (have inner spans so data-i18n doesn't work directly)
+  const _dlTitle=document.querySelector('[data-i18n="downloadJson"]');
+  if(_dlTitle)_dlTitle.innerHTML=t('downloadJson')+' <span style="font-family:\'DM Mono\',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span>';
+  const _rsTitle=document.querySelector('[data-i18n="importTitle"]');
+  if(_rsTitle)_rsTitle.innerHTML=t('importTitle')+' <span style="font-family:\'DM Mono\',monospace;font-size:.5rem;color:var(--accent2);font-weight:400">.json</span>';
+  // 22. Install instructions with HTML
+  const _ios=document.getElementById('settInstallIOS');if(_ios)_ios.innerHTML=t('installIOSDesc')||_ios.innerHTML;
+  const _and=document.getElementById('settInstallAndroid');if(_and)_and.innerHTML=t('installAndroidDesc')||_and.innerHTML;
 }
 function renderWelcomeBody(){
   const wb=document.getElementById('welcomeBody');if(!wb)return;
@@ -6056,9 +6156,11 @@ function initGraph(){
   const dpr=window.devicePixelRatio||1;
   const W=cv.parentElement.offsetWidth||800;
   const H=cv.parentElement.offsetHeight||600;
-  cv.width=W*dpr;cv.height=H*dpr;
+  cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
   cv.style.width=W+'px';cv.style.height=H+'px';
-  const ctx=cv.getContext('2d');
+  const ctx=cv.getContext('2d',{alpha:true,desynchronized:true});
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
   ctx.scale(dpr,dpr);
 
   // Library name input
@@ -6184,8 +6286,8 @@ function animateGraph(){
     const sun=gNodes.find(n=>n.id===sys.sysId);
     if(!sun||!main)return;
     const ang=sys.baseAngle+gT*0.18;
-    sun.x=main.x+Math.cos(ang)*sys.orbitR;
-    sun.y=main.y+Math.sin(ang)*sys.orbitR;
+    sun.x=Math.round(main.x+Math.cos(ang)*sys.orbitR);
+    sun.y=Math.round(main.y+Math.sin(ang)*sys.orbitR);
     gNodes.filter(n=>n.type==='planet'&&n.orbitSun===sys.sysId).forEach(p=>{
       p.orbitCenter={x:sun.x,y:sun.y};
     });
@@ -6204,18 +6306,18 @@ function animateGraph(){
       else{p.x+=(tx-p.x)*0.06;p.y+=(ty-p.y)*0.06;return;}
     }
     gAngles[p.id]+=0.00065+(p.orbitR>100?0.00035:0.00085);
-    p.x=p.orbitCenter.x+Math.cos(gAngles[p.id])*p.orbitR;
-    p.y=p.orbitCenter.y+Math.sin(gAngles[p.id])*p.orbitR;
+    p.x=Math.round(p.orbitCenter.x+Math.cos(gAngles[p.id])*p.orbitR);
+    p.y=Math.round(p.orbitCenter.y+Math.sin(gAngles[p.id])*p.orbitR);
   });
   // Comets (wishlist) — stable invisible orbit
   gNodes.filter(n=>n.type==='comet').forEach(c=>{
     if(!gAngles[c.id])gAngles[c.id]=0;
-    gAngles[c.id]+=0.00025;
+    gAngles[c.id]+=0.00060;
     const orbitR=c.orbitR||(200);
     const oc=c.orbitCenter||main;
     if(oc){
-      c.x=oc.x+Math.cos(gAngles[c.id])*orbitR;
-      c.y=oc.y+Math.sin(gAngles[c.id])*orbitR;
+      c.x=Math.round(oc.x+Math.cos(gAngles[c.id])*orbitR);
+      c.y=Math.round(oc.y+Math.sin(gAngles[c.id])*orbitR);
     }
   });
   drawGraph();
@@ -6228,13 +6330,19 @@ function drawGraph(){
   const dpr=window.devicePixelRatio||1;
   const ctx=cv.getContext('2d');
   const W=cv.width/dpr, H=cv.height/dpr;
+  // Clear only the logical (CSS) area — not the physical pixel area
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.restore();
   ctx.shadowBlur=0;ctx.shadowColor='transparent';
   // Round pan offset to nearest pixel to eliminate subpixel jitter
   const snapX=Math.round(gOff.x), snapY=Math.round(gOff.y);
   ctx.save();ctx.translate(snapX,snapY);ctx.scale(gSc,gSc);
-  // Helper: snap world coord to nearest half-pixel for crisp text
-  const px=v=>Math.round(v*2)/2;
+  // Snap world coord to nearest integer pixel for crisp text — no subpixel
+  const px=v=>Math.round(v);
+  // Round font size to nearest integer to prevent font recalculation jitter
+  const fs=s=>Math.max(1,Math.round(s))+'px';
 
   // Orbit rings
   gSystems.forEach(sys=>{
@@ -6258,6 +6366,15 @@ function drawGraph(){
         ctx.beginPath();ctx.arc(main.x,main.y,r,0,Math.PI*2);
         ctx.strokeStyle='rgba(196,181,253,.3)';ctx.lineWidth=1.3;ctx.setLineDash([6,12]);ctx.stroke();
         ctx.setLineDash([]);
+      }
+    }
+    // Wishlist comet orbit — invisible ring (opacity 0), just defines the path
+    const comets=gNodes.filter(n=>n.type==='comet');
+    if(comets.length>0){
+      const wr=comets[0].orbitR||0;
+      if(wr>0){
+        ctx.beginPath();ctx.arc(main.x,main.y,wr,0,Math.PI*2);
+        ctx.strokeStyle='rgba(0,0,0,0)';ctx.lineWidth=0;ctx.stroke();
       }
     }
   }
@@ -6332,11 +6449,11 @@ function drawGraph(){
     ctx.strokeStyle=ct.sun+'44';ctx.lineWidth=.8;ctx.stroke();
     if(gSc>.3){
       ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.92)';
-      ctx.font='bold '+Math.max(8,10*gSc)+"px 'Playfair Display'";
+      ctx.font='bold '+fs(Math.max(8,10*gSc))+" 'Playfair Display'";
       const words=(main.title||'Biblioteca').split(' ');
       const l1=words.slice(0,2).join(' '),l2=words.slice(2).join(' ');
       ctx.fillText(l1,px(main.x),px(main.y)+(l2?-3:3));
-      if(l2){ctx.font=Math.max(7,8*gSc)+"px Lato";ctx.fillStyle='rgba(196,181,253,.7)';ctx.fillText(l2,px(main.x),px(main.y)+10);}
+      if(l2){ctx.font=fs(Math.max(7,8*gSc))+' Lato';ctx.fillStyle='rgba(196,181,253,.7)';ctx.fillText(l2,px(main.x),px(main.y)+10);}
     }
   }
 
@@ -6349,8 +6466,8 @@ function drawGraph(){
     ctx.strokeStyle=col.sun+'44';ctx.lineWidth=.8;ctx.stroke();
     if(gSc>.38){
       ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.92)';
-      const sfs=Math.max(9,10*gSc);
-      ctx.font='600 '+sfs+"px 'Lato',sans-serif";
+      const sfs=Math.round(Math.max(9,10*gSc));
+      ctx.font='600 '+fs(sfs)+" 'Lato',sans-serif";
       const maxSW=Math.max(80,r*4.5);
       const sWords=n.title.split(' ');let sLine='',sLines=[];
       sWords.forEach(w=>{const tt=sLine?sLine+' '+w:w;if(ctx.measureText(tt).width>maxSW&&sLine){sLines.push(sLine);sLine=w;}else sLine=tt;});
@@ -6379,8 +6496,8 @@ function drawGraph(){
     ctx.strokeStyle=light+'55';ctx.lineWidth=.7;ctx.stroke();
     if(gSc>.38){
       ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,.82)';
-      const pfs=Math.max(7,7.5*gSc);
-      ctx.font=pfs+"px 'DM Mono',monospace";
+      const pfs=Math.round(Math.max(7,7.5*gSc));
+      ctx.font=fs(pfs)+" 'DM Mono',monospace";
       const maxPW=Math.max(60,r*4);
       const words=n.title.split(' ');
       let pLine='',pLines=[];
@@ -6405,7 +6522,7 @@ function drawGraph(){
       ctx.save();
       ctx.textAlign='center';ctx.fillStyle='rgba(251,191,36,.85)';
       ctx.shadowBlur=0;
-      ctx.font=Math.max(7,8*gSc)+'px Lato';
+      ctx.font=fs(Math.max(7,8*gSc))+' Lato';
       ctx.fillText(n.title.split(' ').slice(0,2).join(' '),px(n.x),px(n.y)+(n.r||9)/gSc+14/gSc);
       ctx.restore();
     }
@@ -6863,7 +6980,7 @@ function renderSidebar(){
   const reading=lib.filter(b=>b.readingStatus==='reading');
   // Update lib name in sidebar
   const libNameEl=document.getElementById('sbLibName');
-  if(libNameEl) libNameEl.textContent=appState.libName||'Mi Biblioteca';
+  if(libNameEl) libNameEl.textContent=appState.libName||(t('myLibrary')||'Mi Biblioteca').replace('…','');
   document.getElementById('sbAllN').textContent=real.length;
   const wishNEl=document.getElementById('sbWishN'); if(wishNEl) wishNEl.textContent=wishes.length;
   const ownedEl=document.getElementById('sbOwnedN'); if(ownedEl) ownedEl.textContent=owned.length;
@@ -7567,9 +7684,9 @@ function updateStorageInfo(){
     const pct=Math.min(100,(dataSize/(5*1024*1024))*100).toFixed(1);
     const barColor=pct>80?'rgba(248,113,113,.8)':pct>50?'rgba(251,191,36,.8)':'var(--accent2)';
     const html=`
-      <div style="background:var(--card);border:1px solid ${barColor};border-radius:14px;padding:1.1rem 1.2rem;margin-top:.5rem;box-shadow:0 0 18px rgba(139,92,246,.08)">
+      <div style="background:var(--card);border:1px solid ${barColor};border-radius:14px;padding:1.1rem 1.2rem;margin-top:.5rem;box-shadow:0 0 18px rgba(139,92,246,.08);background-image:radial-gradient(ellipse at 85% 15%,rgba(139,92,246,.18) 0%,transparent 55%),radial-gradient(1px 1px at 8% 20%,rgba(220,210,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 92% 35%,rgba(220,210,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 45% 75%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 78% 60%,rgba(220,210,255,.45) 0%,transparent 100%),radial-gradient(1px 1px at 22% 85%,rgba(220,210,255,.35) 0%,transparent 100%),radial-gradient(1px 1px at 60% 25%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 35% 50%,rgba(255,255,255,.25) 0%,transparent 100%),radial-gradient(1px 1px at 88% 88%,rgba(220,210,255,.3) 0%,transparent 100%),radial-gradient(1px 1px at 15% 55%,rgba(255,255,255,.2) 0%,transparent 100%)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
-          <span style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">💾 Galaxia Local</span>
+          <span style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">${t('galaxiaLocal')||'💾 Galaxia Local'}</span>
           <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:${barColor};font-weight:700">${kb} KB <span style="font-size:.52rem;color:var(--muted);font-weight:400">/ 5 MB</span></span>
         </div>
         <div style="background:var(--border);border-radius:8px;height:10px;overflow:hidden;margin-bottom:.9rem;box-shadow:inset 0 1px 3px rgba(0,0,0,.4)">
@@ -7590,18 +7707,18 @@ function updateStorageInfo(){
           </div>
         </div>
         <div style="font-family:'DM Mono',monospace;font-size:.52rem;color:${pct>80?'rgba(248,113,113,.8)':pct>50?'rgba(251,191,36,.7)':'rgba(139,92,246,.5)'};text-align:center;letter-spacing:.04em">
-          ${pct>80?'⚠️ Espacio casi lleno — exporta tu respaldo':'🔒 Datos 100% locales · Blindado contra borrado automático'}
+          ${pct>80?t('espacioCasi'):t('datosLocales')}
         </div>
         <div style="margin-top:.9rem;background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.15);border-radius:10px;padding:.9rem 1rem">
-          <div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem">🔭 Capacidad restante de tu galaxia</div>
+          <div style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem">${t('capacidadRestante')||'🔭 Capacidad restante de tu galaxia'}</div>
           <div style="display:flex;flex-direction:column;gap:.55rem">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)">Libros que aún caben</span>
+              <span style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)">${t('librosCaben')||'Libros que aún caben'}</span>
               <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--text)">${Math.max(0,Math.floor((LIMITE_BYTES-dataSize)/349)).toLocaleString()}</span>
             </div>
             <div style="height:1px;background:rgba(139,92,246,.1)"></div>
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)">Notas que aún caben</span>
+              <span style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)">${t('notasCaben')||'Notas que aún caben'}</span>
               <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--text)">${Math.max(0,Math.floor((LIMITE_BYTES-dataSize)/254)).toLocaleString()}</span>
             </div>
           </div>
