@@ -7557,7 +7557,7 @@ function hardReset(){
 }
 
 function updateStorageInfo(){
-  const el=document.getElementById('storageInfo'); if(!el) return;
+  const els=document.querySelectorAll('[id="storageInfo"]'); if(!els.length) return;
   try{
     const dataSize=JSON.stringify(lib).length;
     const LIMITE_BYTES=5*1024*1024;
@@ -7566,7 +7566,7 @@ function updateStorageInfo(){
     const notes=lib.reduce((s,b)=>s+(b.notes?.length||0),0);
     const pct=Math.min(100,(dataSize/(5*1024*1024))*100).toFixed(1);
     const barColor=pct>80?'rgba(248,113,113,.8)':pct>50?'rgba(251,191,36,.8)':'var(--accent2)';
-    el.innerHTML=`
+    const html=`
       <div style="background:var(--card);border:1px solid ${barColor};border-radius:14px;padding:1.1rem 1.2rem;margin-top:.5rem;box-shadow:0 0 18px rgba(139,92,246,.08)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
           <span style="font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2)">💾 Galaxia Local</span>
@@ -7607,7 +7607,8 @@ function updateStorageInfo(){
           </div>
         </div>
       </div>`;
-  }catch{el.textContent='No disponible';}
+    els.forEach(el=>el.innerHTML=html);
+  }catch{els.forEach(el=>el.textContent='No disponible');}
 }
 
 async function runCollision(){
