@@ -1528,7 +1528,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <input class="fin" type="text" id="customModelIn" placeholder="llama-3, mistral, etc.">
       </div>
       <label class="flbl" data-i18n="apiKeyLabel">API Key</label>
-      <input class="fin" type="password" id="apiKeyIn" placeholder="AIza…">
+      <input class="fin" type="password" id="apiKeyIn" placeholder="AQ.Ab… o AIza…">
       <div class="api-st none" id="apiSt">○ Sin API key</div><br>
       <button class="btn-test" onclick="testKey()" data-i18n="verifyConn">Verificar conexión</button>
       <div class="api-guide" id="apiGuide"></div>
@@ -4554,7 +4554,7 @@ function selProv(p,_=true){
       <div style="margin-bottom:.3rem">1. ${isEN?'Open':'Abre'} <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent2);text-decoration:underline">aistudio.google.com/app/apikey</a></div>
       <div style="margin-bottom:.3rem">2. ${isEN?'Sign in with your Google account':'Inicia sesión con tu cuenta de Google'}</div>
       <div style="margin-bottom:.3rem">3. ${isEN?'Click <strong style="color:var(--text)">Create API Key</strong>':'Haz clic en <strong style="color:var(--text)">Create API Key</strong>'}</div>
-      <div style="margin-bottom:.3rem">4. ${isEN?'Copy the key (starts with <strong style="color:var(--text)">AIza…</strong>)':'Copia la key (empieza con <strong style="color:var(--text)">AIza…</strong>)'}</div>
+      <div style="margin-bottom:.3rem">4. ${isEN?'Copy the key (starts with <strong style="color:var(--text)">AQ.Ab…</strong>)':'Copia la key (empieza con <strong style="color:var(--text)">AQ.Ab…</strong>)'}</div>
       <div>5. ${isEN?'Paste it above and click <strong style="color:var(--text)">Verify connection</strong>':'Pégala arriba y haz clic en <strong style="color:var(--text)">Verificar conexión</strong>'}</div>
     </div>
     <div style="margin-top:.5rem;font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim)">${isEN?'✓ Free tier · No credit card required':'✓ Tier gratuito · Sin tarjeta de crédito'}</div>
@@ -4569,7 +4569,7 @@ function selProv(p,_=true){
   document.getElementById('apiGuide').innerHTML=(guides[p]||'');
   // Auto-trigger guide for gemini on load
   if(p==='gemini'&&!cfg.apiKey){
-    const ph=document.getElementById('apiKeyIn');if(ph)ph.placeholder='AIza…';
+    const ph=document.getElementById('apiKeyIn');if(ph)ph.placeholder='AQ.Ab… o AIza…';
   }
 }
 function saveSettings(){const _ak=document.getElementById('apiKeyIn');if(_ak)cfg.apiKey=_ak.value.trim();const _ep=document.getElementById('customEndpointIn');if(_ep&&_ep.value)cfg.customEndpoint=_ep.value.trim();const _cm=document.getElementById('customModelIn');if(_cm&&_cm.value)cfg.customModel=_cm.value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
@@ -4580,22 +4580,13 @@ async function testKey(){
   const isEN=currentLang==='en';
   btn.textContent=isEN?'Verifying…':'Verificando…';btn.disabled=true;
   try{
-    // Gemini verification — real call
-    if(cfg.provider==='gemini'||!cfg.provider){
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}})});
-      if(!r.ok){const err=await r.json();throw err;}
-    } else if(cfg.provider==='anthropic'){
-      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'hi'}]})});if(!r.ok)throw 0;
-    } else if(cfg.provider==='grok'){
-      const r=await fetch('https://api.x.ai/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${key}`,'content-type':'application/json'},body:JSON.stringify({model:'grok-3-mini',max_tokens:5,messages:[{role:'user',content:'hi'}]})});if(!r.ok)throw 0;
-    } else {
-      const r=await fetch('https://api.openai.com/v1/models',{headers:{'Authorization':`Bearer ${key}`}});if(!r.ok)throw 0;
-    }
+    // TEST MODE: always Gemini
+    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}})});
+    if(!r.ok){const err=await r.json();console.warn('Gemini error:',err);throw err;}
     // Save key on success
-    cfg.apiKey=key;persistCfg();updateApiSt();
+    cfg.provider='gemini';cfg.apiKey=key;persistCfg();updateApiSt();
     btn.textContent=isEN?'✓ Connected!':'✓ ¡Conectado!';
     btn.style.background='rgba(34,197,94,.15)';btn.style.borderColor='rgba(34,197,94,.5)';btn.style.color='#4ade80';
-    // Show success message
     const guide=document.getElementById('apiGuide');
     if(guide)guide.innerHTML=`<div style="margin-top:.5rem;padding:.5rem .7rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-family:'DM Mono',monospace;font-size:.52rem;color:#4ade80">
       ${isEN?'✓ Gemini is ready. ALINEA will now find deeper connections in your library.':'✓ Gemini conectado. ALINEA ahora encontrará conexiones más profundas en tu biblioteca.'}
