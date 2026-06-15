@@ -781,6 +781,10 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div id="dockActions">
     <button class="dta" id="wishBtn" onclick="openWishlist()" title="Wishlist" style="position:relative;font-size:.82rem">🚀<div class="rocket-badge" id="rocketBadge"></div></button>
+    <button class="dta" id="aiStatusBtn" onclick="_hap.light();openSettings('ia')" title="IA" style="display:none;position:relative;font-size:.75rem;letter-spacing:.04em;font-family:'DM Mono',monospace;padding:.2rem .45rem;gap:.25rem;align-items:center">
+      <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,.8);flex-shrink:0"></span>
+      <span style="color:var(--accent2);font-size:.5rem;letter-spacing:.08em">IA</span>
+    </button>
     <button class="dta dta-settings" onclick="_hap.light();openSettings()" title="Configuración">⚙</button>
   </div>
 </div>
@@ -1514,10 +1518,10 @@ canvas{-webkit-user-select:none;user-select:none}
     <div class="set-s">
       <h3 data-i18n="providerLabel">Proveedor IA</h3>
       <div class="prow" style="flex-wrap:wrap;gap:.3rem;margin-bottom:.55rem">
-        <!-- TEST MODE: solo Gemini activo -->
-        <button class="pbtn active" id="provG" onclick="selProv('gemini')">Gemini</button>
+        <!-- TEST MODE: solo OpenAI activo -->
+        <button class="pbtn active" id="provO" onclick="selProv('openai')">GPT-4o</button>
+        <!-- <button class="pbtn" id="provG" onclick="selProv('gemini')">Gemini</button> -->
         <!-- <button class="pbtn" id="provA" onclick="selProv('anthropic')">Claude</button> -->
-        <!-- <button class="pbtn" id="provO" onclick="selProv('openai')">GPT-4o</button> -->
         <!-- <button class="pbtn" id="provX" onclick="selProv('grok')">Grok</button> -->
         <!-- <button class="pbtn" id="provC" onclick="selProv('custom')">Otro</button> -->
       </div>
@@ -1528,7 +1532,7 @@ canvas{-webkit-user-select:none;user-select:none}
         <input class="fin" type="text" id="customModelIn" placeholder="llama-3, mistral, etc.">
       </div>
       <label class="flbl" data-i18n="apiKeyLabel">API Key</label>
-      <input class="fin" type="password" id="apiKeyIn" placeholder="AQ.Ab… o AIza…">
+      <input class="fin" type="password" id="apiKeyIn" placeholder="sk-…">
       <div class="api-st none" id="apiSt">○ Sin API key</div><br>
       <button class="btn-test" onclick="testKey()" data-i18n="verifyConn">Verificar conexión</button>
       <div class="api-guide" id="apiGuide"></div>
@@ -2390,9 +2394,59 @@ _ja_disabled:{name:'日本語',t:{
 }},
 };
 var currentLang=(()=>{const l=localStorage.getItem('eter_lang')||'es';return(l==='es'||l==='en')?l:'es';})();
+
+// ── AI error modal ────────────────────────────────────────────────────────────
+function showAiError(code, retrySeconds){
+  const isEN=currentLang==='en';
+  const errors={
+    429:{
+      icon:'⏳',
+      title:isEN?'Free limit reached':'Límite gratuito alcanzado',
+      desc:isEN?'You\'ve used all your free Gemini requests for this minute. This is completely normal — the free tier resets automatically.':'Alcanzaste el límite de requests de OpenAI por este momento. Espera un poco y vuelve a intentarlo.',
+      action:isEN?`✓ Wait ${retrySeconds||60} seconds and try again\n✓ Or create a new API key in a new Google project at aistudio.google.com`:`✓ Espera ${retrySeconds||60} segundos e intenta de nuevo\n✓ O crea una nueva API key en un proyecto nuevo en aistudio.google.com`
+    },
+    400:{
+      icon:'🔑',
+      title:isEN?'Invalid key':'Key inválida',
+      desc:isEN?'The API key doesn\'t seem right. Make sure you copied it completely from Google AI Studio.':'La API key no parece correcta. Asegúrate de haberla copiado completa desde platform.openai.com.',
+      action:isEN?'✓ Go to aistudio.google.com/app/apikey\n✓ Click on your key and copy it again\n✓ Make sure it starts with AQ.Ab… or AIza…':'✓ Ve a aistudio.google.com/app/apikey\n✓ Haz clic en tu key y cópiala de nuevo\n✓ Asegúrate de que empiece con AQ.Ab… o AIza…'
+    },
+    403:{
+      icon:'🚫',
+      title:isEN?'Key without permissions':'Key sin permisos',
+      desc:isEN?'Your key exists but doesn\'t have permission to use Gemini. You need to enable it in Google AI Studio.':'Tu key existe pero no tiene permisos. Asegúrate de que esté activa en platform.openai.com.',
+      action:isEN?'✓ Go to aistudio.google.com\n✓ Make sure your key is active\n✓ Try creating a new key in a new project':'✓ Ve a aistudio.google.com\n✓ Asegúrate de que tu key esté activa\n✓ Intenta crear una nueva key en un proyecto nuevo'
+    },
+    0:{
+      icon:'📡',
+      title:isEN?'No connection':'Sin conexión',
+      desc:isEN?'Couldn\'t reach Gemini. Check your internet connection and try again.':'No se pudo conectar con OpenAI. Verifica tu conexión a internet e intenta de nuevo.',
+      action:isEN?'✓ Check your WiFi or mobile data\n✓ Try again in a few seconds':'✓ Verifica tu WiFi o datos móviles\n✓ Intenta de nuevo en unos segundos'
+    }
+  };
+  const e=errors[code]||{
+    icon:'⚠️',
+    title:isEN?'Connection error':'Error de conexión',
+    desc:isEN?'Something went wrong connecting to OpenAI. Try again in a moment.':'Algo salió mal al conectar con OpenAI. Intenta de nuevo en un momento.',
+    action:isEN?'✓ Try again in a few seconds\n✓ If the issue persists, create a new API key':'✓ Intenta de nuevo en unos segundos\n✓ Si persiste, crea una nueva API key'
+  };
+  document.getElementById('mAiErrorIcon').textContent=e.icon;
+  document.getElementById('mAiErrorTitle').textContent=e.title;
+  document.getElementById('mAiErrorDesc').textContent=e.desc;
+  document.getElementById('mAiErrorAction').innerHTML=e.action.split('\n').map(l=>`<div style="margin-bottom:.2rem">${l}</div>`).join('');
+  showModal('mAiError');
+}
+
+function updateAiStatusBtn(){
+  const btn=document.getElementById('aiStatusBtn');
+  if(!btn)return;
+  btn.style.display=cfg.apiKey?'flex':'none';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
 
-let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"gemini","apiKey":""}');
+let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"openai","apiKey":""}');
 let appState = JSON.parse(localStorage.getItem('eter2_state')||'{"libName":"","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
 let wordFloatPositions = {};
 let wordUserPositions = {};
@@ -2412,7 +2466,7 @@ let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
 let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
 const persistShowWish=()=>localStorage.setItem('eter2_showWish',JSON.stringify(showGalaxyWishlist));
-const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat','mProximamente','mNoteConfirm'];
+const MODALS=['mAdd','mEdit','mBook','mVision','mSettings','mWish','mOnboarding','mBitStat','mProximamente','mNoteConfirm','mAiError'];
 // ╔═══════════════════════════════════════════════════════╗
 // ║  📳 HAPTIC FEEDBACK                                    ║
 // ║  Vibración táctil en acciones clave (móvil)           ║
@@ -3384,7 +3438,7 @@ function switchSettingsTab(n){
     tab.style.color=active?'var(--accent2)':'var(--muted)';
   });
 }
-function openSettings(tab){_hap.light();setTimeout(()=>{if(cfg.provider==='gemini'||!cfg.provider)selProv('gemini',false);},50);
+function openSettings(tab){_hap.light();setTimeout(()=>{if(cfg.provider==='openai'||!cfg.provider)selProv('openai',false);},50);
   showModal('mSettings');
   switchSettingsTab(tab||1);
   // Render lists safely
@@ -4562,14 +4616,24 @@ function selProv(p,_=true){
   const guides={
     gemini:geminiGuide,
     anthropic:`<div style="font-family:'Lato',sans-serif;font-size:.68rem;color:var(--muted);margin-top:.4rem"><ol><li>Ve a <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2)">console.anthropic.com</a></li><li>API Keys → Create Key</li><li>Copia y pega arriba</li></ol></div>`,
-    openai:`<div style="font-family:'Lato',sans-serif;font-size:.68rem;color:var(--muted);margin-top:.4rem"><ol><li>Ve a <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent2)">platform.openai.com/api-keys</a></li><li>Create new secret key</li><li>Copia y pega arriba</li></ol></div>`,
+    openai:(()=>{const isEN=currentLang==='en';return`<div style="margin-top:.6rem;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:.75rem 1rem">
+    <div style="font-family:'DM Mono',monospace;font-size:.5rem;color:var(--accent2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem">${isEN?'How to get your OpenAI key':'Cómo obtener tu key de OpenAI'}</div>
+    <div style="font-family:'Lato',sans-serif;font-size:.68rem;color:var(--text);line-height:1.8">
+      <div style="margin-bottom:.3rem">1. ${isEN?'Open':'Abre'} <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent2);text-decoration:underline">platform.openai.com/api-keys</a></div>
+      <div style="margin-bottom:.3rem">2. ${isEN?'Sign in or create a free account':'Inicia sesión o crea una cuenta gratuita'}</div>
+      <div style="margin-bottom:.3rem">3. ${isEN?'Click <strong style="color:var(--text)">Create new secret key</strong>':'Haz clic en <strong style="color:var(--text)">Create new secret key</strong>'}</div>
+      <div style="margin-bottom:.3rem">4. ${isEN?'Copy the key (starts with <strong style="color:var(--text)">sk-…</strong>)':'Copia la key (empieza con <strong style="color:var(--text)">sk-…</strong>)'}</div>
+      <div>5. ${isEN?'Paste it above and click <strong style="color:var(--text)">Verify connection</strong>':'Pégala arriba y haz clic en <strong style="color:var(--text)">Verificar conexión</strong>'}</div>
+    </div>
+    <div style="margin-top:.5rem;font-family:'DM Mono',monospace;font-size:.46rem;color:var(--dim)">${isEN?'✓ Pay per use · Very low cost for personal use':'✓ Pago por uso · Costo muy bajo para uso personal'}</div>
+  </div>`})(),
     grok:`<div style="font-family:'Lato',sans-serif;font-size:.68rem;color:var(--muted);margin-top:.4rem"><ol><li>Ve a <a href="https://console.x.ai" target="_blank" style="color:var(--accent2)">console.x.ai</a></li><li>API Keys → Create Key</li><li>Copia y pega arriba</li></ol></div>`,
     custom:`<div style="font-family:'Lato',sans-serif;font-size:.68rem;color:var(--muted);margin-top:.4rem"><ol><li>Ingresa tu endpoint completo arriba</li><li>Escribe el nombre del modelo</li><li>Agrega tu API key</li></ol></div>`
   };
   document.getElementById('apiGuide').innerHTML=(guides[p]||'');
   // Auto-trigger guide for gemini on load
-  if(p==='gemini'&&!cfg.apiKey){
-    const ph=document.getElementById('apiKeyIn');if(ph)ph.placeholder='AQ.Ab… o AIza…';
+  if(p==='openai'&&!cfg.apiKey){
+    const ph=document.getElementById('apiKeyIn');if(ph)ph.placeholder='sk-…';
   }
 }
 function saveSettings(){const _ak=document.getElementById('apiKeyIn');if(_ak)cfg.apiKey=_ak.value.trim();const _ep=document.getElementById('customEndpointIn');if(_ep&&_ep.value)cfg.customEndpoint=_ep.value.trim();const _cm=document.getElementById('customModelIn');if(_cm&&_cm.value)cfg.customModel=_cm.value.trim();persistCfg();updateApiSt();closeModal('mSettings');}
@@ -4580,20 +4644,25 @@ async function testKey(){
   const isEN=currentLang==='en';
   btn.textContent=isEN?'Verifying…':'Verificando…';btn.disabled=true;
   try{
-    // TEST MODE: always Gemini
-    const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${key}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}})});
-    if(!r.ok){const err=await r.json();console.error('Gemini error response:',JSON.stringify(err));throw err;}
+    // TEST MODE: always OpenAI
+    const r=await fetch('https://api.openai.com/v1/models',{headers:{'Authorization':`Bearer ${key}`}});
+    if(!r.ok){const err=await r.json();console.error('OpenAI error response:',JSON.stringify(err));throw err;}
     // Save key on success
-    cfg.provider='gemini';cfg.apiKey=key;persistCfg();updateApiSt();
+    cfg.provider='openai';cfg.apiKey=key;persistCfg();updateApiSt();updateAiStatusBtn();
     btn.textContent=isEN?'✓ Connected!':'✓ ¡Conectado!';
     btn.style.background='rgba(34,197,94,.15)';btn.style.borderColor='rgba(34,197,94,.5)';btn.style.color='#4ade80';
     const guide=document.getElementById('apiGuide');
     if(guide)guide.innerHTML=`<div style="margin-top:.5rem;padding:.5rem .7rem;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-family:'DM Mono',monospace;font-size:.52rem;color:#4ade80">
-      ${isEN?'✓ Gemini is ready. ALINEA will now find deeper connections in your library.':'✓ Gemini conectado. ALINEA ahora encontrará conexiones más profundas en tu biblioteca.'}
+      ${isEN?'✓ GPT-4o is ready. ALINEA will now find deeper connections in your library.':'✓ GPT-4o conectado. ALINEA ahora encontrará conexiones más profundas en tu biblioteca.'}
     </div>`;
   }catch(e){
-    btn.textContent=isEN?'✗ Invalid key — check it':'✗ Key inválida — verifícala';
+    btn.textContent=isEN?'✗ Error':'✗ Error';
     btn.style.background='rgba(239,68,68,.1)';btn.style.borderColor='rgba(239,68,68,.4)';btn.style.color='#f87171';
+    // Show human-readable error modal
+    const code=e?.error?.code||e?.code||0;
+    const retryMatch=(e?.error?.message||'').match(/retry in ([\d.]+)s/);
+    const retrySec=retryMatch?Math.ceil(parseFloat(retryMatch[1])):60;
+    setTimeout(()=>showAiError(code,retrySec),400);
   }
   setTimeout(()=>{btn.textContent=isEN?'Verify connection':'Verificar conexión';btn.disabled=false;btn.style.background='';btn.style.borderColor='';btn.style.color='';},3000);
 }
@@ -8661,7 +8730,7 @@ function initSplash(){
   },2600);
 }
 
-updateApiSt();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);maybeShowOnboarding();
+updateApiSt();updateAiStatusBtn();renderSidebar();renderLib();loadDemos();applyLang();initAppearance();setTimeout(updateWishGalBtn,500);maybeShowOnboarding();
 // Clean up legacy friend galaxy data from localStorage (feature removed)
 ['eter2_friends','eter2_activegal'].forEach(k=>localStorage.removeItem(k));
 // ╔═══════════════════════════════════════════════════════╗
@@ -9726,5 +9795,18 @@ function generateReminderLink(){
     </div>
   </div>
   <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+
+<!-- ═══════════════════════════════════════════════════════
+     🤖 MODAL — ERROR DE IA
+═══════════════════════════════════════════════════════ -->
+<div class="modal" id="mAiError" style="width:340px;max-width:92vw;text-align:center">
+  <button onclick="closeModal('mAiError')" style="position:absolute;top:.75rem;right:.75rem;background:none;border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;z-index:10" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">✕</button>
+  <div id="mAiErrorIcon" style="font-size:2rem;margin-bottom:.75rem">⚠️</div>
+  <div id="mAiErrorTitle" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.5rem"></div>
+  <div id="mAiErrorDesc" style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);line-height:1.75;margin-bottom:1.25rem"></div>
+  <div id="mAiErrorAction" style="font-family:'DM Mono',monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.3);border-radius:8px;padding:.55rem .85rem;line-height:1.7;text-align:left"></div>
+  <button onclick="closeModal('mAiError')" style="margin-top:1rem;background:linear-gradient(135deg,var(--accent3),var(--accent));border:none;color:#fff;font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1.2rem;border-radius:8px;cursor:pointer">Entendido</button>
+</div>
+
 </body>
 </html>
