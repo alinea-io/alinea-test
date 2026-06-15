@@ -252,6 +252,8 @@ body::before{content:'';position:fixed;inset:0;background:
 .app{position:relative;z-index:1;min-height:calc(100vh - var(--content-top))}
 .view{display:none;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
 .view.active{display:flex;flex-direction:column;animation:_viewIn .18s ease-out}
+#viewTelescopio{padding:0;overflow-y:visible;-webkit-overflow-scrolling:touch}
+#viewTelescopio>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%;contain:layout style}
 @keyframes _viewIn{from{opacity:.7;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
 .filter-bar-top{display:flex;align-items:center;gap:.5rem;padding:.45rem 1.4rem;flex-wrap:nowrap;overflow-x:auto;border-bottom:1px solid rgba(30,27,46,.3);background:rgba(6,5,15,.92);backdrop-filter:blur(4px);flex-shrink:0}
@@ -1597,14 +1599,6 @@ canvas{-webkit-user-select:none;user-select:none}
       <div class="api-st none" id="apiSt">○ Sin API key</div><br>
       <button class="btn-test" onclick="testKey()" data-i18n="verifyConn">Verificar conexión</button>
       <div class="api-guide" id="apiGuide"></div>
-    </div>
-    <div class="set-s">
-      <h3 data-i18n="aiTools">✦ Herramientas IA</h3>
-      <p style="font-size:.63rem;color:var(--muted);line-height:1.6;margin-bottom:.55rem" data-i18n="iaDesc">Tu API key vive solo en tu navegador — no se envía a ningún servidor de ALINEA.</p>
-      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
-        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runCollision(),200)" data-i18n="colisionBtn">Colisión de ideas</button>
-        <button class="btn-gen" style="font-size:.53rem;padding:.32rem .8rem" onclick="closeModal('mSettings');setTimeout(()=>runHorizon(),200)" data-i18n="horizonteBtn">Horizonte de sucesos</button>
-      </div>
     </div>
     </div><!-- /iaContentHidden -->
 
