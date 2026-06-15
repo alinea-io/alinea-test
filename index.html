@@ -789,7 +789,7 @@ canvas{-webkit-user-select:none;user-select:none}
   </div>
   <div id="dockActions">
     <button class="dta" id="wishBtn" onclick="openWishlist()" title="Wishlist" style="position:relative;font-size:.82rem">🚀<div class="rocket-badge" id="rocketBadge"></div></button>
-    <button class="dta" id="aiStatusBtn" onclick="_hap.light();openSettings('ia')" title="IA" style="display:none;position:relative;font-size:.75rem;letter-spacing:.04em;font-family:monospace;padding:.2rem .45rem;gap:.25rem;align-items:center">
+    <button class="dta" id="aiStatusBtn" onclick="_hap.light();showAiConnectedToast()" title="IA" style="display:none;position:relative;font-size:.75rem;letter-spacing:.04em;font-family:monospace;padding:.2rem .45rem;gap:.25rem;align-items:center">
       <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,.8);flex-shrink:0"></span>
       <span style="color:var(--accent2);font-size:.5rem;letter-spacing:.08em">IA</span>
     </button>
@@ -996,7 +996,56 @@ canvas{-webkit-user-select:none;user-select:none}
           <div style="font-family:monospace;font-size:.42rem;color:rgba(139,92,246,.2);letter-spacing:.04em;margin-top:.2rem">© 2026 · Miguel Valdez · All rights reserved</div>
         </div>
       </div>
+    
+    <div class="view" id="viewTelescopio">
+      <div style="padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%">
+        <div style="margin-bottom:2rem">
+          <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--text);margin-bottom:.3rem">🔭 <em style="font-weight:400;font-style:italic;color:var(--accent2)">Telescopio</em></h2>
+          <p style="font-family:'Lato',sans-serif;font-size:.75rem;color:var(--muted);line-height:1.7">La IA como lente. Revela lo que tus libros y notas ya contienen — solo que invisible a simple vista.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.75rem">
+          <button onclick="setTelescopioMode('esencia')" id="tmEsencia" class="t-mode-btn active">✦ Esencia</button>
+          <button onclick="setTelescopioMode('colision')" id="tmColision" class="t-mode-btn">💥 Colisión</button>
+          <button onclick="setTelescopioMode('autor')" id="tmAutor" class="t-mode-btn">✍️ Por autor</button>
+          <button onclick="setTelescopioMode('mapa')" id="tmMapa" class="t-mode-btn">🌐 Mapa total</button>
+          <button onclick="setTelescopioMode('orbita')" id="tmOrbita" class="t-mode-btn">🚀 Próxima órbita</button>
+        </div>
+        <div id="tModeEsencia">
+          <p style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">Selecciona un libro — la IA sintetiza todas tus notas en la esencia de lo que aprendiste.</p>
+          <select id="tEsenciaBook" class="fin" style="margin-bottom:.5rem"><option value="">— Elige un libro —</option></select>
+          <div id="tEsenciaInfo" style="font-family:monospace;font-size:.48rem;color:var(--dim);margin-bottom:.75rem"></div>
+          <button class="btn-gen" onclick="confirmTelescopio('esencia')" id="tEsenciaBtn">✦ Generar esencia</button>
+          <div id="tEsenciaResult" style="margin-top:1.1rem"></div>
+        </div>
+        <div id="tModeColision" style="display:none">
+          <p style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">Selecciona entre 2 y 10 libros — la IA encuentra conexiones profundas entre todos ellos.</p>
+          <div id="tColisionBooks" style="display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;max-height:280px;overflow-y:auto"></div>
+          <div id="tColisionInfo" style="font-family:monospace;font-size:.48rem;color:var(--dim);margin-bottom:.75rem"></div>
+          <button class="btn-gen" onclick="confirmTelescopio('colision')" id="tColisionBtn">💥 Generar colisión</button>
+          <div id="tColisionResult" style="margin-top:1.1rem"></div>
+        </div>
+        <div id="tModeAutor" style="display:none">
+          <p style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">Selecciona un autor con 2+ libros — la IA traza la evolución de su pensamiento a través de tus notas.</p>
+          <select id="tAutorSelect" class="fin" style="margin-bottom:.5rem"><option value="">— Elige un autor —</option></select>
+          <div id="tAutorInfo" style="font-family:monospace;font-size:.48rem;color:var(--dim);margin-bottom:.75rem"></div>
+          <button class="btn-gen" onclick="confirmTelescopio('autor')" id="tAutorBtn">✍️ Analizar autor</button>
+          <div id="tAutorResult" style="margin-top:1.1rem"></div>
+        </div>
+        <div id="tModeMapa" style="display:none">
+          <p style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">La IA analiza toda tu biblioteca y genera un panorama completo de tus conexiones de conocimiento.</p>
+          <div id="tMapaInfo" style="font-family:monospace;font-size:.48rem;color:var(--dim);margin-bottom:.75rem"></div>
+          <button class="btn-gen" onclick="confirmTelescopio('mapa')" id="tMapaBtn">🌐 Generar mapa</button>
+          <div id="tMapaResult" style="margin-top:1.1rem"></div>
+        </div>
+        <div id="tModeOrbita" style="display:none">
+          <p style="font-family:'Lato',sans-serif;font-size:.72rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">La IA analiza tu perfil lector completo y recomienda los 5 libros que más encajan con tu galaxia.</p>
+          <div id="tOrbitaInfo" style="font-family:monospace;font-size:.48rem;color:var(--dim);margin-bottom:.75rem"></div>
+          <button class="btn-gen" onclick="confirmTelescopio('orbita')" id="tOrbitaBtn">🚀 Descubrir próxima órbita</button>
+          <div id="tOrbitaResult" style="margin-top:1.1rem"></div>
+        </div>
+      </div>
     </div>
+</div>
   </div>
 
     <!-- ═══════════════════════════════════════════════════════
@@ -2453,8 +2502,20 @@ function updateAiStatusBtn(){
   const btn=document.getElementById('aiStatusBtn');
   if(!btn)return;
   btn.style.display=cfg.apiKey?'flex':'none';
+  updateTelescopioVisibility();
 }
-// ─────────────────────────────────────────────────────────────────────────────
+
+function showAiConnectedToast(){
+  const isEN=currentLang==='en';
+  const existing=document.getElementById('aiConnectedToast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.id='aiConnectedToast';
+  toast.style.cssText='position:fixed;top:72px;right:1rem;z-index:9999;background:rgba(13,11,30,.97);border:1px solid rgba(74,222,128,.35);border-radius:12px;padding:.65rem 1rem;display:flex;align-items:center;gap:.6rem;box-shadow:0 4px 24px rgba(0,0,0,.5);animation:fadeUp .25s ease both';
+  toast.innerHTML='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.8);flex-shrink:0"></span><div><div style="font-family:monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:#4ade80;margin-bottom:.15rem">'+(isEN?'AI Connected':'IA Conectada')+'</div><div style="font-family:\'Lato\',sans-serif;font-size:.65rem;color:var(--muted)">GPT-4o \u00b7 '+(isEN?'Ready':'Lista')+'</div></div>';
+  document.body.appendChild(toast);
+  setTimeout(function(){toast.style.opacity='0';toast.style.transition='opacity .3s';setTimeout(function(){toast.remove();},300);},2500);
+}
 
 
 // ╔═══════════════════════════════════════════════════════╗
