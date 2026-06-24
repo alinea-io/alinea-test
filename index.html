@@ -250,8 +250,8 @@ body::before{content:'';position:fixed;inset:0;background:
 .btn-add:hover{opacity:.86;box-shadow:0 4px 22px rgba(139,92,246,.48)}
 
 /* ── LAYOUT ── */
-.app{position:relative;z-index:1;min-height:calc(100vh - var(--content-top))}
-.view{display:none;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
+.app{position:relative;z-index:1;min-height:calc(100dvh - var(--content-top))}
+.view{display:none;min-height:calc(100dvh - var(--content-top) - var(--content-bottom))}
 .view.active{display:flex;flex-direction:column;animation:_viewIn .18s ease-out}
 #viewTelescopio{padding:0;overflow-y:visible;-webkit-overflow-scrolling:touch}
 #viewTelescopio>div{padding:1.8rem 2rem;max-width:860px;margin:0 auto;width:100%;contain:layout style}@keyframes _viewIn{from{opacity:.7;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
@@ -320,8 +320,8 @@ body::before{content:'';position:fixed;inset:0;background:
 .g-hint{position:absolute;bottom:.9rem;left:50%;transform:translateX(-50%);font-family:monospace;font-size:.53rem;color:var(--dim);pointer-events:none;text-align:center;letter-spacing:.05em}
 
 /* ── EXPLORE — MAGNETIC WORDS ── */
-#viewExplore{min-height:calc(100vh - var(--content-top) - var(--content-bottom));overflow-y:visible;overflow-x:hidden;position:relative}
-.exp-bg{position:relative;width:100%;min-height:calc(100vh - var(--content-top) - var(--content-bottom))}
+#viewExplore{min-height:calc(100dvh - var(--content-top) - var(--content-bottom));overflow-y:visible;overflow-x:hidden;position:relative}
+.exp-bg{position:relative;width:100%;min-height:calc(100dvh - var(--content-top) - var(--content-bottom))}
 .mag-words-flow{position:relative;padding:1.2rem 1.5rem 4rem;min-height:calc(100vh - 300px)}
 @keyframes magFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-5px) rotate(var(--r,0deg))}}
 @keyframes bitFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
@@ -916,7 +916,7 @@ canvas{-webkit-user-select:none;user-select:none}
     <span id="sbLibName" style="display:none"></span>
     <div id="sbCats" style="display:none"></div>
     <span id="filterBarTop" style="display:none"></span>
-    <div class="view" id="viewGraph" style="height:calc(100vh - var(--content-top) - var(--content-bottom));position:relative;overflow:hidden">
+    <div class="view" id="viewGraph" style="height:calc(100dvh - var(--content-top) - var(--content-bottom));position:relative;overflow:hidden">
       <canvas id="gCanvas" style="will-change:transform;transform:translateZ(0)"></canvas>
       <div class="g-lib-name">
         <input type="text" id="libNameInput" placeholder="Mi Biblioteca…" oninput="onLibName(this.value)" onblur="saveLibName()">
@@ -8037,20 +8037,20 @@ function setupGraph(cv){
           // Double click Mi Biblioteca → zoom in, single click → zoom out/reset
           if(dbl){
             const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;
-            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*3,y:cv2.height/d2/2-gDragNode.y*3},3);
+            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);
           } else { gReset(); }
         } else if(gDragNode.type==='sun'){
           // Double click category → zoom closer, single click → normal zoom
           if(dbl){
             const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;
-            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*3.5,y:cv2.height/d2/2-gDragNode.y*3.5},3.5);
+            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);
           } else { zoomToSystem(gDragNode); }
         } else if(gDragNode.type==='planet'||gDragNode.type==='comet'){
           if(dbl)openBook(gDragNode.bookId||gDragNode.id);
           else{
             const cv2=document.getElementById('gCanvas');
             const d2=window.devicePixelRatio||1;
-            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.5,y:cv2.height/d2/2-gDragNode.y*2.5},2.5);
+            if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);
           }
         }
       }else if(gDragNode.type==='planet')gDragNode._returning=true;
@@ -8075,7 +8075,7 @@ function setupGraph(cv){
     const my=(e.clientY-cvRect.top);
     // Zoom factor — gentler step
     const factor=e.deltaY<0?1.06:0.94;
-    const ns=Math.max(.2,Math.min(4,gSc*factor));
+    const ns=Math.max(.2,Math.min(2.4,gSc*factor));
     // Zoom centered on cursor
     const targetOff={
       x:mx-(mx-gOff.x)*(ns/gSc),
@@ -8108,7 +8108,9 @@ function setupGraph(cv){
       }else if(gPan&&gLast){gOff.x+=t.clientX-gLast.x;gOff.y+=t.clientY-gLast.y;gLast={x:t.clientX,y:t.clientY};}
     }else if(e.touches.length===2&&_lpd){
       const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
-      gSc=Math.max(.2,Math.min(4,gSc*(d/_lpd)));_lpd=d;
+      const ns=Math.max(.2,Math.min(2.4,gSc*(d/_lpd)));
+      gSc+=(ns-gSc)*0.35;
+      _lpd=d;
     }
   },{passive:false});
   cv.addEventListener('touchend',e=>{
@@ -8128,14 +8130,14 @@ function setupGraph(cv){
       const _tDbl=(gDragNode.id===_lastClick&&_tNow-_lastClickTime<400);
       _lastClick=gDragNode.id;_lastClickTime=_tNow;
       if(gDragNode.type==='main'){
-        if(_tDbl){const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*3,y:cv2.height/d2/2-gDragNode.y*3},3);}
+        if(_tDbl){const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);}
         else gReset();
       } else if(gDragNode.type==='sun'){
-        if(_tDbl){const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*3.5,y:cv2.height/d2/2-gDragNode.y*3.5},3.5);}
+        if(_tDbl){const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);}
         else zoomToSystem(gDragNode);
       } else if(gDragNode.type==='planet'||gDragNode.type==='comet'){
         if(_tDbl)openBook(gDragNode.bookId||gDragNode.id);
-        else{const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.5,y:cv2.height/d2/2-gDragNode.y*2.5},2.5);}
+        else{const cv2=document.getElementById('gCanvas');const d2=window.devicePixelRatio||1;if(cv2)animateZoom({x:cv2.width/d2/2-gDragNode.x*2.4,y:cv2.height/d2/2-gDragNode.y*2.4},2.4);}
       }
     }else if(gDragNode&&gDragNode._dragging&&gDragNode.type==='planet')gDragNode._returning=true;
     gDragNode=null;gPan=false;gLast=null;_lpd=null;
@@ -8231,7 +8233,7 @@ function gZoom(f){
   const cv=document.getElementById('gCanvas');if(!cv)return;
   const dpr=window.devicePixelRatio||1;
   const W=cv.width/dpr,H=cv.height/dpr;
-  const ns=Math.max(.2,Math.min(4,gSc*f));
+  const ns=Math.max(.2,Math.min(2.4,gSc*f));
   animateZoom({x:W/2-(W/2-gOff.x)*(ns/gSc),y:H/2-(H/2-gOff.y)*(ns/gSc)},ns);
 }
 
