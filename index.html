@@ -869,7 +869,14 @@ canvas{-webkit-user-select:none;user-select:none}
           <canvas id="searchStars" style="position:absolute;inset:0;border-radius:10px;pointer-events:none;z-index:0;opacity:0;transition:opacity .3s"></canvas>
         </div>
         <div style="display:flex;align-items:center;gap:.4rem">
-          <select id="filterSelect" onchange="setFilterFromSelect(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;appearance:auto;flex:1"><option value="all">Todos</option><option value="reading">Leyendo</option><option value="owned">No leídos</option><option value="wishlist">Wishlist</option><option value="recent">Recientes</option></select>
+          <select id="filterSelect" onchange="setFilterFromSelect(this.value)" style="display:none"><option value="all">Todos</option><option value="reading">Leyendo</option><option value="owned">No leídos</option><option value="wishlist">Wishlist</option><option value="recent">Recientes</option></select>
+          <div id="filterDropdownWrap" style="position:relative;flex:1;flex-shrink:0">
+            <button id="filterDropdownBtn" onclick="event.stopPropagation();toggleFilterDropdown()" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:.3rem;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;box-sizing:border-box">
+              <span id="filterDropdownLabel" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Todos</span>
+              <span style="opacity:.5;flex-shrink:0;font-size:.6rem">▾</span>
+            </button>
+            <div id="filterDropdownPanel" style="display:none;position:absolute;top:calc(100% + 4px);left:0;min-width:100%;width:max-content;max-width:min(280px,80vw);max-height:240px;overflow-y:auto;background:rgba(8,6,18,.97);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:.35rem;z-index:500;backdrop-filter:blur(20px);box-shadow:0 8px 28px rgba(0,0,0,.6)"></div>
+          </div>
           <select id="sortSelectBar" onchange="setSortOrder(this.value)" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:monospace;font-size:.54rem;padding:.22rem .5rem;border-radius:6px;outline:none;cursor:pointer;flex-shrink:0;-webkit-appearance:menulist;appearance:menulist;flex:1">
             <option value="added">↓ Más reciente</option>
             <option value="added_asc">↑ Primero agregado</option>
@@ -969,7 +976,7 @@ canvas{-webkit-user-select:none;user-select:none}
             <button onclick="event.stopPropagation();setCatFilterAll(false)" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:rgba(248,113,113,.7);font-family:monospace;font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .45rem;border-radius:4px;cursor:pointer" data-i18n="filterNone">Ninguna</button>
           </div>
         </div>
-        <div id="catFilterList" style="display:flex;flex-direction:column;gap:.28rem;max-height:280px;overflow-y:auto"></div>
+        <div id="catFilterList" style="display:flex;flex-direction:column;gap:.28rem;max-height:266px;overflow-y:auto;position:relative;z-index:1"></div>
       </div>
       <div class="g-hint" data-i18n="galaxyHint">Sistema solar · Arrastra · Scroll = zoom · Clic = libro · Órbitas animadas</div>
     </div>
@@ -4809,7 +4816,8 @@ function applyLang(){
   if(gb)gb.textContent=gravityOn?t('gravOn'):t('gravOff');
   // 4. Filter/sort selects
   const fs=document.getElementById('filterSelect');
-  if(fs){const v=fs.value;const opts=['filterAll','filterReading','filterOwned','filterWishlist'];[...fs.options].forEach((o,i)=>o.textContent=t(opts[i]));fs.value=v;}
+  if(fs){const v=fs.value;const opts=['filterAll','filterReading','filterOwned','filterWishlist'];const recentLabel=currentLang==='en'?'Recent':'Recientes';[...fs.options].forEach((o,i)=>{o.textContent=i<opts.length?t(opts[i]):recentLabel;});fs.value=v;}
+  renderFilterDropdown();
   const ss=document.getElementById('sortSelectBar');
   if(ss){const v=ss.value;const opts=['sortRecent','sortTitle','sortAuthor','sortRating'];[...ss.options].forEach((o,i)=>o.textContent=t(opts[i]));ss.value=v;}
   // 5. All data-i18n elements (covers settings modal + everything tagged)
@@ -7317,13 +7325,20 @@ function toggleCatFilterPanel(){
     panel.style.width=pw+'px';
     // Open above or below depending on space
     panel.style.display='block';
-    const ph=panel.offsetHeight||280;
+    panel.style.zIndex='9500';
+    const ph=panel.offsetHeight||320;
+    // Reserve space for the floating action button (fab-wrap: bottom 100px + its own height)
+    const fabSafeBottom=window.innerHeight-160;
     if(r.top>ph+20){
       // enough space above — open upward
       panel.style.top=(r.top-ph-6)+'px';
     } else {
-      // open downward
-      panel.style.top=(r.bottom+6)+'px';
+      // open downward, but never push past the FAB's safe zone
+      let top=r.bottom+6;
+      if(top+ph>fabSafeBottom){
+        top=Math.max(8,fabSafeBottom-ph);
+      }
+      panel.style.top=top+'px';
     }
   } else {
     panel.style.display='block';
@@ -7336,8 +7351,8 @@ function renderCatFilterPanel(){
   const realBooks=lib.filter(b=>!b.isWishlist&&b.status!=='wishlist');
   const usedCats=[...new Set(realBooks.map(b=>{const p=CAT_PARENT[b.category||'']||b.category||'';return p;}).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
   if(!usedCats.length){list.innerHTML=`<div style="font-size:.64rem;color:var(--dim);font-style:italic">${t('noCatsYet')}</div>`;return;}
-  // 3x3 grid of category pills
-  list.style.cssText='display:flex;flex-direction:column;gap:.28rem;margin-bottom:.45rem';
+  // Column of category pills, capped to ~7 rows tall with internal scroll
+  list.style.cssText='display:flex;flex-direction:column;gap:.28rem;margin-bottom:.45rem;max-height:266px;overflow-y:auto;position:relative;z-index:1';
   list.innerHTML=usedCats.map(cat=>{
     const col=cc(cat);
     const n=realBooks.filter(b=>(CAT_PARENT[b.category||'']||b.category||'')===cat).length;
@@ -8535,6 +8550,54 @@ function sortLib(books){
   return arr;
 }
 
+// ── Custom filter dropdown (replaces native <select> to avoid OS-level
+// fullscreen picker on mobile when there are many categories — keeps a
+// small scrollable panel instead) ──
+function renderFilterDropdown(){
+  const fs=document.getElementById('filterSelect');
+  const panel=document.getElementById('filterDropdownPanel');
+  const label=document.getElementById('filterDropdownLabel');
+  if(!fs||!panel||!label)return;
+  const isEN=currentLang==='en';
+  const fixedOpts=[
+    {val:'all',label:t('filterAll')||'Todos'},
+    {val:'reading',label:t('filterReading')||'Leyendo'},
+    {val:'owned',label:t('filterOwned')||'No leídos'},
+    {val:'wishlist',label:t('filterWishlist')||'Wishlist'},
+    {val:'recent',label:isEN?'Recent':'Recientes'}
+  ];
+  const catOg=[...fs.querySelectorAll('optgroup option')];
+  const curVal=fs.value;
+  const rowStyle='display:block;width:100%;text-align:left;background:none;border:none;color:var(--text);font-family:monospace;font-size:.56rem;padding:.4rem .55rem;border-radius:6px;cursor:pointer;white-space:nowrap';
+  let html=fixedOpts.map(o=>`<button onclick="event.stopPropagation();selectFilterDropdown('${o.val}')" style="${rowStyle};${o.val===curVal?'background:var(--glow);color:var(--accent2)':''}">${o.label}</button>`).join('');
+  if(catOg.length){
+    html+=`<div style="margin:.3rem 0 .15rem;padding:0 .55rem;font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);border-top:1px solid var(--border);padding-top:.4rem">── ${t('category')||'Categorías'}</div>`;
+    html+=catOg.map(o=>`<button onclick="event.stopPropagation();selectFilterDropdown('${o.value.replace(/'/g,"\\'")}')" style="${rowStyle};${o.value===curVal?'background:var(--glow);color:var(--accent2)':''}">${o.textContent}</button>`).join('');
+  }
+  panel.innerHTML=html;
+  const curOpt=[...fs.options].find(o=>o.value===curVal);
+  label.textContent=curOpt?curOpt.textContent:(t('filterAll')||'Todos');
+}
+function toggleFilterDropdown(){
+  const panel=document.getElementById('filterDropdownPanel');
+  if(!panel)return;
+  const open=panel.style.display==='block';
+  panel.style.display=open?'none':'block';
+}
+function selectFilterDropdown(val){
+  const fs=document.getElementById('filterSelect');
+  if(fs)fs.value=val;
+  const panel=document.getElementById('filterDropdownPanel');
+  if(panel)panel.style.display='none';
+  setFilterFromSelect(val);
+}
+document.addEventListener('click',function(e){
+  const wrap=document.getElementById('filterDropdownWrap');
+  const panel=document.getElementById('filterDropdownPanel');
+  if(panel&&panel.style.display==='block'&&wrap&&!wrap.contains(e.target)){
+    panel.style.display='none';
+  }
+});
 function setFilterFromSelect(val){
   curFilter=val;
   renderSidebar();renderLib();
@@ -8546,6 +8609,7 @@ function setFilter(cat,el){
   const fs=document.getElementById('filterSelect');
   if(fs&&['all','reading','owned','wishlist'].includes(cat))fs.value=cat;
   renderSidebar();renderLib();
+  renderFilterDropdown();
 }
 function renderSidebar(){
   const cats=[...new Set(lib.map(b=>b.category).filter(Boolean))];
@@ -8589,6 +8653,7 @@ function renderSidebar(){
     // restore value if still valid
     if(curVal&&[...filterSel.options].some(o=>o.value===curVal))filterSel.value=curVal;
   }
+  renderFilterDropdown();
   // Update compact bar
   const libBarEl=document.getElementById('sbLibNameBar');
   if(libBarEl)libBarEl.textContent=appState.libName||'Mi Biblioteca';
