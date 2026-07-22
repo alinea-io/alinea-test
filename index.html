@@ -1959,7 +1959,24 @@ canvas{-webkit-user-select:none;user-select:none}
 // ══════════════════════════
 // STATE
 // ══════════════════════════
-let lib = JSON.parse(localStorage.getItem(atob('ZXRlcjI='))||'[]');
+// Blindaje anti-pantalla-blanca: si algún valor en localStorage se corrompe
+// (escritura interrumpida, cierre de pestaña a medio guardar, etc.), un
+// JSON.parse sin protección aquí mataría TODO el script y dejaría la app
+// en blanco para siempre. _safeParse nunca truena: si el JSON es inválido,
+// guarda una copia de respaldo bajo "<key>_corrupt_<timestamp>" (por si se
+// puede recuperar algo a mano) y regresa el valor por default en su lugar.
+function _safeParse(key, fallback){
+  const raw = localStorage.getItem(key);
+  if(raw==null) return JSON.parse(fallback);
+  try{
+    return JSON.parse(raw);
+  }catch(err){
+    try{ localStorage.setItem(key+'_corrupt_'+Date.now(), raw); }catch(e){}
+    console.warn('[ALINEA] Dato corrupto en localStorage["'+key+'"], usando valor por defecto. Respaldo guardado.', err);
+    return JSON.parse(fallback);
+  }
+}
+let lib = _safeParse(atob('ZXRlcjI='), '[]');
 
 var LANGS={
 es:{name:'Español',t:{
@@ -2725,8 +2742,8 @@ async function runTelescopio(mode){
 
 function t(key){return LANGS[currentLang]?.t[key]||LANGS.es.t[key]||key;}
 
-let cfg = JSON.parse(localStorage.getItem('eter2_cfg')||'{"provider":"openai","apiKey":""}');
-let appState = JSON.parse(localStorage.getItem('eter2_state')||'{"libName":"","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
+let cfg = _safeParse('eter2_cfg', '{"provider":"openai","apiKey":""}');
+let appState = _safeParse('eter2_state', '{"libName":"","categories":["Finanzas","Negocios","Filosofía","Psicología","Historia","Ciencia","Tecnología","Autobiografía","Literatura","Otro"],"magPositions":{}}');
 let wordFloatPositions = {};
 let wordUserPositions = {};
 let gv='grid', curFilter='all', curSearch='', _noteSearchQuery='';
@@ -2741,11 +2758,11 @@ let _exploreMatches=[];
 // Friend galaxies removed — single galaxy only
 const activeGalaxies=['mine'];
 // Hidden categories in galaxy view
-let hiddenCats=JSON.parse(localStorage.getItem('eter2_hiddenCats')||'[]');
+let hiddenCats=_safeParse('eter2_hiddenCats', '[]');
 const persistHiddenCats=()=>localStorage.setItem('eter2_hiddenCats',JSON.stringify(hiddenCats));
-let showGalaxyWishlist=JSON.parse(localStorage.getItem('eter2_showWish')||'true');
-let showGalaxyKeywords=JSON.parse(localStorage.getItem('eter2_showKw')||'false');
-let showGalaxyNotesDust=JSON.parse(localStorage.getItem('eter2_showNotesDust')||'false');
+let showGalaxyWishlist=_safeParse('eter2_showWish', 'true');
+let showGalaxyKeywords=_safeParse('eter2_showKw', 'false');
+let showGalaxyNotesDust=_safeParse('eter2_showNotesDust', 'false');
 window._gPlanetSpeed=parseFloat(localStorage.getItem('eter2_planetSpeed')||'1');
 window._gCatSpeed=parseFloat(localStorage.getItem('eter2_catSpeed')||'1');
 window._gConnSpeed=parseFloat(localStorage.getItem('eter2_connSpeed')||'1');
@@ -3398,8 +3415,8 @@ function activateOrbHalo(){
   },200);
 }
 
-let catColorOverrides=JSON.parse(localStorage.getItem('eter2_catColors')||'{}');
-let bookColorOverrides=JSON.parse(localStorage.getItem('eter2_bookColors')||'{}');
+let catColorOverrides=_safeParse('eter2_catColors', '{}');
+let bookColorOverrides=_safeParse('eter2_bookColors', '{}');
 function persistBookColors(){localStorage.setItem('eter2_bookColors',JSON.stringify(bookColorOverrides));}
 
 function persistCatColors(){localStorage.setItem('eter2_catColors',JSON.stringify(catColorOverrides));}
@@ -10584,6 +10601,18 @@ function generateReminderLink(){
   <div id="mAiErrorAction" style="font-family:monospace;font-size:.52rem;color:var(--accent2);background:var(--glow);border:1px solid rgba(139,92,246,.3);border-radius:8px;padding:.55rem .85rem;line-height:1.7;text-align:left"></div>
   <button onclick="closeModal('mAiError')" style="margin-top:1rem;background:linear-gradient(135deg,var(--accent3),var(--accent));border:none;color:#fff;font-family:monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1.2rem;border-radius:8px;cursor:pointer">Entendido</button>
 </div>
+
+<script>
+// ── Soporte offline: registra el Service Worker (sw.js debe subirse a la
+//    raíz del dominio, junto a este HTML) ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(err=>{
+      console.warn('[ALINEA] No se pudo registrar el service worker:', err);
+    });
+  });
+}
+</script>
 
 </body>
 </html>
